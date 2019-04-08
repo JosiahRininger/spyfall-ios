@@ -7,21 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8CBE28324837C172579739E8 /* Pods_spyfall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DED611AE68AC0D90185B6E /* Pods_spyfall.framework */; };
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706256A22586D3900A80B76 /* LaunchScreen.storyboard */; };
-		D706257422586D4F00A80B76 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706257322586D4F00A80B76 /* Home.storyboard */; };
+		D706257422586D4F00A80B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706257322586D4F00A80B76 /* Main.storyboard */; };
 		D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeViewController.swift */; };
+		D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		01D48E87E8B1E8C04083D140 /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
+		98DED611AE68AC0D90185B6E /* Pods_spyfall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spyfall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706255E22586D3800A80B76 /* spyfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spyfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706256122586D3800A80B76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D706256B22586D3900A80B76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D706257322586D4F00A80B76 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
+		D706257322586D4F00A80B76 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		D706257A225B87E600A80B76 /* NewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +35,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8CBE28324837C172579739E8 /* Pods_spyfall.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		601F979B90D37F94FA61C43B /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				01D48E87E8B1E8C04083D140 /* Pods-spyfall.debug.xcconfig */,
+				DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		6EB091D4AF577916501AC5CD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				98DED611AE68AC0D90185B6E /* Pods_spyfall.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D706255522586D3800A80B76 = {
 			isa = PBXGroup;
 			children = (
 				D706256022586D3800A80B76 /* spyfall */,
 				D706255F22586D3800A80B76 /* Products */,
+				601F979B90D37F94FA61C43B /* Pods */,
+				6EB091D4AF577916501AC5CD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -54,7 +81,9 @@
 		D706256022586D3800A80B76 /* spyfall */ = {
 			isa = PBXGroup;
 			children = (
+				D706257322586D4F00A80B76 /* Main.storyboard */,
 				D706257622586D9500A80B76 /* Home */,
+				D7062579225B87B700A80B76 /* New Game */,
 				D706256A22586D3900A80B76 /* LaunchScreen.storyboard */,
 				D706257522586D6B00A80B76 /* Supporting Files */,
 				D706256D22586D3900A80B76 /* Info.plist */,
@@ -74,10 +103,17 @@
 		D706257622586D9500A80B76 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				D706257322586D4F00A80B76 /* Home.storyboard */,
 				D706257722586DBC00A80B76 /* HomeViewController.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		D7062579225B87B700A80B76 /* New Game */ = {
+			isa = PBXGroup;
+			children = (
+				D706257A225B87E600A80B76 /* NewGameViewController.swift */,
+			);
+			path = "New Game";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -87,6 +123,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "spyfall" */;
 			buildPhases = (
+				93EDDD3C9AAC3F25F2F5BCBF /* [CP] Check Pods Manifest.lock */,
 				D706255A22586D3800A80B76 /* Sources */,
 				D706255B22586D3800A80B76 /* Frameworks */,
 				D706255C22586D3800A80B76 /* Resources */,
@@ -138,13 +175,38 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D706257422586D4F00A80B76 /* Home.storyboard in Resources */,
+				D706257422586D4F00A80B76 /* Main.storyboard in Resources */,
 				D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */,
 				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		93EDDD3C9AAC3F25F2F5BCBF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-spyfall-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D706255A22586D3800A80B76 /* Sources */ = {
@@ -153,6 +215,7 @@
 			files = (
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */,
+				D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +351,7 @@
 		};
 		D706257122586D3900A80B76 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 01D48E87E8B1E8C04083D140 /* Pods-spyfall.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -306,6 +370,7 @@
 		};
 		D706257222586D3900A80B76 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
