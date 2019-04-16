@@ -16,8 +16,13 @@ class NewGameViewController: UIViewController {
     @IBOutlet weak var timeLimitTextField: UITextField!
     @IBOutlet weak var createGame: UIButton!
     
+    @IBOutlet weak var packOne: CheckBox!
+    @IBOutlet weak var packTwo: CheckBox!
+    @IBOutlet weak var specialPack: CheckBox!
+    
     let timeRange = ["1","2","3","4","5","6","7","8","9","10"]
-    var selectedTime = 8
+    var timeLimit = 8
+    var accessCode = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,63 +35,68 @@ class NewGameViewController: UIViewController {
     
     @IBAction func createGameAction(_ sender: Any) {
         
-        //let newGame = Game(playerList: ["playerList" : [Player("username": "name", "role": "None", "votes": 0)]], timeLimit: ["timeLimit" : selectedTime])
-        //Game(timeLimit: selectedTime, playerList: [Player(username: nameTextField.text! ?? "Name", role: "None", votes: 0)])
+        // store selected location packs
+        var chosenLocations = [String]()
+        if packOne.isChecked {
+            chosenLocations.append("pack 1")
+        }
+        if packTwo.isChecked {
+            chosenLocations.append("pack 2")
+        }
+        if specialPack.isChecked {
+            chosenLocations.append("special pack")
+        }
+        //let location: String = grabLocation(locations: chosenLocations)
         
-//        func saveToFirebase() {
-//            let usersRef = myFirebase.child(users)
-//            let dict = ["name": self.myName, "food", self.myFood]
-//
-//            let thisUserRef = usersRef.childByAutoId()
-//            thisUserRef.setValue(dict)
-//        }
-        
-        let ref = Database.database().reference().child("games")
-        let id = ref.childByAutoId()
+        // create Player object
+        let newPlayer = nameTextField.text!
 
-        var accessCode = ""
-        for character in id.key! where (character.isLetter || character.isNumber) && accessCode.count < 9 {accessCode.append(character)}
+        // create access code
+        var uuid = NSUUID().uuidString.lowercased()
+        while uuid.count > 8 { uuid.removeLast() }
+        //let ref = Database.database().reference().child("games")
+        //let id = ref.childByAutoId()
+        //for character in id.key! where (character.isLetter || character.isNumber) && accessCode.count < 8 {accessCode.append(character)}
         
-        ref.child("\(accessCode)").setValue(["playerList":[], "timeLimit":selectedTime])
-        
-        
-        
-        
-//        ref.child("someid").observeSingleEvent(of: .value) {
-//            (snapshot) in
-//            let data = snapshot.value as? [String:Any]
-//        }
- 
+        // set values on firebase
+        let db = Firestore.firestore()
+
         // Add a new document with a generated ID
+        db.collection("games").document(uuid).setData([
+            "playerList": [newPlayer],
+            "timeLimit": timeLimit,
+            "isStarted": false,
+            "chosenPacks": chosenLocations
+        ]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+        /*ref.child("\(accessCode)").setValue(["playerList": [newPlayer]])
+        ref.child("\(accessCode)").updateChildValues(["timeLimit" : timeLimit])
+        ref.child("\(accessCode)").updateChildValues(["isStarted" : false])
+        ref.child("\(accessCode)").updateChildValues(["chosenPacks" : chosenLocations])*/
+//        ref.child("\(accessCode)").updateChildValues(["chosenLocation" : newGame.chosenLocation])
+    }
+    
+//    func grabLocation(locations: [String]) -> String {
+//        var randomLocation = String()
 //        let db = Firestore.firestore()
-//
-//        var ref: DocumentReference? = nil
-//        ref = db.collection("users").addDocument(data: [
-//            "first": "Ada",
-//            "last": "Lovelace",
-//            "born": 1815
-//        ]) { err in
+//        db.collection(locations.randomElement()!).getDocuments() { (querySnapshot, err) in
 //            if let err = err {
-//                print("Error adding document: \(err)")
+//                print("Error getting documents: \(err)")
 //            } else {
-//                print("Document added with ID: \(ref!.documentID)")
+//                let document = querySnapshot!.documents.randomElement()
+//                randomLocation = document!.documentID
+//                print("\n\n\n\n\n\(document!.documentID)")
+//                print("\n\n\n\n\n\(randomLocation)")
 //            }
 //        }
-//
-//        let citiesRef = db.collection("cities")
-//
-//        citiesRef.document("SF").setData([
-//            "name": "San Francisco",
-//            "state": "CA",
-//            "country": "USA",
-//            "capital": false,
-//            "population": 860000,
-//            "regions": ["west_coast", "norcal"]
-//            ])
-        
-        
-        
-    }
+//        // this exacutes once location are grabbed
+//        return randomLocation
+//    }
 
     private func createTimeLimitPicker() {
         let timePicker = UIPickerView()
@@ -102,7 +112,6 @@ class NewGameViewController: UIViewController {
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameViewController.dismissKeyboard))
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
-        
         timeLimitTextField.inputAccessoryView = toolBar
     }
     
@@ -126,8 +135,18 @@ extension NewGameViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        selectedTime = Int(timeRange[row])!
+        timeLimit = Int(timeRange[row])!
         timeLimitTextField.text = timeRange[row]
         timeLimitTextField.textColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
     }
 }
+
+//        ref.child("someid").observeSingleEvent(of: .value) {
+//            (snapshot) in
+//            let data = snapshot.value as? [String:Any]
+//        }
+
+// Add a new document with a generated ID
+//        let db = Firestore.firestore()
+//
+//        var ref: DocumentReference? = nil
