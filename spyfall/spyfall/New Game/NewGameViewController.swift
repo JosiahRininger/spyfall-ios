@@ -46,23 +46,19 @@ class NewGameViewController: UIViewController {
         if specialPack.isChecked {
             chosenLocations.append("special pack")
         }
-        //let location: String = grabLocation(locations: chosenLocations)
         
         // create Player object
         let newPlayer = nameTextField.text!
 
         // create access code
-        var uuid = NSUUID().uuidString.lowercased()
-        while uuid.count > 8 { uuid.removeLast() }
-        //let ref = Database.database().reference().child("games")
-        //let id = ref.childByAutoId()
-        //for character in id.key! where (character.isLetter || character.isNumber) && accessCode.count < 8 {accessCode.append(character)}
+        accessCode = NSUUID().uuidString.lowercased()
+        while accessCode.count > 6 { accessCode.removeLast() }
         
         // set values on firebase
         let db = Firestore.firestore()
 
         // Add a new document with a generated ID
-        db.collection("games").document(uuid).setData([
+        db.collection("games").document(accessCode).setData([
             "playerList": [newPlayer],
             "timeLimit": timeLimit,
             "isStarted": false,
@@ -74,6 +70,17 @@ class NewGameViewController: UIViewController {
                 print("Document successfully written!")
             }
         }
+//        db.collection("games").document().updateData(["playerList" : FieldValue.arrayUnion(["Josiahisbetterthanyou"])]) { err in
+//            if let err = err {
+//                print("Error writing document: \(err)")
+//            } else {
+//                print("Document successfully written!")
+//            }
+//        }
+//        // Atomically remove a region from the "regions" array field.
+//        washingtonRef.updateData([
+//            "regions": FieldValue.arrayRemove(["east_coast"])
+//            ])
         /*ref.child("\(accessCode)").setValue(["playerList": [newPlayer]])
         ref.child("\(accessCode)").updateChildValues(["timeLimit" : timeLimit])
         ref.child("\(accessCode)").updateChildValues(["isStarted" : false])
@@ -81,6 +88,7 @@ class NewGameViewController: UIViewController {
 //        ref.child("\(accessCode)").updateChildValues(["chosenLocation" : newGame.chosenLocation])
     }
     
+//      let location: String = grabLocation(locations: chosenLocations)
 //    func grabLocation(locations: [String]) -> String {
 //        var randomLocation = String()
 //        let db = Firestore.firestore()
@@ -97,6 +105,15 @@ class NewGameViewController: UIViewController {
 //        // this exacutes once location are grabbed
 //        return randomLocation
 //    }
+    //        ref.child("someid").observeSingleEvent(of: .value) {
+    //            (snapshot) in
+    //            let data = snapshot.value as? [String:Any]
+    //        }
+    
+    // Add a new document with a generated ID
+    //        let db = Firestore.firestore()
+    //
+    //        var ref: DocumentReference? = nil
 
     private func createTimeLimitPicker() {
         let timePicker = UIPickerView()
@@ -117,6 +134,18 @@ class NewGameViewController: UIViewController {
     
     @objc func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "WaitingScreen" {
+            let currentUsername: String
+            currentUsername = nameTextField.text!
+            guard let dest = segue.destination as? WaitingScreenTableViewController else {
+                fatalError()
+            }
+            dest.currentUsername = currentUsername
+            dest.accessCode = accessCode
+        }
     }
 }
 
@@ -140,13 +169,3 @@ extension NewGameViewController: UIPickerViewDelegate, UIPickerViewDataSource {
         timeLimitTextField.textColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
     }
 }
-
-//        ref.child("someid").observeSingleEvent(of: .value) {
-//            (snapshot) in
-//            let data = snapshot.value as? [String:Any]
-//        }
-
-// Add a new document with a generated ID
-//        let db = Firestore.firestore()
-//
-//        var ref: DocumentReference? = nil

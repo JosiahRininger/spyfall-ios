@@ -17,6 +17,8 @@
 		D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9C6B922654A7400163179 /* CheckBox.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
+		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */; };
+		D7FD37DE22679C8F0043A8D4 /* WaitingScreenTableTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DD22679C8F0043A8D4 /* WaitingScreenTableTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +35,8 @@
 		D7F9C6B922654A7400163179 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableView.swift; sourceTree = "<group>"; };
+		D7FD37DD22679C8F0043A8D4 /* WaitingScreenTableTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenTableTableViewController.swift; sourceTree = "<group>"; };
 		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +93,7 @@
 				D706257322586D4F00A80B76 /* Main.storyboard */,
 				D706257622586D9500A80B76 /* Home */,
 				D7062579225B87B700A80B76 /* New Game */,
+				D7FD37D5226660C60043A8D4 /* Waiting Screen */,
 				D706256A22586D3900A80B76 /* LaunchScreen.storyboard */,
 				D706257522586D6B00A80B76 /* Supporting Files */,
 				D706256D22586D3900A80B76 /* Info.plist */,
@@ -122,6 +127,15 @@
 				D7F9C6B922654A7400163179 /* CheckBox.swift */,
 			);
 			path = "New Game";
+			sourceTree = "<group>";
+		};
+		D7FD37D5226660C60043A8D4 /* Waiting Screen */ = {
+			isa = PBXGroup;
+			children = (
+				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */,
+				D7FD37DD22679C8F0043A8D4 /* WaitingScreenTableTableViewController.swift */,
+			);
+			path = "Waiting Screen";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,10 +272,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
+				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */,
 				D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
 				D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */,
+				D7FD37DE22679C8F0043A8D4 /* WaitingScreenTableTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
