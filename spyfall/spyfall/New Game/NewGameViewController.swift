@@ -81,10 +81,6 @@ class NewGameViewController: UIViewController {
 //        washingtonRef.updateData([
 //            "regions": FieldValue.arrayRemove(["east_coast"])
 //            ])
-        /*ref.child("\(accessCode)").setValue(["playerList": [newPlayer]])
-        ref.child("\(accessCode)").updateChildValues(["timeLimit" : timeLimit])
-        ref.child("\(accessCode)").updateChildValues(["isStarted" : false])
-        ref.child("\(accessCode)").updateChildValues(["chosenPacks" : chosenLocations])*/
 //        ref.child("\(accessCode)").updateChildValues(["chosenLocation" : newGame.chosenLocation])
     }
     
@@ -140,7 +136,7 @@ class NewGameViewController: UIViewController {
         if segue.identifier == "WaitingScreen" {
             let currentUsername: String
             currentUsername = nameTextField.text!
-            guard let dest = segue.destination as? WaitingScreenTableViewController else {
+            guard let dest = segue.destination as? WaitingScreenViewController else {
                 fatalError()
             }
             dest.currentUsername = currentUsername

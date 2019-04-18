@@ -9,7 +9,10 @@
 import UIKit
 
 class PlayersWaitingTableView: UITableViewCell {
- 
+    
+    @IBOutlet weak var playerNumber: UILabel!
+    @IBOutlet weak var usernameTextView: UITextField!
+    @IBOutlet weak var pencilImage: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,6 +21,7 @@ class PlayersWaitingTableView: UITableViewCell {
     
     // configures text for table view cells
     func configure(username: String, isCurrentUsername: Bool) {
-        
+        pencilImage.isHidden = !isCurrentUsername
+        usernameTextView.text = username
     }
 }
