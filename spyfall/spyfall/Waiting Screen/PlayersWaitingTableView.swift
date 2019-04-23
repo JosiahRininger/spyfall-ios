@@ -20,8 +20,30 @@ class PlayersWaitingTableView: UITableViewCell {
     }
     
     // configures text for table view cells
-    func configure(username: String, isCurrentUsername: Bool) {
-        pencilImage.isHidden = !isCurrentUsername
-        usernameTextView.text = username
+    func configure(username: String, index: Int, isCurrentUsername: Bool) -> String {
+        playerNumber.text = String(index)
+        pencilImage.isHidden = true
+        pencilImage.isUserInteractionEnabled = false
+        if isCurrentUsername {
+            if usernameTextView.text == "" { usernameTextView.text = username }
+            pencilImage.isHidden = false
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeUsername))
+            pencilImage.addGestureRecognizer(tapGesture)
+            pencilImage.isUserInteractionEnabled = true
+            NotificationCenter.default.addObserver(self, selector: #selector(disableUsernameInteraction), name: NSNotification.Name("editingOver"), object: nil)
+            return usernameTextView.text!
+        } else {
+            usernameTextView.text = username
+            return username
+        }
+    }
+    
+    @objc func changeUsername() {
+        usernameTextView.isUserInteractionEnabled = true
+        usernameTextView.becomeFirstResponder()
+    }
+    
+    @objc func disableUsernameInteraction() {
+        usernameTextView.isUserInteractionEnabled = false
     }
 }

@@ -31,21 +31,16 @@ class NewGameViewController: UIViewController {
         createGame.layer.borderWidth = 1
         createTimeLimitPicker()
         createPickerToolBar()
+        setUpKeyboard()
     }
     
     @IBAction func createGameAction(_ sender: Any) {
         
         // store selected location packs
         var chosenLocations = [String]()
-        if packOne.isChecked {
-            chosenLocations.append("pack 1")
-        }
-        if packTwo.isChecked {
-            chosenLocations.append("pack 2")
-        }
-        if specialPack.isChecked {
-            chosenLocations.append("special pack")
-        }
+        if packOne.isChecked { chosenLocations.append("pack 1") }
+        if packTwo.isChecked { chosenLocations.append("pack 2") }
+        if specialPack.isChecked { chosenLocations.append("special pack") }
         
         // create Player object
         let newPlayer = nameTextField.text!
@@ -70,17 +65,7 @@ class NewGameViewController: UIViewController {
                 print("Document successfully written!")
             }
         }
-//        db.collection("games").document().updateData(["playerList" : FieldValue.arrayUnion(["Josiahisbetterthanyou"])]) { err in
-//            if let err = err {
-//                print("Error writing document: \(err)")
-//            } else {
-//                print("Document successfully written!")
-//            }
-//        }
-//        // Atomically remove a region from the "regions" array field.
-//        washingtonRef.updateData([
-//            "regions": FieldValue.arrayRemove(["east_coast"])
-//            ])
+        
 //        ref.child("\(accessCode)").updateChildValues(["chosenLocation" : newGame.chosenLocation])
     }
     
@@ -94,8 +79,6 @@ class NewGameViewController: UIViewController {
 //            } else {
 //                let document = querySnapshot!.documents.randomElement()
 //                randomLocation = document!.documentID
-//                print("\n\n\n\n\n\(document!.documentID)")
-//                print("\n\n\n\n\n\(randomLocation)")
 //            }
 //        }
 //        // this exacutes once location are grabbed
@@ -105,11 +88,7 @@ class NewGameViewController: UIViewController {
     //            (snapshot) in
     //            let data = snapshot.value as? [String:Any]
     //        }
-    
-    // Add a new document with a generated ID
-    //        let db = Firestore.firestore()
-    //
-    //        var ref: DocumentReference? = nil
+
 
     private func createTimeLimitPicker() {
         let timePicker = UIPickerView()
@@ -126,6 +105,12 @@ class NewGameViewController: UIViewController {
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         timeLimitTextField.inputAccessoryView = toolBar
+    }
+    
+    func setUpKeyboard() {
+        let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
     }
     
     @objc func dismissKeyboard() {

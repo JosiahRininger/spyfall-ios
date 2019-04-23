@@ -13,7 +13,9 @@ import FirebaseFirestore
 class WaitingScreenViewController: UIViewController {
     
     @IBOutlet weak var tableHeight: NSLayoutConstraint!
-    var maxHeight: CGFloat = UIScreen.main.bounds.size.height
+    @IBOutlet weak var startGame: UIButton!
+    @IBOutlet weak var leaveGame: UIButton!
+    @IBOutlet weak var accessCodeLabel: UILabel!
     
     let db = Firestore.firestore()
     let cellIdentifier = "waitingPlayersCell"
@@ -25,12 +27,33 @@ class WaitingScreenViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        accessCodeLabel.text = accessCode!
 
+        startGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
+        startGame.layer.borderWidth = 1
+        leaveGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
+        leaveGame.layer.borderWidth = 1
+        leaveGame.addTarget(self, action: #selector(leaveGameActionOnClick(sender:)), for: .touchUpInside)
+        
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         
         addUsernameToPlayerList()
         updatePlayerList()
+        setUpKeyboard()
+    }
+    
+    @IBAction func startGameAction(_ sender: Any) {
+        
+    }
+    
+    @objc func leaveGameActionOnClick(sender: UIButton) {
+        let rowToDelete = IndexPath(row: playerList.firstIndex(of: currentUsername!)!, section: 0)
+        tableView.deleteRows(at: [rowToDelete], with: UITableView.RowAnimation.automatic)
+        playerList = playerList.filter() { $0 != currentUsername }
+        db.collection("games").document(accessCode!).updateData(["playerList": playerList])
     }
     
     func addUsernameToPlayerList() {
@@ -54,21 +77,28 @@ class WaitingScreenViewController: UIViewController {
                     print("Document data was empty.")
                     return
                 }
-                print("Current data: \(data)")
+                
+                // update playerList and tableView
+                self.playerList = data as! [String]
                 self.tableView.reloadData()
+                self.tableView.setNeedsUpdateConstraints()
+                self.tableView.layoutIfNeeded()
         }
     }
     
-    //        let db = Firestore.firestore()
-    //        let docRef = db.collection("games").document(accessCode!)
-    //
-    //        docRef.getDocument(source: .cache) { (document, error) in
-    //            if let document = document {
-    //                let playerList = document.get("playerList")
-    //            } else {
-    //                print("Document does not exist in cache")
-    //            }
-    //        }
+    func setUpKeyboard() {
+        let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
+        view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+        
+        // updates the tableView cells to new username
+        NotificationCenter.default.post(name: NSNotification.Name("editingOver"), object: nil)
+        tableView.reloadData()
+    }
 }
 
 // MARK: - Table View Delegate & Data Source
@@ -84,59 +114,26 @@ extension WaitingScreenViewController: UITableViewDelegate, UITableViewDataSourc
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? PlayersWaitingTableView else {
             fatalError()
         }
+        // configures the cells
+        cell.selectionStyle = .none
         isUser = playerList[indexPath.row] == currentUsername
-        cell.configure(username: (playerList[indexPath.row]), isCurrentUsername: isUser)
+        let editedUsername = cell.configure(username: (playerList[indexPath.row]), index: indexPath.row + 1, isCurrentUsername: isUser)
+        
+        // updates playerList when player changes name
+        if editedUsername != currentUsername && isUser {
+            currentUsername = editedUsername
+            playerList[indexPath.row] = editedUsername
+            db.collection("games").document(accessCode!).updateData(["playerList": playerList])
+        }
         return cell
     }
+    
+//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+//        if
+//    }
     
     override func viewWillLayoutSubviews() {
         super.updateViewConstraints()
         self.tableHeight?.constant = self.tableView.contentSize.height
     }
-    
-    /*
-     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-     let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
-     
-     // Configure the cell...
-     
-     return cell
-     }
-     */
-    
-    /*
-     // Override to support conditional editing of the table view.
-     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the specified item to be editable.
-     return true
-     }
-     */
-    
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
-    
-    /*
-     // Override to support rearranging the table view.
-     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-     
-     }
-     */
-    
-    /*
-     // Override to support conditional rearranging of the table view.
-     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-     // Return false if you do not want the item to be re-orderable.
-     return true
-     }
-     */
-
 }
