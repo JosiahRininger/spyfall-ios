@@ -22,6 +22,7 @@ class WaitingScreenViewController: UIViewController {
     var playerList = [String]()
     var currentUsername: String?
     var accessCode: String?
+    var isStarted = false
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -32,6 +33,7 @@ class WaitingScreenViewController: UIViewController {
 
         startGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
         startGame.layer.borderWidth = 1
+        startGame.addTarget(self, action: #selector(startGameActionOnClick(sender:)), for: .touchUpInside)
         leaveGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
         leaveGame.layer.borderWidth = 1
         leaveGame.addTarget(self, action: #selector(leaveGameActionOnClick(sender:)), for: .touchUpInside)
@@ -45,17 +47,20 @@ class WaitingScreenViewController: UIViewController {
         setUpKeyboard()
     }
     
-    @IBAction func startGameAction(_ sender: Any) {
-        
+    // WHERE ALL THE MAGIC HAPPENS
+    @objc func startGameActionOnClick(sender: UIButton) {
+        if isStarted
     }
     
+    // deletes player from game and deletes game if playerList is empty
     @objc func leaveGameActionOnClick(sender: UIButton) {
-        let rowToDelete = IndexPath(row: playerList.firstIndex(of: currentUsername!)!, section: 0)
-        tableView.deleteRows(at: [rowToDelete], with: UITableView.RowAnimation.automatic)
         playerList = playerList.filter() { $0 != currentUsername }
+        if playerList.isEmpty { db.collection("games").document(accessCode!).delete()}
         db.collection("games").document(accessCode!).updateData(["playerList": playerList])
+        tableView.reloadData()
     }
     
+    // adds players username to firestore
     func addUsernameToPlayerList() {
         db.collection("games").document(accessCode!).updateData(["playerList" : FieldValue.arrayUnion([currentUsername!])]) { err in
             if let err = err {
@@ -66,6 +71,7 @@ class WaitingScreenViewController: UIViewController {
         }
     }
     
+    // listenor that updates playerList and tableView when firestore playerList is updated
     func updatePlayerList() {
         db.collection("games").document(accessCode!)
             .addSnapshotListener { documentSnapshot, error in
@@ -73,13 +79,18 @@ class WaitingScreenViewController: UIViewController {
                     print("Error fetching document: \(error!)")
                     return
                 }
-                guard let data = document.get("playerList") else {
+                guard let playerListData = document.get("playerList") else {
+                    print("Document data was empty.")
+                    return
+                }
+                guard let isStartedData = document.get("isStarted") else {
                     print("Document data was empty.")
                     return
                 }
                 
                 // update playerList and tableView
-                self.playerList = data as! [String]
+                self.playerList = playerListData as! [String]
+                self.isStarted = isStartedData as! Bool
                 self.tableView.reloadData()
                 self.tableView.setNeedsUpdateConstraints()
                 self.tableView.layoutIfNeeded()
@@ -114,6 +125,7 @@ extension WaitingScreenViewController: UITableViewDelegate, UITableViewDataSourc
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier) as? PlayersWaitingTableView else {
             fatalError()
         }
+        
         // configures the cells
         cell.selectionStyle = .none
         isUser = playerList[indexPath.row] == currentUsername
@@ -127,10 +139,6 @@ extension WaitingScreenViewController: UITableViewDelegate, UITableViewDataSourc
         }
         return cell
     }
-    
-//    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-//        if
-//    }
     
     override func viewWillLayoutSubviews() {
         super.updateViewConstraints()

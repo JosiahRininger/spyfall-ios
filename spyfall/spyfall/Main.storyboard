@@ -13,7 +13,7 @@
         <!--Home View Controller-->
         <scene sceneID="cwC-z7-JVA">
             <objects>
-                <viewController id="SEB-Rx-wNv" customClass="HomeViewController" customModule="spyfall" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Home" useStoryboardIdentifierAsRestorationIdentifier="YES" id="SEB-Rx-wNv" customClass="HomeViewController" customModule="spyfall" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="LQe-Ig-Ba7">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -485,9 +485,6 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
-                                <connections>
-                                    <action selector="startGameAction:" destination="jIJ-Qt-5Pr" eventType="touchUpInside" id="lVt-6w-9zK"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s7t-9B-ZBC">
                                 <rect key="frame" x="215" y="366" width="144" height="45"/>
@@ -505,6 +502,9 @@
                                         </fragment>
                                     </attributedString>
                                 </state>
+                                <connections>
+                                    <segue destination="SEB-Rx-wNv" kind="show" identifier="leaveGame" id="MOW-YC-axw"/>
+                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="code" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E8p-km-NSe">
                                 <rect key="frame" x="215" y="175" width="41" height="22"/>
