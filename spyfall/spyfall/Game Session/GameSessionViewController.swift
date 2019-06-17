@@ -21,7 +21,11 @@ class GameSessionViewController: UIViewController {
     @IBOutlet weak var usernameTableView: UITableView!
     @IBOutlet weak var locationTableView: UITableView!
 
+    @IBOutlet weak var usernameTableHeight: NSLayoutConstraint!
+    @IBOutlet weak var locationTableHeight: NSLayoutConstraint!
+    
     let db = Firestore.firestore()
+    var timer = Timer()
     var usernameList = [String]()
     var locationList = [String]()
     var playerObject = Player(role: "a role", username: "Name", votes: 0)
@@ -70,9 +74,11 @@ class GameSessionViewController: UIViewController {
                                            votes: playerObject["votes"] as! Int)
             }
             
+            self.roleLabel.text = "Role: \(self.playerObject.role)"
+            self.locationLabel.text = "Location: \(chosenLocation)"
+            
             self.timerLabel.text = "\(timeLimit):00"
-            self.roleLabel.text = "You are \(self.playerObject.role)"
-            self.locationLabel.text = "at \(chosenLocation)"
+            self.setupTimer()
             
             for pack in self.chosenPacks {
                 self.db.collection(pack).getDocuments() { (querySnapshot, err) in
@@ -82,10 +88,30 @@ class GameSessionViewController: UIViewController {
                         for doc in querySnapshot!.documents { self.locationList.append(doc.documentID as String) }
                     }
                     self.usernameTableView.reloadData()
+                    self.usernameTableView.setNeedsUpdateConstraints()
+                    self.usernameTableView.layoutIfNeeded()
                     self.locationTableView.reloadData()
+                    self.locationTableView.setNeedsUpdateConstraints()
+                    self.locationTableView.layoutIfNeeded()
                 }
             }
         }
+    }
+    
+    func setupTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
+            var minutes: Int = Int(String(self.timerLabel.text?.split(separator: ":")[0] ?? "0")) ?? 0
+            var seconds: Int = Int(String(self.timerLabel.text?.split(separator: ":")[1] ?? "0")) ?? 0
+            
+            seconds = seconds == 00 ? 59 : seconds - 1
+            if seconds == 59 { minutes -= 1 }
+            
+            self.timerLabel.text = seconds > 9 ? "\(minutes):\(seconds)" : "\(minutes):0\(seconds)"
+            
+            if self.timerLabel.text == "0:00" {
+                self.timer.invalidate()
+            }
+        })
     }
 }
 
@@ -117,5 +143,11 @@ extension GameSessionViewController: UITableViewDelegate, UITableViewDataSource 
             cell.configure(location: locationList[indexPath.row])
             return cell
         }
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.updateViewConstraints()
+        usernameTableHeight.constant = usernameTableView.contentSize.height
+        locationTableHeight.constant = locationTableView.contentSize.height
     }
 }
