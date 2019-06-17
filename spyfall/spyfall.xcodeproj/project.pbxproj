@@ -14,11 +14,15 @@
 		D706257422586D4F00A80B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706257322586D4F00A80B76 /* Main.storyboard */; };
 		D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeViewController.swift */; };
 		D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameViewController.swift */; };
+		D726325F228CD60900E385E8 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameViewController.swift */; };
 		D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9C6B922654A7400163179 /* CheckBox.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
 		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */; };
 		D7FD37E02267C9A30043A8D4 /* WaitingScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DF2267C9A30043A8D4 /* WaitingScreenViewController.swift */; };
+		D7FF08E6228FB8C800C1ED43 /* GameSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */; };
+		D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */; };
+		D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,11 +36,15 @@
 		D706257322586D4F00A80B76 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		D706257A225B87E600A80B76 /* NewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
+		D726325E228CD60900E385E8 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
 		D7F9C6B922654A7400163179 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableView.swift; sourceTree = "<group>"; };
 		D7FD37DF2267C9A30043A8D4 /* WaitingScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenViewController.swift; sourceTree = "<group>"; };
+		D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionViewController.swift; sourceTree = "<group>"; };
+		D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTableView.swift; sourceTree = "<group>"; };
+		D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTableView.swift; sourceTree = "<group>"; };
 		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,9 +99,12 @@
 			isa = PBXGroup;
 			children = (
 				D706257322586D4F00A80B76 /* Main.storyboard */,
+				D7FDF39D22ADAA9D00A65BCD /* Models */,
 				D706257622586D9500A80B76 /* Home */,
 				D7062579225B87B700A80B76 /* New Game */,
 				D7FD37D5226660C60043A8D4 /* Waiting Screen */,
+				D726325D228CD5B900E385E8 /* Join Game */,
+				D7FF08E4228FB86A00C1ED43 /* Game Session */,
 				D706256A22586D3900A80B76 /* LaunchScreen.storyboard */,
 				D706257522586D6B00A80B76 /* Supporting Files */,
 				D706256D22586D3900A80B76 /* Info.plist */,
@@ -123,19 +134,44 @@
 			isa = PBXGroup;
 			children = (
 				D706257A225B87E600A80B76 /* NewGameViewController.swift */,
-				D7FC262B225BD891009EA32D /* Player.swift */,
-				D7F9C6B922654A7400163179 /* CheckBox.swift */,
 			);
 			path = "New Game";
+			sourceTree = "<group>";
+		};
+		D726325D228CD5B900E385E8 /* Join Game */ = {
+			isa = PBXGroup;
+			children = (
+				D726325E228CD60900E385E8 /* JoinGameViewController.swift */,
+			);
+			path = "Join Game";
 			sourceTree = "<group>";
 		};
 		D7FD37D5226660C60043A8D4 /* Waiting Screen */ = {
 			isa = PBXGroup;
 			children = (
-				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */,
 				D7FD37DF2267C9A30043A8D4 /* WaitingScreenViewController.swift */,
+				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */,
 			);
 			path = "Waiting Screen";
+			sourceTree = "<group>";
+		};
+		D7FDF39D22ADAA9D00A65BCD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				D7FC262B225BD891009EA32D /* Player.swift */,
+				D7F9C6B922654A7400163179 /* CheckBox.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D7FF08E4228FB86A00C1ED43 /* Game Session */ = {
+			isa = PBXGroup;
+			children = (
+				D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */,
+				D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */,
+				D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */,
+			);
+			path = "Game Session";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,12 +307,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D726325F228CD60900E385E8 /* JoinGameViewController.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */,
 				D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */,
+				D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
+				D7FF08E6228FB8C800C1ED43 /* GameSessionViewController.swift in Sources */,
 				D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */,
+				D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */,
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

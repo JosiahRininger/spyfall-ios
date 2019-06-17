@@ -9,8 +9,8 @@
 import Foundation
 
 struct Player {
-    let role: String
-    let username: String
+    var role: String
+    var username: String
     var votes: Int
     
     func getPlayer() -> [String: Any] {

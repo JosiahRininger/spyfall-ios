@@ -20,15 +20,17 @@ class NewGameViewController: UIViewController {
     @IBOutlet weak var packTwo: CheckBox!
     @IBOutlet weak var specialPack: CheckBox!
     
+    var chosenLocation = String()
     let timeRange = ["1","2","3","4","5","6","7","8","9","10"]
     var timeLimit = 8
-    var accessCode = ""
+    var accessCode = String()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         createGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
         createGame.layer.borderWidth = 1
+        timeLimitTextField.tintColor = .clear
         createTimeLimitPicker()
         createPickerToolBar()
         setUpKeyboard()
@@ -37,10 +39,10 @@ class NewGameViewController: UIViewController {
     @IBAction func createGameAction(_ sender: Any) {
         
         // store selected location packs
-        var chosenLocations = [String]()
-        if packOne.isChecked { chosenLocations.append("pack 1") }
-        if packTwo.isChecked { chosenLocations.append("pack 2") }
-        if specialPack.isChecked { chosenLocations.append("special pack") }
+        var chosenPacks = [String]()
+        if packOne.isChecked { chosenPacks.append("pack 1") }
+        if packTwo.isChecked { chosenPacks.append("pack 2") }
+        if specialPack.isChecked { chosenPacks.append("special pack") }
         
         // create Player object
         let newPlayer = nameTextField.text!
@@ -51,44 +53,33 @@ class NewGameViewController: UIViewController {
         
         // set values on firebase
         let db = Firestore.firestore()
-
-        // Add a new document with a generated ID
-        db.collection("games").document(accessCode).setData([
-            "playerList": [newPlayer],
-            "timeLimit": timeLimit,
-            "isStarted": false,
-            "chosenPacks": chosenLocations
-        ]) { err in
+        
+        // Grab random location
+        chosenPacks.shuffle()
+        db.collection(chosenPacks[0]).getDocuments() { (querySnapshot, err) in
             if let err = err {
-                print("Error writing document: \(err)")
+                print("Error getting documents: \(err)")
             } else {
-                print("Document successfully written!")
+                let document = querySnapshot!.documents.randomElement()
+                self.chosenLocation = document!.data()["location"] as! String
+            }
+            
+            // Add a new document with a generated ID
+            db.collection("games").document(self.accessCode).setData([
+                "playerList": [newPlayer],
+                "timeLimit": self.timeLimit,
+                "isStarted": false,
+                "chosenPacks": chosenPacks,
+                "chosenLocation": self.chosenLocation
+            ]) { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
             }
         }
-        
-//        ref.child("\(accessCode)").updateChildValues(["chosenLocation" : newGame.chosenLocation])
     }
-    
-//      let location: String = grabLocation(locations: chosenLocations)
-//    func grabLocation(locations: [String]) -> String {
-//        var randomLocation = String()
-//        let db = Firestore.firestore()
-//        db.collection(locations.randomElement()!).getDocuments() { (querySnapshot, err) in
-//            if let err = err {
-//                print("Error getting documents: \(err)")
-//            } else {
-//                let document = querySnapshot!.documents.randomElement()
-//                randomLocation = document!.documentID
-//            }
-//        }
-//        // this exacutes once location are grabbed
-//        return randomLocation
-//    }
-    //        ref.child("someid").observeSingleEvent(of: .value) {
-    //            (snapshot) in
-    //            let data = snapshot.value as? [String:Any]
-    //        }
-
 
     private func createTimeLimitPicker() {
         let timePicker = UIPickerView()
@@ -118,7 +109,7 @@ class NewGameViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "WaitingScreen" {
+        if segue.identifier == "CreateWaitingScreen" {
             let currentUsername: String
             currentUsername = nameTextField.text!
             guard let dest = segue.destination as? WaitingScreenViewController else {
