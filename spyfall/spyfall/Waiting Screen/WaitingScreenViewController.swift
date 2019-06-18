@@ -53,19 +53,8 @@ class WaitingScreenViewController: UIViewController {
     // check if Start Game has been clicked
     @objc func startGameActionOnClick(sender: UIButton) {
         if isStarted == true {
-            print("* hmmmm")
             return
         } else {
-            // Set isStarted to true
-            isStarted = true
-            db.collection("games").document(accessCode).updateData(["isStarted" : true]) { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    print("Document successfully written!")
-                }
-            }
-            
             var roles = [String]()
             
             db.collection(chosenPacks[0]).document(chosenLocation).getDocument { (document, error) in
@@ -89,7 +78,7 @@ class WaitingScreenViewController: UIViewController {
                 for i in 0..<(self.playerList.count - 1) {
                     self.playerObjectList.append(Player(role: roles[i], username: self.playerList[i], votes: 0))
                 }
-                self.playerObjectList.append(Player(role: "the Spy!", username: self.playerList.last!, votes: 0))
+                self.playerObjectList.append(Player(role: "The Spy!", username: self.playerList.last!, votes: 0))
                 
                 for playerObject in self.playerObjectList {
                     // Add playerObjectList field to document
@@ -105,7 +94,16 @@ class WaitingScreenViewController: UIViewController {
                             }
                     }
                 }
-                
+            }
+            
+            // Set isStarted to true
+            isStarted = true
+            db.collection("games").document(accessCode).updateData(["started" : true]) { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
             }
         }
     }
@@ -138,7 +136,7 @@ class WaitingScreenViewController: UIViewController {
                     return
                 }
                 guard let playerListData = document.get("playerList"),
-                    let isStartedData = document.get("isStarted"),
+                    let isStartedData = document.get("started"),
                     let chosenPacksData = document.get("chosenPacks"),
                     let chosenLocationData = document.get("chosenLocation") else {
                         print("Document data was empty.")
@@ -155,10 +153,11 @@ class WaitingScreenViewController: UIViewController {
                 self.tableView.layoutIfNeeded()
                 
                 // Check for segue
-                if let playerObjects = document.get("playerObjectList") as? [[String : Any]] {
-                    if playerObjects.last?["role"] as? String == "the Spy!" {
+//                if let playerObjects = document.get("playerObjectList") as? [[String : Any]] {
+//                    if playerObjects.last?["role"] as? String == "The Spy!" {
+                if self.isStarted {
                         self.performSegue(withIdentifier: "gameSessionSegue", sender: nil)
-                    }
+//                    }
                 }
         }
     }

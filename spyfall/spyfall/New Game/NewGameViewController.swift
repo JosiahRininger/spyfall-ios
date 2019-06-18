@@ -68,7 +68,7 @@ class NewGameViewController: UIViewController {
             db.collection("games").document(self.accessCode).setData([
                 "playerList": [newPlayer],
                 "timeLimit": self.timeLimit,
-                "isStarted": false,
+                "started": false,
                 "chosenPacks": chosenPacks,
                 "chosenLocation": self.chosenLocation
             ]) { err in
