@@ -8,13 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		8CBE28324837C172579739E8 /* Pods_spyfall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98DED611AE68AC0D90185B6E /* Pods_spyfall.framework */; };
+		D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
+		D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
+		D7030EE022BA85D8002CB9B2 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDF22BA85D8002CB9B2 /* NetworkManager.swift */; };
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706256A22586D3900A80B76 /* LaunchScreen.storyboard */; };
 		D706257422586D4F00A80B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706257322586D4F00A80B76 /* Main.storyboard */; };
-		D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeViewController.swift */; };
-		D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameViewController.swift */; };
-		D726325F228CD60900E385E8 /* JoinGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameViewController.swift */; };
+		D706257822586DBC00A80B76 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
+		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
+		D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
+		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
+		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
+		D7798B1522B8694F006D7615 /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1422B8694F006D7615 /* Constraints.swift */; };
+		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
+		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
+		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
 		D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F9C6B922654A7400163179 /* CheckBox.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
@@ -28,15 +37,24 @@
 /* Begin PBXFileReference section */
 		01D48E87E8B1E8C04083D140 /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
 		98DED611AE68AC0D90185B6E /* Pods_spyfall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spyfall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
+		D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
+		D7030EDF22BA85D8002CB9B2 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		D706255E22586D3800A80B76 /* spyfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spyfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706256122586D3800A80B76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D706256B22586D3900A80B76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D706257322586D4F00A80B76 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		D706257722586DBC00A80B76 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		D706257A225B87E600A80B76 /* NewGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewController.swift; sourceTree = "<group>"; };
-		D726325E228CD60900E385E8 /* JoinGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewController.swift; sourceTree = "<group>"; };
+		D706257722586DBC00A80B76 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
+		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
+		D726325E228CD60900E385E8 /* JoinGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameController.swift; sourceTree = "<group>"; };
+		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
+		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		D7798B1422B8694F006D7615 /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
+		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
+		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
 		D7F9C6B922654A7400163179 /* CheckBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -99,6 +117,9 @@
 			isa = PBXGroup;
 			children = (
 				D706257322586D4F00A80B76 /* Main.storyboard */,
+				D706256122586D3800A80B76 /* AppDelegate.swift */,
+				D7798B0D22B866E5006D7615 /* Custom Managers */,
+				D7798B1022B86831006D7615 /* Extensions */,
 				D7FDF39D22ADAA9D00A65BCD /* Models */,
 				D706257622586D9500A80B76 /* Home */,
 				D7062579225B87B700A80B76 /* New Game */,
@@ -106,26 +127,18 @@
 				D726325D228CD5B900E385E8 /* Join Game */,
 				D7FF08E4228FB86A00C1ED43 /* Game Session */,
 				D706256A22586D3900A80B76 /* LaunchScreen.storyboard */,
-				D706257522586D6B00A80B76 /* Supporting Files */,
+				D706256822586D3900A80B76 /* Assets.xcassets */,
 				D706256D22586D3900A80B76 /* Info.plist */,
 				D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */,
 			);
 			path = spyfall;
 			sourceTree = "<group>";
 		};
-		D706257522586D6B00A80B76 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				D706256122586D3800A80B76 /* AppDelegate.swift */,
-				D706256822586D3900A80B76 /* Assets.xcassets */,
-			);
-			path = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		D706257622586D9500A80B76 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				D706257722586DBC00A80B76 /* HomeViewController.swift */,
+				D706257722586DBC00A80B76 /* HomeController.swift */,
+				D7798B1922B86A43006D7615 /* HomeView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -133,7 +146,8 @@
 		D7062579225B87B700A80B76 /* New Game */ = {
 			isa = PBXGroup;
 			children = (
-				D706257A225B87E600A80B76 /* NewGameViewController.swift */,
+				D706257A225B87E600A80B76 /* NewGameController.swift */,
+				D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */,
 			);
 			path = "New Game";
 			sourceTree = "<group>";
@@ -141,9 +155,31 @@
 		D726325D228CD5B900E385E8 /* Join Game */ = {
 			isa = PBXGroup;
 			children = (
-				D726325E228CD60900E385E8 /* JoinGameViewController.swift */,
+				D726325E228CD60900E385E8 /* JoinGameController.swift */,
+				D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */,
 			);
 			path = "Join Game";
+			sourceTree = "<group>";
+		};
+		D7798B0D22B866E5006D7615 /* Custom Managers */ = {
+			isa = PBXGroup;
+			children = (
+				D7030EDF22BA85D8002CB9B2 /* NetworkManager.swift */,
+				D7798B1722B869AC006D7615 /* UIElementSizes.swift */,
+				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
+				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
+				D7798B1422B8694F006D7615 /* Constraints.swift */,
+				D7F9C6B922654A7400163179 /* CheckBox.swift */,
+			);
+			path = "Custom Managers";
+			sourceTree = "<group>";
+		};
+		D7798B1022B86831006D7615 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				D7798B1122B8684E006D7615 /* UIColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		D7FD37D5226660C60043A8D4 /* Waiting Screen */ = {
@@ -159,7 +195,6 @@
 			isa = PBXGroup;
 			children = (
 				D7FC262B225BD891009EA32D /* Player.swift */,
-				D7F9C6B922654A7400163179 /* CheckBox.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -307,17 +342,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D726325F228CD60900E385E8 /* JoinGameViewController.swift in Sources */,
+				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
+				D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */,
 				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */,
-				D706257822586DBC00A80B76 /* HomeViewController.swift in Sources */,
-				D706257B225B87E600A80B76 /* NewGameViewController.swift in Sources */,
+				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
+				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,
+				D706257B225B87E600A80B76 /* NewGameController.swift in Sources */,
 				D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
+				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
+				D7798B1522B8694F006D7615 /* Constraints.swift in Sources */,
 				D7FF08E6228FB8C800C1ED43 /* GameSessionViewController.swift in Sources */,
+				D7030EE022BA85D8002CB9B2 /* NetworkManager.swift in Sources */,
+				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
 				D7F9C6BA22654A7400163179 /* CheckBox.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */,
+				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenViewController.swift in Sources */,
+				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
+				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

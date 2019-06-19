@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="SEB-Rx-wNv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -86,7 +86,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" red="0.99963909387588501" green="1" blue="0.99975615739822388" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="nzh-Wh-Dcd" firstAttribute="trailing" secondItem="o3o-ew-bL7" secondAttribute="trailing" id="1wZ-9p-tP2"/>
                             <constraint firstItem="nzh-Wh-Dcd" firstAttribute="centerY" secondItem="LQe-Ig-Ba7" secondAttribute="centerY" id="E4f-qP-VMa"/>
@@ -109,10 +109,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="OHv-Ko-Gnb"/>
                     </view>
-                    <connections>
-                        <outlet property="joinGameButton" destination="nzh-Wh-Dcd" id="n9q-ju-HkR"/>
-                        <outlet property="newGameButton" destination="bqV-De-IAa" id="xHg-iV-4tE"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lJF-4a-LvQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -432,14 +428,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gHc-bI-va5"/>
                     </view>
-                    <connections>
-                        <outlet property="createGame" destination="IDa-k7-uJx" id="1df-fa-l3Z"/>
-                        <outlet property="nameTextField" destination="GPZ-2o-NdN" id="2cn-wz-UV0"/>
-                        <outlet property="packOne" destination="JeX-Qg-6VS" id="c8I-GC-vGM"/>
-                        <outlet property="packTwo" destination="1ps-ta-GkI" id="otW-pS-0P1"/>
-                        <outlet property="specialPack" destination="8DW-Rr-Bt8" id="r3D-li-Xh7"/>
-                        <outlet property="timeLimitTextField" destination="cbO-zD-CR8" id="dC9-n4-Lhb"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AWL-s4-i39" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

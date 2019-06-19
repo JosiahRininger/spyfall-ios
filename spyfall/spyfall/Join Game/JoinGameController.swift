@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class JoinGameViewController: UIViewController {
+class JoinGameController: UIViewController {
 
     @IBOutlet weak var accessCodeTextField: UITextField!
     @IBOutlet weak var usernameTextField: UITextField!

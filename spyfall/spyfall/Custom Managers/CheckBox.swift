@@ -21,12 +21,16 @@ class CheckBox: UIButton {
         }
     }
     
-    
-    override func awakeFromNib() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         self.addTarget(self, action: #selector(CheckBox.buttonClicked), for: UIControl.Event.touchUpInside)
-        self.updateImage()
-    }
+        self.updateImage()    }
     
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.addTarget(self, action: #selector(CheckBox.buttonClicked), for: UIControl.Event.touchUpInside)
+        self.updateImage()    }
+
     
     func updateImage() {
         if isChecked == true{

@@ -10,42 +10,38 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class NewGameViewController: UIViewController {
-
-    @IBOutlet weak var nameTextField: UITextField!
-    @IBOutlet weak var timeLimitTextField: UITextField!
-    @IBOutlet weak var createGame: UIButton!
+class NewGameController: UIViewController {
     
-    @IBOutlet weak var packOne: CheckBox!
-    @IBOutlet weak var packTwo: CheckBox!
-    @IBOutlet weak var specialPack: CheckBox!
+    var newGameView = NewGameView()
     
     var chosenLocation = String()
-    let timeRange = ["1","2","3","4","5","6","7","8","9","10"]
-    var timeLimit = 8
     var accessCode = String()
+    var timeLimit = Int()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        createGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
-        createGame.layer.borderWidth = 1
-        timeLimitTextField.tintColor = .clear
+        setupView()
         createTimeLimitPicker()
-        createPickerToolBar()
+        createToolBar()
         setUpKeyboard()
     }
     
-    @IBAction func createGameAction(_ sender: Any) {
+    private func setupView() {
+        
+        view = newGameView
+    }
+    
+    @objc func createGameAction() {
         
         // store selected location packs
         var chosenPacks = [String]()
-        if packOne.isChecked { chosenPacks.append("pack 1") }
-        if packTwo.isChecked { chosenPacks.append("pack 2") }
-        if specialPack.isChecked { chosenPacks.append("special pack") }
+        if newGameView.packOneCheckBox.isChecked { chosenPacks.append("pack 1") }
+        if newGameView.packTwoCheckBox.isChecked { chosenPacks.append("pack 2") }
+        if newGameView.specialPackCheckBox.isChecked { chosenPacks.append("special pack") }
         
         // create Player object
-        let newPlayer = nameTextField.text!
+        let newPlayer = newGameView.nameTextField.text!
 
         // create access code
         accessCode = NSUUID().uuidString.lowercased()
@@ -78,24 +74,37 @@ class NewGameViewController: UIViewController {
                     print("Document successfully written!")
                 }
             }
+//            let currentUsername: String
+//            currentUsername = newGameView.nameTextField.text!
+//            guard let dest = segue.destination as? WaitingScreenViewController else {
+//                fatalError()
+//            }
+//            dest.currentUsername = currentUsername
+//            dest.accessCode = accessCode
+//            present(NewGameController(), animated: true, completion: nil)
         }
     }
 
     private func createTimeLimitPicker() {
         let timePicker = UIPickerView()
         timePicker.delegate = self
-        timeLimitTextField.inputView = timePicker
+        timePicker.dataSource = self
+        timePicker.selectRow(newGameView.timeRange.firstIndex(of: "8") ?? 0, inComponent: 0, animated: true)
+
+        newGameView.timeLimitTextField.inputView = timePicker
+        newGameView.timeLimitTextField.tintColor = .clear
         
         timePicker.backgroundColor = .white
     }
     
-    func createPickerToolBar() {
+    func createToolBar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameViewController.dismissKeyboard))
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
-        timeLimitTextField.inputAccessoryView = toolBar
+        newGameView.nameTextField.inputAccessoryView = toolBar
+        newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
     func setUpKeyboard() {
@@ -108,36 +117,36 @@ class NewGameViewController: UIViewController {
         view.endEditing(true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "CreateWaitingScreen" {
-            let currentUsername: String
-            currentUsername = nameTextField.text!
-            guard let dest = segue.destination as? WaitingScreenViewController else {
-                fatalError()
-            }
-            dest.currentUsername = currentUsername
-            dest.accessCode = accessCode
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "CreateWaitingScreen" {
+//            let currentUsername: String
+//            currentUsername = newGameView.nameTextField.text!
+//            guard let dest = segue.destination as? WaitingScreenViewController else {
+//                fatalError()
+//            }
+//            dest.currentUsername = currentUsername
+//            dest.accessCode = accessCode
+//        }
+//    }
 }
 
-extension NewGameViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+extension NewGameController: UIPickerViewDelegate, UIPickerViewDataSource {
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
-    func pickerView(_ pickerView: UIPickerView,     numberOfRowsInComponent component: Int) -> Int {
-        return timeRange.count
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return newGameView.timeRange.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return timeRange[row]
+        return newGameView.timeRange[row]
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        timeLimit = Int(timeRange[row])!
-        timeLimitTextField.text = timeRange[row]
-        timeLimitTextField.textColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
+        timeLimit = Int(newGameView.timeRange[row])!
+        newGameView.timeLimitTextField.text = newGameView.timeRange[row]
+        newGameView.timeLimitTextField.textColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
     }
 }
