@@ -19,26 +19,29 @@ enum UIElementsManager {
         return v
     }
     
-    static func createGenericButton(with title: String) -> UIButton {
+    static func createGenericButton(with title: String, color: UIColor = .secondaryColor) -> UIButton {
         let b = UIButton()
-        b.backgroundColor = .white
-        b.setTitleColor(.primaryGray, for: .normal)
+        b.backgroundColor = color
+        b.setTitleColor(color != .white ? .primaryWhite : .black, for: .normal)
         b.setTitle(title, for: .normal)
-        b.layer.borderWidth = 1
-        b.layer.cornerRadius = 5
-        b.layer.borderColor = UIColor.primaryGray.cgColor
+        b.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        b.layer.cornerRadius = 30
+        b.layer.shadowRadius = 3
+        b.layer.shadowOffset = CGSize(width: 0, height: 5)
+        b.layer.shadowOpacity = 0.16
         b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonAndTextFieldHeight).isActive = true
-        b.widthAnchor.constraint(equalToConstant: UIElementSizes.buttonWidth).isActive = true
+        b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
         
         return b
     }
     
-    static func createCheckBoxButton() -> CheckBox {
-        let b = CheckBox()
+    static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {
+        let b = PackView()
+        b.backgroundColor = packColor
+        b.numberLabel.text = packNumberString
         b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.checkBoxHeightAndWidth).isActive = true
-        b.widthAnchor.constraint(equalToConstant: UIElementSizes.checkBoxHeightAndWidth).isActive = true
+        b.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
+        b.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
         
         return b
     }
@@ -48,13 +51,13 @@ enum UIElementsManager {
         t.backgroundColor = .white
         t.textColor = .primaryGray
         t.placeholder = placeholder
-        t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.buttonAndTextFieldHeight))
+        t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.textFieldHeight))
         t.leftViewMode = .always
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 5
         t.layer.borderColor = UIColor.primaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
-        t.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonAndTextFieldHeight).isActive = true
+        t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
         
         return t
     }
@@ -74,25 +77,41 @@ enum UIElementsManager {
         return t
     }
     
-    static func createGenericLabel(with title: String) -> UILabel {
+    static func createGenericLabel(with title: String, fontSize: CGFloat, color: UIColor = .black) -> UILabel {
         let l = UILabel()
         l.text = title
-        l.textColor = .primaryGray
-        l.font = .systemFont(ofSize: 17)
+        l.textColor = color
+        l.font = .systemFont(ofSize: fontSize)
         l.adjustsFontSizeToFitWidth = true
         l.translatesAutoresizingMaskIntoConstraints = false
         
         return l
     }
     
-    static func createHeaderLabel(with title: String) -> UILabel {
+    static func createHeaderLabel(with title: String, fontSize: CGFloat) -> UILabel {
         let l = UILabel()
         l.text = title
-        l.textColor = .primaryGray
-        l.font = .systemFont(ofSize: 37)
+        l.textColor = .black
+        l.textAlignment = .center
+        l.font = .boldSystemFont(ofSize: fontSize)
         l.adjustsFontSizeToFitWidth = true
         l.translatesAutoresizingMaskIntoConstraints = false
         
         return l
     }
+    
+    static func createInfoImageView() -> UIImageView {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "Info_Icon")
+        iv.contentMode = .scaleAspectFill
+        iv.layer.shadowRadius = 3
+        iv.layer.shadowOffset = CGSize(width: 0, height: 3)
+        iv.layer.shadowOpacity = 0.16
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.heightAnchor.constraint(equalToConstant: UIElementSizes.infoIconHeightAndWidth).isActive = true
+        iv.widthAnchor.constraint(equalToConstant: UIElementSizes.infoIconHeightAndWidth).isActive = true
+        
+        return iv
+    }
+
 }

@@ -21,6 +21,8 @@ class NewGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        newGameView.create.addTarget(self, action: #selector(createGameAction), for: .touchUpInside)
+        
         setupView()
         createTimeLimitPicker()
         createToolBar()
@@ -33,7 +35,7 @@ class NewGameController: UIViewController {
     }
     
     @objc func createGameAction() {
-        
+        if !textFieldsAreValid() { return }
         // store selected location packs
         var chosenPacks = [String]()
         if newGameView.packOneCheckBox.isChecked { chosenPacks.append("pack 1") }
@@ -41,8 +43,8 @@ class NewGameController: UIViewController {
         if newGameView.specialPackCheckBox.isChecked { chosenPacks.append("special pack") }
         
         // create Player object
-        let newPlayer = newGameView.nameTextField.text!
-
+        let newPlayer = newGameView.usernameTextField.text!
+        
         // create access code
         accessCode = NSUUID().uuidString.lowercased()
         while accessCode.count > 6 { accessCode.removeLast() }
@@ -74,14 +76,10 @@ class NewGameController: UIViewController {
                     print("Document successfully written!")
                 }
             }
-//            let currentUsername: String
-//            currentUsername = newGameView.nameTextField.text!
-//            guard let dest = segue.destination as? WaitingScreenViewController else {
-//                fatalError()
-//            }
-//            dest.currentUsername = currentUsername
-//            dest.accessCode = accessCode
-//            present(NewGameController(), animated: true, completion: nil)
+            let nextScreen = WaitingScreenController()
+            nextScreen.currentUsername = self.newGameView.usernameTextField.text!
+            nextScreen.accessCode = self.accessCode
+            self.present(nextScreen, animated: true, completion: nil)
         }
     }
 
@@ -96,6 +94,26 @@ class NewGameController: UIViewController {
         
         timePicker.backgroundColor = .white
     }
+
+    func textFieldsAreValid() -> Bool {
+        let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
+        sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        if newGameView.usernameTextField.text?.isEmpty ?? true {
+            sentAlert.title = "Please enter a username"
+        } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
+            sentAlert.title = "Please enter a username less than 25 characters"
+        } else if !newGameView.packOneCheckBox.isChecked
+            && !newGameView.packTwoCheckBox.isChecked
+            && !newGameView.specialPackCheckBox.isChecked {
+            sentAlert.title = "Please select pack(s)"
+        } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
+            sentAlert.title = "Please enter a time limit"
+        } else {
+            return true
+        }
+        self.present(sentAlert, animated: true, completion: nil)
+        return false
+    }
     
     func createToolBar() {
         let toolBar = UIToolbar()
@@ -103,7 +121,7 @@ class NewGameController: UIViewController {
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
-        newGameView.nameTextField.inputAccessoryView = toolBar
+        newGameView.usernameTextField.inputAccessoryView = toolBar
         newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
@@ -117,17 +135,6 @@ class NewGameController: UIViewController {
         view.endEditing(true)
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "CreateWaitingScreen" {
-//            let currentUsername: String
-//            currentUsername = newGameView.nameTextField.text!
-//            guard let dest = segue.destination as? WaitingScreenViewController else {
-//                fatalError()
-//            }
-//            dest.currentUsername = currentUsername
-//            dest.accessCode = accessCode
-//        }
-//    }
 }
 
 extension NewGameController: UIPickerViewDelegate, UIPickerViewDataSource {

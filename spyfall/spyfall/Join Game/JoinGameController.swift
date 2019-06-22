@@ -46,7 +46,7 @@ class JoinGameController: UIViewController {
         if segue.identifier == "JoinWaitingScreen" {
             let currentUsername: String
             currentUsername = usernameTextField.text!
-            guard let dest = segue.destination as? WaitingScreenViewController else {
+            guard let dest = segue.destination as? WaitingScreenController else {
                 fatalError()
             }
             dest.currentUsername = currentUsername

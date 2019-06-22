@@ -30,12 +30,17 @@ struct UIElementSizes {
     static var segmentedControlHeight: CGFloat = 50
     
     static var buttonWidth: CGFloat = 144
-    static var buttonAndTextFieldHeight: CGFloat = 45
+    static var buttonHeight: CGFloat = 61
+    
+    static var textFieldHeight: CGFloat = 50
 
-    static var checkBoxHeightAndWidth: CGFloat = 40
+    static var packViewHeight: CGFloat = 116
+    static var packViewWidth: CGFloat = 88
+    
     static var pickerViewTextFieldHeight: CGFloat = 30
     static var pickerViewTextFieldWidth: CGFloat = 25
+    static var infoIconHeightAndWidth: CGFloat = 20
     
-    static var padding: CGFloat = 50
+    static var padding: CGFloat = 30
     
 }

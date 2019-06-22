@@ -10,15 +10,17 @@ import UIKit
 
 class HomeView: UIView {
 
-    var welcomeLabel = UIElementsManager.createHeaderLabel(with: "Welcome to Spyfall")
+    var welcomeToLabel = UIElementsManager.createHeaderLabel(with: "Welcome to", fontSize: 45)
     
-    var topLine = UIElementsManager.createLineView()
+    var spyfallLabel = UIElementsManager.createHeaderLabel(with: "Spyfall", fontSize: 81)
     
-    var newGame = UIElementsManager.createGenericButton(with: "NEW GAME")
+    var newGame = UIElementsManager.createGenericButton(with: "New Game", color: .white)
     
-    var joinGame = UIElementsManager.createGenericButton(with: "JOIN GAME")
+    var joinGame = UIElementsManager.createGenericButton(with: "Join Game")
     
-    var bottomLine = UIElementsManager.createLineView()
+    var infoIcon = UIElementsManager.createInfoImageView()
+    
+    var rulesLabel = UIElementsManager.createGenericLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,36 +34,38 @@ class HomeView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .white
+        backgroundColor = .primaryWhite
         
-        addSubview(welcomeLabel)
-        addSubview(topLine)
-        addSubview(newGame)
-        addSubview(joinGame)
-        addSubview(bottomLine)
+        addSubviews(welcomeToLabel, spyfallLabel, newGame, joinGame, infoIcon, rulesLabel)
+        
         setupConstraints()
     }
     
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            newGame.centerYAnchor.constraint(equalTo: centerYAnchor),
-            newGame.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -5),
+            infoIcon.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -89),
+            infoIcon.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -11),
             
-            joinGame.centerYAnchor.constraint(equalTo: centerYAnchor),
-            joinGame.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 5),
-
-            bottomLine.topAnchor.constraint(equalTo: newGame.bottomAnchor, constant: 60),
-            bottomLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            bottomLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-
-            topLine.bottomAnchor.constraint(equalTo: newGame.topAnchor, constant: -60),
-            topLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            topLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-
-            welcomeLabel.bottomAnchor.constraint(equalTo: topLine.topAnchor, constant: -60),
-            welcomeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            welcomeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)])
+            rulesLabel.centerYAnchor.constraint(equalTo: infoIcon.centerYAnchor),
+            rulesLabel.leadingAnchor.constraint(equalTo: centerXAnchor),
+            
+            joinGame.bottomAnchor.constraint(equalTo: infoIcon.topAnchor, constant: -37),
+            joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            newGame.bottomAnchor.constraint(equalTo: joinGame.topAnchor, constant: -24),
+            newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            welcomeToLabel.topAnchor.constraint(equalTo: topAnchor, constant: 153),
+            welcomeToLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),
+            welcomeToLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding * 3),
+            
+            spyfallLabel.topAnchor.constraint(equalTo: welcomeToLabel.bottomAnchor),
+            spyfallLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),
+            spyfallLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding * 3)
+            ])
     }
     
 }

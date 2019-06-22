@@ -10,7 +10,7 @@ import UIKit
 
 class JoinGameView: UIView {
     
-    var welcomeLabel = UIElementsManager.createHeaderLabel(with: "Welcome to Spyfall")
+    var welcomeLabel = UIElementsManager.createHeaderLabel(with: "Welcome to Spyfall", fontSize: 81)
     
     var topLine = UIElementsManager.createLineView()
     

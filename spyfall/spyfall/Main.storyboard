@@ -528,7 +528,6 @@
                                         <connections>
                                             <outlet property="pencilImage" destination="fMd-gV-WOl" id="QIw-Dv-8i4"/>
                                             <outlet property="playerNumber" destination="iMk-RC-SV5" id="xcu-kI-fT6"/>
-                                            <outlet property="usernameTextView" destination="SEE-DQ-x7y" id="A02-UY-RTW"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -619,11 +618,6 @@
                         <viewLayoutGuide key="safeArea" id="NvN-y3-nor"/>
                     </view>
                     <connections>
-                        <outlet property="accessCodeLabel" destination="E8p-km-NSe" id="iJp-QY-Pla"/>
-                        <outlet property="leaveGame" destination="s7t-9B-ZBC" id="rCz-he-idQ"/>
-                        <outlet property="startGame" destination="oCe-Uq-H52" id="TGI-SC-UBD"/>
-                        <outlet property="tableHeight" destination="DIy-Qv-g00" id="vG7-yc-dXe"/>
-                        <outlet property="tableView" destination="aVs-71-AQ6" id="lMa-sr-blE"/>
                         <segue destination="9O8-Tf-FCa" kind="show" identifier="gameSessionSegue" id="0HM-r5-CMg"/>
                     </connections>
                 </viewController>
