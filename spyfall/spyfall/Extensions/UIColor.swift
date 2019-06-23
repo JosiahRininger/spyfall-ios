@@ -33,8 +33,13 @@ extension UIColor {
         return color
     }
     
-    static let primaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let primaryWhite: UIColor = .hexToColor(hexString: "#FCFCFC")
-    static let secondaryColor: UIColor = .hexToColor(hexString: "##D65656")
-    
+    static let secondaryColor: UIColor = .hexToColor(hexString: "#D65656")
+    static let primaryGray: UIColor = .hexToColor(hexString: "#707070")
+    static let textGray: UIColor = .hexToColor(hexString: "#585858")
+    static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
+    static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
+    static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")
+    static let tableViewCellGray: UIColor = .hexToColor(hexString: "#F4F4F4")
+
 }

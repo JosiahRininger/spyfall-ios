@@ -10,19 +10,23 @@ import UIKit
 
 class WaitingScreenView: UIView {
     
-    var welcomeLabel = UIElementsManager.createHeaderLabel(with: "Welcome to Spyfall", fontSize: 81)
+    var waitingForPlayersLabel: UILabel = {
+        let l = UIElementsManager.createHeaderLabel(with: "Waiting for players...", fontSize: 40)
+        l.textAlignment = .left
+        
+        return l
+    }()
     
     var accessCodeLabel = UIElementsManager.createHeaderLabel(with: "access code", fontSize: 19)
-    
     var codeLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 18)
     
-    var topLine = UIElementsManager.createLineView()
+    let cellId: String = "playerListCellId"
     
-    var bottomLine = UIElementsManager.createLineView()
-    
-    var startGame = UIElementsManager.createGenericButton(with: "START GAME")
-    
-    var leaveGame = UIElementsManager.createGenericButton(with: "LEAVE GAME")
+    var tableHeight = NSLayoutConstraint()
+    var tableView = UIElementsManager.createTableView()
+
+    var leaveGame = UIElementsManager.createGenericButton(with: "Leave Game", color: .white)
+    var startGame = UIElementsManager.createGenericButton(with: "Start Game")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -38,38 +42,42 @@ class WaitingScreenView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        addSubviews(welcomeLabel, accessCodeLabel, codeLabel, topLine, bottomLine, startGame, leaveGame)
+        tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
+        addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)
         setupConstraints()
     }
     
     private func setupConstraints() {
         
+        tableHeight.isActive = true
+        
         NSLayoutConstraint.activate([
-//            bottomLine.topAnchor.constraint(equalTo: timeLimitTextField.bottomAnchor, constant: 30),
-//            bottomLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            bottomLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//            
-//            create.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 30),
-//            create.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -5),
-//            
-//            back.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 30),
-//            back.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 5),
-//            
-//            locationsLabel.bottomAnchor.constraint(equalTo: packOneCheckBox.topAnchor, constant: -20),
-//            locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            
-//            nameTextField.bottomAnchor.constraint(equalTo: locationsLabel.topAnchor, constant: -30),
-//            nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//            
-//            topLine.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -30),
-//            topLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            topLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//            
-//            welcomeLabel.bottomAnchor.constraint(equalTo: topLine.topAnchor, constant: -30),
-//            welcomeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            welcomeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            waitingForPlayersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            waitingForPlayersLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            waitingForPlayersLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
+            
+            accessCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            accessCodeLabel.topAnchor.constraint(equalTo: waitingForPlayersLabel.bottomAnchor, constant: 30),
+            accessCodeLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -14),
+            
+            codeLabel.leadingAnchor.constraint(equalTo: accessCodeLabel.trailingAnchor, constant: 11),
+            codeLabel.centerYAnchor.constraint(equalTo: accessCodeLabel.centerYAnchor),
+            
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            leaveGame.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 18),
+            leaveGame.bottomAnchor.constraint(equalTo: startGame.topAnchor, constant: -24),
+            leaveGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            leaveGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            startGame.topAnchor.constraint(equalTo: leaveGame.bottomAnchor, constant: -24),
+            startGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
+            startGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
         ])
     }
     

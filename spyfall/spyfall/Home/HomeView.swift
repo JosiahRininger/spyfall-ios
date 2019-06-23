@@ -11,15 +11,12 @@ import UIKit
 class HomeView: UIView {
 
     var welcomeToLabel = UIElementsManager.createHeaderLabel(with: "Welcome to", fontSize: 45)
-    
     var spyfallLabel = UIElementsManager.createHeaderLabel(with: "Spyfall", fontSize: 81)
     
     var newGame = UIElementsManager.createGenericButton(with: "New Game", color: .white)
-    
     var joinGame = UIElementsManager.createGenericButton(with: "Join Game")
     
     var infoIcon = UIElementsManager.createInfoImageView()
-    
     var rulesLabel = UIElementsManager.createGenericLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
     
     override init(frame: CGRect) {

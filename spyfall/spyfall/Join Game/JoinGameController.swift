@@ -19,11 +19,6 @@ class JoinGameController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        accessCodeTextField.borderStyle = UITextField.BorderStyle.roundedRect
-        usernameTextField.borderStyle = UITextField.BorderStyle.roundedRect
-        joinGame.layer.borderColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
-        joinGame.layer.borderWidth = 1
-        
         setupKeyboard()
         
     }

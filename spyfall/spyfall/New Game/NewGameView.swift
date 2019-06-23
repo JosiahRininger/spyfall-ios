@@ -15,22 +15,21 @@ class NewGameView: UIView {
     var newGameLabel = UIElementsManager.createHeaderLabel(with: "New Game", fontSize: 40)
     
     var usernameLabel = UIElementsManager.createHeaderLabel(with: "Enter a username:", fontSize: 24)
-    
     var usernameTextField = UIElementsManager.createGenericTextField(with: "Username")
     
     var choosePacksLabel = UIElementsManager.createHeaderLabel(with: "Choose packs:", fontSize: 24)
     
-    var packOneCheckBox = UIElementsManager.createCheckBoxButton()
-    var packTwoCheckBox = UIElementsManager.createCheckBoxButton()
-    var specialPackCheckBox = UIElementsManager.createCheckBoxButton()
+    var packOneView = UIElementsManager.createPackView(packColor: .packOneColor, packNumberString: "1", packName: "Standard\nPack")
+    var packTwoView = UIElementsManager.createPackView(packColor: .packTwoColor, packNumberString: "2", packName: "Standard\nPack")
+    var specialPackView = UIElementsManager.createPackView(packColor: .specialPackColor, packNumberString: "1", packName: "Special\nPack")
     
     var timeLabel = UIElementsManager.createHeaderLabel(with: "Pick a time limit:", fontSize: 24)
+    var disclaimerLabel = UIElementsManager.createGenericLabel(with: "Time limits must be 10 minutes or less", fontSize: 13)
     
-    var timeLimitTextField = UIElementsManager.createPickerViewTextField()
-        
-    var create = UIElementsManager.createGenericButton(with: "CREATE")
-
-    var back = UIElementsManager.createGenericButton(with: "BACK")
+    var timeLimitTextField = UIElementsManager.createNumberTextField()
+    
+    var back = UIElementsManager.createGenericButton(with: "Back", color: .white)
+    var create = UIElementsManager.createGenericButton(with: "Create")
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,8 +45,7 @@ class NewGameView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        addSubviews(newGameLabel, usernameLabel, usernameTextField)
-//                    topLine, nameTextField, locationsLabel, packOneCheckBox, packOneLabel, packTwoCheckBox, packTwoLabel, specialPackCheckBox, specialPackLabel, timeLabel, timeLimitTextField, bottomLine, create, back)
+        addSubviews(newGameLabel, usernameLabel, usernameTextField, choosePacksLabel, packOneView, packTwoView, specialPackView, timeLimitTextField, timeLabel, disclaimerLabel, back, create)
 
         setupConstraints()
     }
@@ -55,63 +53,47 @@ class NewGameView: UIView {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            newGameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
-            newGameLabel.bottomAnchor.constraint(lessThanOrEqualTo: usernameLabel.topAnchor, constant: -34),
             newGameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            newGameLabel.trailingAnchor.constraint(equalTo: centerXAnchor),
+            newGameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
             
             usernameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            usernameLabel.trailingAnchor.constraint(equalTo: centerXAnchor),
-            usernameLabel.bottomAnchor.constraint(lessThanOrEqualTo: usernameTextField.topAnchor, constant: -14),
+            usernameLabel.topAnchor.constraint(equalTo: newGameLabel.bottomAnchor, constant: 30),
+            usernameLabel.bottomAnchor.constraint(equalTo: usernameTextField.topAnchor, constant: -14),
             
             usernameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             usernameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-
-//            packOneCheckBox.bottomAnchor.constraint(equalTo: centerYAnchor, constant: -5),
-//            packOneCheckBox.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            
-//            packTwoCheckBox.topAnchor.constraint(equalTo: centerYAnchor, constant: 5),
-//            packTwoCheckBox.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            
-//            specialPackCheckBox.topAnchor.constraint(equalTo: packTwoCheckBox.bottomAnchor, constant: 10),
-//            specialPackCheckBox.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            
-//            packOneLabel.leadingAnchor.constraint(equalTo: packOneCheckBox.trailingAnchor, constant: 12),
-//            packOneLabel.centerYAnchor.constraint(equalTo: packOneCheckBox.centerYAnchor),
-//            
-//            packTwoLabel.leadingAnchor.constraint(equalTo: packTwoCheckBox.trailingAnchor, constant: 12),
-//            packTwoLabel.centerYAnchor.constraint(equalTo: packTwoCheckBox.centerYAnchor),
-//            
-//            specialPackLabel.leadingAnchor.constraint(equalTo: specialPackCheckBox.trailingAnchor, constant: 12),
-//            specialPackLabel.centerYAnchor.constraint(equalTo: specialPackCheckBox.centerYAnchor),
-//            
-//            timeLabel.topAnchor.constraint(equalTo: specialPackLabel.bottomAnchor, constant: 30),
-//            timeLabel.leadingAnchor.constraint(equalTo: specialPackLabel.leadingAnchor),
-//            
-//            timeLimitTextField.leadingAnchor.constraint(equalTo: timeLabel.trailingAnchor, constant: 12),
-//            timeLimitTextField.centerYAnchor.constraint(equalTo: timeLabel.centerYAnchor),
-//            
-//            bottomLine.topAnchor.constraint(equalTo: timeLimitTextField.bottomAnchor, constant: 30),
-//            bottomLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            bottomLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//            
-//            create.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 30),
-//            create.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -5),
-//            
-//            back.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 30),
-//            back.leadingAnchor.constraint(equalTo: centerXAnchor, constant: 5),
-//            
-//            locationsLabel.bottomAnchor.constraint(equalTo: packOneCheckBox.topAnchor, constant: -20),
-//            locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            
-//            nameTextField.bottomAnchor.constraint(equalTo: locationsLabel.topAnchor, constant: -30),
-//            nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//            
-//            topLine.bottomAnchor.constraint(equalTo: nameTextField.topAnchor, constant: -30),
-//            topLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-//            topLine.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
-//
+            
+            choosePacksLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            choosePacksLabel.topAnchor.constraint(lessThanOrEqualTo: usernameTextField.bottomAnchor, constant: 70),
+            choosePacksLabel.bottomAnchor.constraint(equalTo: packTwoView.topAnchor, constant: -14),
+            
+            packTwoView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            packTwoView.leadingAnchor.constraint(lessThanOrEqualTo: packOneView.trailingAnchor, constant: 50),
+            packTwoView.trailingAnchor.constraint(greaterThanOrEqualTo: specialPackView.leadingAnchor, constant: -50),
+            packTwoView.bottomAnchor.constraint(greaterThanOrEqualTo: timeLimitTextField.topAnchor, constant: -70),
+            
+            packOneView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            packOneView.centerYAnchor.constraint(equalTo: packTwoView.centerYAnchor),
+            
+            specialPackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            specialPackView.centerYAnchor.constraint(equalTo: packTwoView.centerYAnchor),
+            
+            timeLimitTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            timeLimitTextField.bottomAnchor.constraint(greaterThanOrEqualTo: back.topAnchor, constant: -70),
+            
+            timeLabel.topAnchor.constraint(equalTo: timeLimitTextField.topAnchor),
+            timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            
+            disclaimerLabel.bottomAnchor.constraint(equalTo: timeLimitTextField.bottomAnchor),
+            disclaimerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            
+            create.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -87),
+            create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            back.bottomAnchor.constraint(equalTo: create.topAnchor, constant: -24),
+            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
             ])
     }
 

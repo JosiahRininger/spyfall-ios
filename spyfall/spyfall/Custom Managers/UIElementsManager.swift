@@ -26,8 +26,8 @@ enum UIElementsManager {
         b.setTitle(title, for: .normal)
         b.titleLabel?.font = .boldSystemFont(ofSize: 20)
         b.layer.cornerRadius = 30
-        b.layer.shadowRadius = 3
-        b.layer.shadowOffset = CGSize(width: 0, height: 5)
+        b.layer.shadowRadius = 4
+        b.layer.shadowOffset = CGSize(width: 0, height: 4)
         b.layer.shadowOpacity = 0.16
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
@@ -36,25 +36,45 @@ enum UIElementsManager {
     }
     
     static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {
-        let b = PackView()
-        b.backgroundColor = packColor
-        b.numberLabel.text = packNumberString
-        b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
-        b.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        let pv = PackView()
+        pv.boundsLayerView.backgroundColor = packColor
+        pv.numberLabel.text = packNumberString
+        pv.packNameLabel.text = packName
+        pv.layer.cornerRadius = 9
+        pv.layer.shadowRadius = 4
+        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
+        pv.layer.shadowOpacity = 0.16
+        pv.isUserInteractionEnabled = true
+        pv.translatesAutoresizingMaskIntoConstraints = false
+        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
+        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
         
-        return b
+        return pv
+    }
+    
+    static func createUserInfoView() -> UserInfoView {
+        let pv = UserInfoView()
+        pv.layer.cornerRadius = 9
+        pv.layer.shadowRadius = 4
+        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
+        pv.layer.shadowOpacity = 0.16
+        pv.isUserInteractionEnabled = true
+        pv.translatesAutoresizingMaskIntoConstraints = false
+        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
+        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        
+        return pv
     }
     
     static func createGenericTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
-        t.textColor = .primaryGray
+        t.textColor = .black
         t.placeholder = placeholder
         t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.textFieldHeight))
         t.leftViewMode = .always
         t.layer.borderWidth = 1
-        t.layer.cornerRadius = 5
+        t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.primaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
         t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
@@ -62,17 +82,20 @@ enum UIElementsManager {
         return t
     }
     
-    static func createPickerViewTextField() -> UITextField {
+    static func createNumberTextField() -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
-        t.textColor = .primaryGray
+        t.placeholder = "0"
+        t.textColor = .black
         t.textAlignment = .center
+        t.tintColor = .clear
+        t.keyboardType = .numberPad
         t.layer.borderWidth = 1
-        t.layer.cornerRadius = 5
+        t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.primaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
-        t.heightAnchor.constraint(equalToConstant: UIElementSizes.pickerViewTextFieldHeight).isActive = true
-        t.widthAnchor.constraint(equalToConstant: UIElementSizes.pickerViewTextFieldWidth).isActive = true
+        t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
+        t.widthAnchor.constraint(equalToConstant: UIElementSizes.numberTextFieldWidth).isActive = true
         
         return t
     }
@@ -88,10 +111,10 @@ enum UIElementsManager {
         return l
     }
     
-    static func createHeaderLabel(with title: String, fontSize: CGFloat) -> UILabel {
+    static func createHeaderLabel(with title: String, fontSize: CGFloat, color: UIColor = .black) -> UILabel {
         let l = UILabel()
         l.text = title
-        l.textColor = .black
+        l.textColor = color
         l.textAlignment = .center
         l.font = .boldSystemFont(ofSize: fontSize)
         l.adjustsFontSizeToFitWidth = true
@@ -112,6 +135,18 @@ enum UIElementsManager {
         iv.widthAnchor.constraint(equalToConstant: UIElementSizes.infoIconHeightAndWidth).isActive = true
         
         return iv
+    }
+    
+    static func createTableView() -> UITableView {
+        let tableView = UITableView()
+        tableView.separatorStyle = .none
+        tableView.separatorInset = .zero
+        tableView.isScrollEnabled = false
+        tableView.rowHeight = UIElementSizes.tableViewCellHeight
+        tableView.backgroundColor = .primaryWhite
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
     }
 
 }

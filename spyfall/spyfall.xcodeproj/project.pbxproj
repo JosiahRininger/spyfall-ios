@@ -22,16 +22,17 @@
 		D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
-		D7798B1522B8694F006D7615 /* Constraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1422B8694F006D7615 /* Constraints.swift */; };
 		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
+		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
+		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
-		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */; };
+		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
 		D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */; };
-		D7FF08E6228FB8C800C1ED43 /* GameSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */; };
+		D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */; };
 		D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */; };
 		D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */; };
 /* End PBXBuildFile section */
@@ -55,16 +56,17 @@
 		D726325E228CD60900E385E8 /* JoinGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameController.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		D7798B1422B8694F006D7615 /* Constraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constraints.swift; sourceTree = "<group>"; };
 		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
+		D7A72D3922BFCE75005D1831 /* GameSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionView.swift; sourceTree = "<group>"; };
+		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableView.swift; sourceTree = "<group>"; };
+		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableViewCell.swift; sourceTree = "<group>"; };
 		D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenController.swift; sourceTree = "<group>"; };
-		D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionViewController.swift; sourceTree = "<group>"; };
+		D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
 		D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTableView.swift; sourceTree = "<group>"; };
 		D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTableView.swift; sourceTree = "<group>"; };
 		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
@@ -172,8 +174,8 @@
 				D7798B1722B869AC006D7615 /* UIElementSizes.swift */,
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
-				D7798B1422B8694F006D7615 /* Constraints.swift */,
 				D7A72D3722BED262005D1831 /* PackView.swift */,
+				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
 			);
 			path = "Custom Managers";
 			sourceTree = "<group>";
@@ -191,7 +193,7 @@
 			isa = PBXGroup;
 			children = (
 				D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */,
-				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableView.swift */,
+				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */,
 				D7030EE922BB226D002CB9B2 /* WaitingScreenView.swift */,
 			);
 			path = "Waiting Screen";
@@ -208,7 +210,8 @@
 		D7FF08E4228FB86A00C1ED43 /* Game Session */ = {
 			isa = PBXGroup;
 			children = (
-				D7FF08E5228FB8C800C1ED43 /* GameSessionViewController.swift */,
+				D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */,
+				D7A72D3922BFCE75005D1831 /* GameSessionView.swift */,
 				D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */,
 				D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */,
 			);
@@ -348,11 +351,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D7030EEC22BBC3F1002CB9B2 /* AddSubview.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */,
-				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableView.swift in Sources */,
+				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */,
 				D7A72D3822BED262005D1831 /* PackView.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
 				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,
@@ -361,8 +365,7 @@
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
 				D7030EEA22BB226D002CB9B2 /* WaitingScreenView.swift in Sources */,
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
-				D7798B1522B8694F006D7615 /* Constraints.swift in Sources */,
-				D7FF08E6228FB8C800C1ED43 /* GameSessionViewController.swift in Sources */,
+				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
 				D7030EE022BA85D8002CB9B2 /* NetworkManager.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */,
@@ -370,6 +373,7 @@
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
+				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

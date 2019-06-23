@@ -23,8 +23,9 @@ class NewGameController: UIViewController {
         
         newGameView.create.addTarget(self, action: #selector(createGameAction), for: .touchUpInside)
         
+        newGameView.timeLimitTextField.addTarget(self, action: #selector(resignedFirstResponder(_:)), for: .editingChanged)
+        
         setupView()
-        createTimeLimitPicker()
         createToolBar()
         setUpKeyboard()
     }
@@ -38,9 +39,9 @@ class NewGameController: UIViewController {
         if !textFieldsAreValid() { return }
         // store selected location packs
         var chosenPacks = [String]()
-        if newGameView.packOneCheckBox.isChecked { chosenPacks.append("pack 1") }
-        if newGameView.packTwoCheckBox.isChecked { chosenPacks.append("pack 2") }
-        if newGameView.specialPackCheckBox.isChecked { chosenPacks.append("special pack") }
+        if newGameView.packOneView.isChecked { chosenPacks.append("pack 1") }
+        if newGameView.packTwoView.isChecked { chosenPacks.append("pack 2") }
+        if newGameView.specialPackView.isChecked { chosenPacks.append("special pack") }
         
         // create Player object
         let newPlayer = newGameView.usernameTextField.text!
@@ -83,18 +84,6 @@ class NewGameController: UIViewController {
         }
     }
 
-    private func createTimeLimitPicker() {
-        let timePicker = UIPickerView()
-        timePicker.delegate = self
-        timePicker.dataSource = self
-        timePicker.selectRow(newGameView.timeRange.firstIndex(of: "8") ?? 0, inComponent: 0, animated: true)
-
-        newGameView.timeLimitTextField.inputView = timePicker
-        newGameView.timeLimitTextField.tintColor = .clear
-        
-        timePicker.backgroundColor = .white
-    }
-
     func textFieldsAreValid() -> Bool {
         let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
         sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
@@ -102,9 +91,9 @@ class NewGameController: UIViewController {
             sentAlert.title = "Please enter a username"
         } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
             sentAlert.title = "Please enter a username less than 25 characters"
-        } else if !newGameView.packOneCheckBox.isChecked
-            && !newGameView.packTwoCheckBox.isChecked
-            && !newGameView.specialPackCheckBox.isChecked {
+        } else if !newGameView.packOneView.isChecked
+            && !newGameView.packTwoView.isChecked
+            && !newGameView.specialPackView.isChecked {
             sentAlert.title = "Please select pack(s)"
         } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
             sentAlert.title = "Please enter a time limit"
@@ -113,6 +102,15 @@ class NewGameController: UIViewController {
         }
         self.present(sentAlert, animated: true, completion: nil)
         return false
+    }
+    
+    @objc func resignedFirstResponder(_ sender: Any) {
+        if Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 > 10 {
+            newGameView.timeLimitTextField.text = ""
+            let sentAlert = UIAlertController(title: "Please enter a time limit that is equal to or less than 10", message: nil, preferredStyle: .alert)
+            sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(sentAlert, animated: true, completion: nil)
+        }
     }
     
     func createToolBar() {
@@ -135,25 +133,4 @@ class NewGameController: UIViewController {
         view.endEditing(true)
     }
     
-}
-
-extension NewGameController: UIPickerViewDelegate, UIPickerViewDataSource {
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
-
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return newGameView.timeRange.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return newGameView.timeRange[row]
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        timeLimit = Int(newGameView.timeRange[row])!
-        newGameView.timeLimitTextField.text = newGameView.timeRange[row]
-        newGameView.timeLimitTextField.textColor = #colorLiteral(red: 0.4392156863, green: 0.4392156863, blue: 0.4392156863, alpha: 1)
-    }
 }
