@@ -14,12 +14,17 @@ class GameSessionView: UIView {
     
     var userInfoView = UIElementsManager.createUserInfoView()
     
-    var accessCodeLabel = UIElementsManager.createHeaderLabel(with: "access code", fontSize: 19)
+    var playersLabel = UIElementsManager.createHeaderLabel(with: "Players:", fontSize: 24)
     
-    let cellId: String = "playerListCellId"
+    let playersCollectionViewCellId: String = "playersCollectionViewCellId"
+    var playersCollectionHeight = NSLayoutConstraint()
+    var playersCollectionView = UIElementsManager.createCollectionView()
     
-    var tableHeight = NSLayoutConstraint()
-    var tableView = UIElementsManager.createTableView()
+    var locationsLabel = UIElementsManager.createHeaderLabel(with: "Locations:", fontSize: 24)
+    
+    let locationsCollectionViewCellId: String = "locationsCollectionViewCellId"
+    var locationsCollectionHeight = NSLayoutConstraint()
+    var locationsCollectionView = UIElementsManager.createCollectionView()
     
     var endGame = UIElementsManager.createGenericButton(with: "End Game")
     
@@ -37,16 +42,18 @@ class GameSessionView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: cellId)
-        tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
+        playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 58)
         
-        addSubviews(timerLabel, userInfoView, accessCodeLabel, tableView, endGame)
+        locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 58)
+        
+        addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)
         setupConstraints()
     }
     
     private func setupConstraints() {
         
-        tableHeight.isActive = true
+        playersCollectionHeight.isActive = true
+        locationsCollectionHeight.isActive = true
         
         NSLayoutConstraint.activate([
             timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -59,9 +66,6 @@ class GameSessionView: UIView {
 //            accessCodeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
 //            accessCodeLabel.topAnchor.constraint(equalTo: waitingForPlayersLabel.bottomAnchor, constant: 30),
 //            accessCodeLabel.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: -14),
-//
-//            codeLabel.leadingAnchor.constraint(equalTo: accessCodeLabel.trailingAnchor, constant: 11),
-//            codeLabel.centerYAnchor.constraint(equalTo: accessCodeLabel.centerYAnchor),
 //
 //            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
 //            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),

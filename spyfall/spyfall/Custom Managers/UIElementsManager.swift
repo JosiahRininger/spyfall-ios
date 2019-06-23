@@ -123,30 +123,36 @@ enum UIElementsManager {
         return l
     }
     
-    static func createInfoImageView() -> UIImageView {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "Info_Icon")
-        iv.contentMode = .scaleAspectFill
-        iv.layer.shadowRadius = 3
-        iv.layer.shadowOffset = CGSize(width: 0, height: 3)
-        iv.layer.shadowOpacity = 0.16
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.heightAnchor.constraint(equalToConstant: UIElementSizes.infoIconHeightAndWidth).isActive = true
-        iv.widthAnchor.constraint(equalToConstant: UIElementSizes.infoIconHeightAndWidth).isActive = true
+    static func createCircleView() -> UIView {
+        let v = UIView()
+        v.backgroundColor = .secondaryColor
+        v.layer.cornerRadius = UIElementSizes.circleViewHeightAndWidth / 2
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.heightAnchor.constraint(equalToConstant: UIElementSizes.circleViewHeightAndWidth).isActive = true
+        v.widthAnchor.constraint(equalToConstant: UIElementSizes.circleViewHeightAndWidth).isActive = true
         
-        return iv
+        return v
     }
     
     static func createTableView() -> UITableView {
-        let tableView = UITableView()
-        tableView.separatorStyle = .none
-        tableView.separatorInset = .zero
-        tableView.isScrollEnabled = false
-        tableView.rowHeight = UIElementSizes.tableViewCellHeight
-        tableView.backgroundColor = .primaryWhite
-        tableView.translatesAutoresizingMaskIntoConstraints = false
+        let tv = UITableView()
+        tv.separatorStyle = .none
+        tv.separatorInset = .zero
+        tv.isScrollEnabled = false
+        tv.rowHeight = UIElementSizes.tableViewCellHeight
+        tv.backgroundColor = .primaryWhite
+        tv.translatesAutoresizingMaskIntoConstraints = false
         
-        return tableView
+        return tv
+    }
+    
+    static func createCollectionView() -> UICollectionView {
+        let cv = UICollectionView()
+        cv.isScrollEnabled = false
+        cv.backgroundColor = .primaryWhite
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        
+        return cv
     }
 
 }

@@ -16,7 +16,19 @@ class HomeView: UIView {
     var newGame = UIElementsManager.createGenericButton(with: "New Game", color: .white)
     var joinGame = UIElementsManager.createGenericButton(with: "Join Game")
     
-    var infoIcon = UIElementsManager.createInfoImageView()
+    var infoView: UIView = {
+        var v = UIElementsManager.createCircleView()
+        v.layer.shadowRadius = 3
+        v.layer.shadowOffset = CGSize(width: 0, height: 3)
+        v.layer.shadowOpacity = 0.16
+        
+        var i = UIElementsManager.createHeaderLabel(with: "i", fontSize: 14, color: .primaryWhite)
+        v.addSubview(i)
+        i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
+        i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
+        
+        return v
+    }()
     var rulesLabel = UIElementsManager.createGenericLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
     
     override init(frame: CGRect) {
@@ -33,7 +45,7 @@ class HomeView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        addSubviews(welcomeToLabel, spyfallLabel, newGame, joinGame, infoIcon, rulesLabel)
+        addSubviews(welcomeToLabel, spyfallLabel, newGame, joinGame, infoView, rulesLabel)
         
         setupConstraints()
     }
@@ -41,13 +53,13 @@ class HomeView: UIView {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            infoIcon.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -89),
-            infoIcon.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -11),
+            infoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -89),
+            infoView.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -11),
             
-            rulesLabel.centerYAnchor.constraint(equalTo: infoIcon.centerYAnchor),
+            rulesLabel.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
             rulesLabel.leadingAnchor.constraint(equalTo: centerXAnchor),
             
-            joinGame.bottomAnchor.constraint(equalTo: infoIcon.topAnchor, constant: -37),
+            joinGame.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -37),
             joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
             

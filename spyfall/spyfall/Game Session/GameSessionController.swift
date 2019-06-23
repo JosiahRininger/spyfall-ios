@@ -33,12 +33,10 @@ class GameSessionController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        usernameTableView.delegate = self
-//        usernameTableView.dataSource = self
-//        usernameTableView.isScrollEnabled = false
-//        locationTableView.delegate = self
-//        locationTableView.dataSource = self
-//        locationTableView.isScrollEnabled = false
+        gameSessionView.playersCollectionView.delegate = self
+        gameSessionView.playersCollectionView.dataSource = self
+        gameSessionView.locationsCollectionView.delegate = self
+        gameSessionView.locationsCollectionView.dataSource = self
         
         setupView()
     }
@@ -110,11 +108,15 @@ class GameSessionController: UIViewController {
     }
 }
 
-//extension GameSessionViewController: UITableViewDelegate, UITableViewDataSource {
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return tableView == usernameTableView ? (usernameList.count + 1) / 2 : locationList.count
-//    }
-//
+extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return collectionView == gameSessionView.playersCollectionView ? (usernameList.count + 1) / 2 : locationList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        <#code#>
+    }
+    
 //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        if tableView == usernameTableView {
 //            let cellId = "usernameCell"
@@ -139,10 +141,4 @@ class GameSessionController: UIViewController {
 //            return cell
 //        }
 //    }
-//
-//    override func viewWillLayoutSubviews() {
-//        super.updateViewConstraints()
-//        usernameTableHeight.constant = usernameTableView.contentSize.height
-//        locationTableHeight.constant = locationTableView.contentSize.height
-//    }
-//}
+}
