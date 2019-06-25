@@ -10,11 +10,14 @@ import UIKit
 
 class UserInfoView: UIView {
 
+    var shownConstraints = [NSLayoutConstraint]()
+    var hiddenConstraints = [NSLayoutConstraint]()
+    
     var mainView: UIView = {
         let v = UIView()
         v.backgroundColor = .tableViewCellGray
         v.layer.cornerRadius = 30
-        v.layer.shadowRadius = 3
+        v.layer.shadowRadius = 0
         v.layer.shadowOffset = CGSize(width: 0, height: 3)
         v.layer.shadowOpacity = 0.16
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +29,7 @@ class UserInfoView: UIView {
         let v = UIView()
         v.backgroundColor = .secondaryColor
         v.layer.cornerRadius = 14
-        v.layer.shadowRadius = 2
+        v.layer.shadowRadius = 0
         v.layer.shadowOffset = CGSize(width: 0, height: 2)
         v.layer.shadowOpacity = 0.16
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +45,9 @@ class UserInfoView: UIView {
     //bool propety
     @IBInspectable var isShown: Bool = true {
         didSet{
+            subViewLabel.text = self.isShown ? "Hide" : "Show"
             self.resetConstraints(isShown: isShown)
+            NotificationCenter.default.post(name: .viewDidChangeConstraintsNotification, object: nil)
         }
     }
     
@@ -74,47 +79,62 @@ class UserInfoView: UIView {
     }
     
     private func setupConstraints() {
-        
-        var shownConstraints = [
+        shownConstraints = [
             mainView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
             mainView.leadingAnchor.constraint(equalTo: leadingAnchor),
             mainView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainView.heightAnchor.constraint(equalToConstant: 81),
             
-            roleLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
+            roleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             roleLabel.bottomAnchor.constraint(equalTo: mainView.centerYAnchor),
             
             locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             locationLabel.topAnchor.constraint(equalTo: mainView.centerYAnchor),
             
             subView.centerYAnchor.constraint(equalTo: mainView.bottomAnchor),
-            subView.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
+            subView.centerXAnchor.constraint(equalTo: centerXAnchor),
             subView.heightAnchor.constraint(equalToConstant: 29),
             subView.widthAnchor.constraint(equalToConstant: 120),
             
             subViewLabel.centerYAnchor.constraint(equalTo: subView.centerYAnchor),
             subViewLabel.centerXAnchor.constraint(equalTo: subView.centerXAnchor)
-            ]
+        ]
         
-//        var hiddenConstraints = [
-//
-//            ]
+        hiddenConstraints = [
+            subView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
+            subView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            subView.heightAnchor.constraint(equalToConstant: 29),
+            subView.widthAnchor.constraint(equalToConstant: 120),
+            
+            subViewLabel.centerYAnchor.constraint(equalTo: subView.centerYAnchor),
+            subViewLabel.centerXAnchor.constraint(equalTo: subView.centerXAnchor)
+        ]
+        
         NSLayoutConstraint.activate(shownConstraints)
+        
     }
     
     private func resetConstraints(isShown: Bool) {
         if isShown {
-//            NSLayoutConstraint.activate(shownConstraints)
-//            NSLayoutConstraint.deactivate(hiddenConstraints)
             mainView.isHidden = false
             roleLabel.isHidden = false
             locationLabel.isHidden = false
+            
+            NSLayoutConstraint.deactivate(hiddenConstraints)
+            NSLayoutConstraint.activate(shownConstraints)
+            
+            setNeedsUpdateConstraints()
+            layoutIfNeeded()
         } else {
-//            NSLayoutConstraint.activate(hiddenConstraints)
-//            NSLayoutConstraint.deactivate(shownConstraints)
             mainView.isHidden = true
             roleLabel.isHidden = true
             locationLabel.isHidden = true
+            
+            NSLayoutConstraint.deactivate(shownConstraints)
+            NSLayoutConstraint.activate(hiddenConstraints)
+            
+            setNeedsUpdateConstraints()
+            layoutIfNeeded()
         }
     }
 }

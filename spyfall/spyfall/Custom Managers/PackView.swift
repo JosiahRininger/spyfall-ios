@@ -7,8 +7,18 @@
 //
 
 import UIKit
+import Lottie
 
 class PackView: UIView {
+    
+    var checkAnimationView: AnimationView = {
+        let av = AnimationView(name: "check_animation")
+        av.animationSpeed = 2.0
+        av.tintColor = .secondaryColor
+        av.translatesAutoresizingMaskIntoConstraints = false
+        
+        return av
+    }()
     
     var boundsLayerView: UIView = {
         let v = UIView()
@@ -48,10 +58,28 @@ class PackView: UIView {
         return l
     }()
     
+    var transparentView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .black
+        v.alpha = 0.5
+        v.isHidden = true
+        v.translatesAutoresizingMaskIntoConstraints = false
+        
+        return v
+    }()
+    
     //bool propety
     @IBInspectable var isChecked:Bool = false {
         didSet{
-            self.animate()
+            if self.isChecked {
+                checkAnimationView.isHidden = false
+                checkAnimationView.play()
+                transparentView.isHidden = false
+            } else {
+                checkAnimationView.isHidden = true
+                checkAnimationView.stop()
+                transparentView.isHidden = true
+            }
         }
     }
     
@@ -67,17 +95,13 @@ class PackView: UIView {
         setupView()
     }
     
-    func animate() {
-        
-    }
-    
     @objc func tapped(sender: UITapGestureRecognizer) {
         isChecked.toggle()
     }
     
     private func setupView() {
         addSubview(boundsLayerView)
-        boundsLayerView.addSubviews(whiteView, numberLabel, packNameLabel)
+        boundsLayerView.addSubviews(whiteView, numberLabel, packNameLabel, transparentView, checkAnimationView)
         setupConstraints()
     }
     
@@ -87,6 +111,16 @@ class PackView: UIView {
             boundsLayerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             boundsLayerView.topAnchor.constraint(equalTo: topAnchor),
             boundsLayerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            transparentView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            transparentView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            transparentView.topAnchor.constraint(equalTo: topAnchor),
+            transparentView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            
+            checkAnimationView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            checkAnimationView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            checkAnimationView.topAnchor.constraint(equalTo: topAnchor),
+            checkAnimationView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
             whiteView.leadingAnchor.constraint(equalTo: leadingAnchor),
             whiteView.trailingAnchor.constraint(equalTo: trailingAnchor),

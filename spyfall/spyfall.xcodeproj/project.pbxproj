@@ -28,13 +28,15 @@
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
 		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
+		D7A72D3E22C14788005D1831 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3D22C14788005D1831 /* Notification.swift */; };
+		D7A72D4022C19017005D1831 /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = D7A72D3F22C19013005D1831 /* check_animation.json */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
 		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
 		D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */; };
 		D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */; };
-		D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */; };
-		D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */; };
+		D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */; };
+		D7FF08EA228FB98600C1ED43 /* UsernameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,13 +64,15 @@
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
 		D7A72D3922BFCE75005D1831 /* GameSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionView.swift; sourceTree = "<group>"; };
 		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		D7A72D3D22C14788005D1831 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
+		D7A72D3F22C19013005D1831 /* check_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check_animation.json; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableViewCell.swift; sourceTree = "<group>"; };
 		D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenController.swift; sourceTree = "<group>"; };
 		D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
-		D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsTableView.swift; sourceTree = "<group>"; };
-		D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameTableView.swift; sourceTree = "<group>"; };
+		D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsCollectionViewCell.swift; sourceTree = "<group>"; };
+		D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -122,6 +126,7 @@
 		D706256022586D3800A80B76 /* spyfall */ = {
 			isa = PBXGroup;
 			children = (
+				D7A72D3F22C19013005D1831 /* check_animation.json */,
 				D706257322586D4F00A80B76 /* Main.storyboard */,
 				D706256122586D3800A80B76 /* AppDelegate.swift */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
@@ -185,6 +190,7 @@
 			children = (
 				D7798B1122B8684E006D7615 /* UIColor.swift */,
 				D7030EEB22BBC3F1002CB9B2 /* AddSubview.swift */,
+				D7A72D3D22C14788005D1831 /* Notification.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -212,8 +218,8 @@
 			children = (
 				D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */,
 				D7A72D3922BFCE75005D1831 /* GameSessionView.swift */,
-				D7FF08E9228FB98600C1ED43 /* UsernameTableView.swift */,
-				D7FF08E7228FB95F00C1ED43 /* LocationsTableView.swift */,
+				D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */,
+				D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */,
 			);
 			path = "Game Session";
 			sourceTree = "<group>";
@@ -281,6 +287,7 @@
 				D706257422586D4F00A80B76 /* Main.storyboard in Resources */,
 				D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */,
 				D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */,
+				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
 				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +310,7 @@
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-Core/grpc.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -315,6 +323,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -361,16 +370,17 @@
 				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
 				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,
 				D706257B225B87E600A80B76 /* NewGameController.swift in Sources */,
-				D7FF08EA228FB98600C1ED43 /* UsernameTableView.swift in Sources */,
+				D7FF08EA228FB98600C1ED43 /* UsernameCollectionViewCell.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
 				D7030EEA22BB226D002CB9B2 /* WaitingScreenView.swift in Sources */,
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
 				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
 				D7030EE022BA85D8002CB9B2 /* NetworkManager.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
-				D7FF08E8228FB95F00C1ED43 /* LocationsTableView.swift in Sources */,
+				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
 				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */,
+				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,

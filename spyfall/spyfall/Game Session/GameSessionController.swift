@@ -14,13 +14,6 @@ class GameSessionController: UIViewController {
 
     var gameSessionView = GameSessionView()
     
-
-//    @IBOutlet weak var usernameTableView: UITableView!
-//    @IBOutlet weak var locationTableView: UITableView!
-//
-//    @IBOutlet weak var usernameTableHeight: NSLayoutConstraint!
-//    @IBOutlet weak var locationTableHeight: NSLayoutConstraint!
-    
     let db = Firestore.firestore()
     var timer = Timer()
     var usernameList = [String]()
@@ -33,12 +26,23 @@ class GameSessionController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        gameSessionView.playersCollectionView.delegate = self
-        gameSessionView.playersCollectionView.dataSource = self
-        gameSessionView.locationsCollectionView.delegate = self
-        gameSessionView.locationsCollectionView.dataSource = self
+//        gameSessionView.playersCollectionView.delegate = self
+//        gameSessionView.playersCollectionView.dataSource = self
+//        gameSessionView.locationsCollectionView.delegate = self
+//        gameSessionView.locationsCollectionView.dataSource = self
         
         setupView()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(viewDidChangeConstraints), name: .viewDidChangeConstraintsNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func setupView() {
@@ -106,17 +110,22 @@ class GameSessionController: UIViewController {
             }
         })
     }
+    
+    @objc func viewDidChangeConstraints() {
+        gameSessionView.setNeedsUpdateConstraints()
+        gameSessionView.layoutIfNeeded()
+    }
 }
 
-extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == gameSessionView.playersCollectionView ? (usernameList.count + 1) / 2 : locationList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
-    }
-    
+//extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
+//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return collectionView == gameSessionView.playersCollectionView ? (usernameList.count + 1) / 2 : locationList.count
+//    }
+//
+//    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+//        <#code#>
+//    }
+
 //    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        if tableView == usernameTableView {
 //            let cellId = "usernameCell"
@@ -141,4 +150,4 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
 //            return cell
 //        }
 //    }
-}
+//}

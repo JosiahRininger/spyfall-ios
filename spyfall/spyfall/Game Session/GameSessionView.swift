@@ -43,8 +43,10 @@ class GameSessionView: UIView {
         backgroundColor = .primaryWhite
         
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 58)
-        
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 58)
+        
+        playersCollectionView.register(UsernameCollectionViewCell.self, forCellWithReuseIdentifier: playersCollectionViewCellId)
+        locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: locationsCollectionViewCellId)
         
         addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)
         setupConstraints()
@@ -70,7 +72,7 @@ class GameSessionView: UIView {
 //            tableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
 //            tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
             
-            endGame.topAnchor.constraint(equalTo: userInfoView.bottomAnchor, constant: 24),
+            endGame.topAnchor.constraint(equalTo: userInfoView.subView.bottomAnchor, constant: 24),
             endGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
             endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),

@@ -8,23 +8,13 @@
 
 import UIKit
 
-class UsernameTableView: UITableViewCell {
+class UsernameCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var firstView: UIView!
     @IBOutlet weak var firstUsername: UILabel!
     @IBOutlet weak var secondView: UIView!
     @IBOutlet weak var secondUsername: UILabel!
     
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
     func configure(firstUsername: String, secondUsername: String?) {
         self.firstUsername.text = firstUsername

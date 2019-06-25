@@ -8,16 +8,9 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 enum UIElementsManager {
-    
-    static func createLineView() -> UIView {
-        let v = UIView()
-        v.backgroundColor = .primaryGray
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        return v
-    }
     
     static func createGenericButton(with title: String, color: UIColor = .secondaryColor) -> UIButton {
         let b = UIButton()
@@ -66,11 +59,14 @@ enum UIElementsManager {
         return pv
     }
     
+    
+    
     static func createGenericTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
         t.textColor = .black
         t.placeholder = placeholder
+        t.tintColor = .secondaryColor
         t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.textFieldHeight))
         t.leftViewMode = .always
         t.layer.borderWidth = 1
@@ -85,7 +81,6 @@ enum UIElementsManager {
     static func createNumberTextField() -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
-        t.placeholder = "0"
         t.textColor = .black
         t.textAlignment = .center
         t.tintColor = .clear
@@ -147,7 +142,7 @@ enum UIElementsManager {
     }
     
     static func createCollectionView() -> UICollectionView {
-        let cv = UICollectionView()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         cv.isScrollEnabled = false
         cv.backgroundColor = .primaryWhite
         cv.translatesAutoresizingMaskIntoConstraints = false
