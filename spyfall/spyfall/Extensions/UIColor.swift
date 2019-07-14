@@ -21,7 +21,7 @@ extension UIColor {
         return hexInt
     }
     
-    static func hexToColor(hexString: String, alpha:CGFloat? = 1.0) -> UIColor {
+    static func hexToColor(hexString: String, alpha: CGFloat? = 1.0) -> UIColor {
         // Convert hex string to an integer
         let hexint = Int(UIColor.intFromHexString(hexStr: hexString))
         let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
@@ -40,6 +40,6 @@ extension UIColor {
     static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")
-    static let tableViewCellGray: UIColor = .hexToColor(hexString: "#F4F4F4")
+    static let cellGray: UIColor = .hexToColor(hexString: "#F4F4F4")
 
 }

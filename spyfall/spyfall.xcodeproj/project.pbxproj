@@ -16,9 +16,9 @@
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706256A22586D3900A80B76 /* LaunchScreen.storyboard */; };
-		D706257422586D4F00A80B76 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706257322586D4F00A80B76 /* Main.storyboard */; };
 		D706257822586DBC00A80B76 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
 		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
+		D70CF92322D3CC840093AB94 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70CF92222D3CC840093AB94 /* GameData.swift */; };
 		D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
@@ -52,9 +52,9 @@
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D706256B22586D3900A80B76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		D706257322586D4F00A80B76 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
+		D70CF92222D3CC840093AB94 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		D726325E228CD60900E385E8 /* JoinGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameController.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
@@ -127,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				D7A72D3F22C19013005D1831 /* check_animation.json */,
-				D706257322586D4F00A80B76 /* Main.storyboard */,
 				D706256122586D3800A80B76 /* AppDelegate.swift */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
 				D7798B1022B86831006D7615 /* Extensions */,
@@ -208,6 +207,7 @@
 		D7FDF39D22ADAA9D00A65BCD /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				D70CF92222D3CC840093AB94 /* GameData.swift */,
 				D7FC262B225BD891009EA32D /* Player.swift */,
 			);
 			path = Models;
@@ -236,6 +236,7 @@
 				D706255B22586D3800A80B76 /* Frameworks */,
 				D706255C22586D3800A80B76 /* Resources */,
 				485004464644426125DDAD50 /* [CP] Embed Pods Frameworks */,
+				D72F018B22C5622E00977179 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -284,7 +285,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D706257422586D4F00A80B76 /* Main.storyboard in Resources */,
 				D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */,
 				D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
@@ -353,6 +353,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		D72F018B22C5622E00977179 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -366,6 +383,7 @@
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */,
 				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */,
+				D70CF92322D3CC840093AB94 /* GameData.swift in Sources */,
 				D7A72D3822BED262005D1831 /* PackView.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
 				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,

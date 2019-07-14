@@ -99,12 +99,14 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
+  - SwiftLint (0.33.0)
 
 DEPENDENCIES:
   - Firebase/Core
   - Firebase/Database
   - Firebase/Firestore
   - lottie-ios
+  - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -124,6 +126,7 @@ SPEC REPOS:
     - lottie-ios
     - nanopb
     - Protobuf
+    - SwiftLint
 
 SPEC CHECKSUMS:
   BoringSSL-GRPC: 2a230d9cd93e7ce39916044f645cebb31f37dde6
@@ -142,7 +145,8 @@ SPEC CHECKSUMS:
   lottie-ios: 9467723922dfff46f6d4e3019c32594a62440b7c
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
+  SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
 
-PODFILE CHECKSUM: dbb35f349c37c4d3b296013c261d8590be4ed4b8
+PODFILE CHECKSUM: 52f589cad586d35bcd1c1c88f03c8e357dd21811
 
 COCOAPODS: 1.6.0

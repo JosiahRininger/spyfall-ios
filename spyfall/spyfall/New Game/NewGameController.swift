@@ -55,12 +55,19 @@ class NewGameController: UIViewController {
         
         // Grab random location
         chosenPacks.shuffle()
-        db.collection(chosenPacks[0]).getDocuments() { (querySnapshot, err) in
+        db.collection(chosenPacks[0]).getDocuments() { querySnapshot, err in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
                 let document = querySnapshot!.documents.randomElement()
-                self.chosenLocation = document!.data()["location"] as! String
+//                self.chosenLocation = document!.data()["location"] as! String
+                if let chosenLocation = document?.data()["location"] as? String {
+                    self.chosenLocation = chosenLocation
+                }
+            }
+            
+            if let timeLimit = Int(self.newGameView.timeLimitTextField.text ?? "0") {
+                self.timeLimit = timeLimit
             }
             
             // Add a new document with a generated ID

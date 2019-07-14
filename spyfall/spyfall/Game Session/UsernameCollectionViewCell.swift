@@ -9,21 +9,44 @@
 import UIKit
 
 class UsernameCollectionViewCell: UICollectionViewCell {
-
-    @IBOutlet weak var firstView: UIView!
-    @IBOutlet weak var firstUsername: UILabel!
-    @IBOutlet weak var secondView: UIView!
-    @IBOutlet weak var secondUsername: UILabel!
     
+    let usernameLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 16)
     
-    func configure(firstUsername: String, secondUsername: String?) {
-        self.firstUsername.text = firstUsername
-        if let username = secondUsername {
-            self.secondUsername.text = username
-        } else {
-            self.secondUsername.isHidden = true
-            self.secondView.isHidden = true
+    var isTapped: Bool = false {
+        didSet {
+            setNeedsDisplay()
         }
     }
-
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupView()
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
+        backgroundColor = .cellGray
+        layer.cornerRadius = 9
+        
+        addSubview(usernameLabel)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            usernameLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            ])
+        
+    }
+    
+    func configure(username: String) {
+        usernameLabel.text = username
+    }
+    
 }

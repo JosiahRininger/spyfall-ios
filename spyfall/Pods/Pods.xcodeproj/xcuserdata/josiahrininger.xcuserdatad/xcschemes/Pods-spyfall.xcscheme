@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0930"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "81FCDE063DA1EC7656473C747C2762C0"
+               BlueprintIdentifier = "34CF2E8F073ECF11F5C2BDADAB228E36"
                BuildableName = "Pods_spyfall.framework"
                BlueprintName = "Pods-spyfall"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "81FCDE063DA1EC7656473C747C2762C0"
+            BlueprintIdentifier = "34CF2E8F073ECF11F5C2BDADAB228E36"
             BuildableName = "Pods_spyfall.framework"
             BlueprintName = "Pods-spyfall"
             ReferencedContainer = "container:Pods.xcodeproj">

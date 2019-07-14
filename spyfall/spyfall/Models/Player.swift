@@ -17,7 +17,7 @@ struct Player {
         let dict = ["role": self.role,
                     "username": self.username,
                     "votes": self.votes
-            ] as [String : Any]
+            ] as [String: Any]
         return dict
     }
 }

@@ -12,7 +12,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
     
     var cellBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .tableViewCellGray
+        view.backgroundColor = .cellGray
         view.layer.cornerRadius = 9
         view.layer.masksToBounds = false
         view.isUserInteractionEnabled = true
@@ -88,7 +88,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             pencilImageView.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
             pencilImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             pencilImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth),
-            pencilImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth),
+            pencilImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth)
             
             ])
 

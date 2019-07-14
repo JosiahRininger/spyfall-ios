@@ -60,7 +60,6 @@ enum UIElementsManager {
     }
     
     
-    
     static func createGenericTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white

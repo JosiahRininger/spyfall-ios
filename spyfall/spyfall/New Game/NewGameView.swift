@@ -10,7 +10,7 @@ import UIKit
 
 class NewGameView: UIView {
     
-    let timeRange: [String] = ["1","2","3","4","5","6","7","8","9","10"]
+    let timeRange: [String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
     
     var newGameLabel = UIElementsManager.createHeaderLabel(with: "New Game", fontSize: 40)
     

@@ -9,5 +9,6 @@
 import UIKit
 
 extension Notification.Name {
-    static let viewDidChangeConstraintsNotification = NSNotification.Name("viewDidChangeConstraints")
+    static let gameDataRetrieved = NSNotification.Name("gameDataRetrieved")
+    static let viewDidChangeConstraints = NSNotification.Name("viewDidChangeConstraints")
 }

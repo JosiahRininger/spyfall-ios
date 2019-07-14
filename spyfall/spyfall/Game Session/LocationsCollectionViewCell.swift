@@ -9,9 +9,41 @@
 import UIKit
 
 class LocationsCollectionViewCell: UICollectionViewCell {
-
-    @IBOutlet weak var locationLabel: UILabel!
     
+    let locationLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 16)
+
+    var isTapped: Bool = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupView()
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
+        backgroundColor = .cellGray
+        layer.cornerRadius = 9
+        
+        addSubview(locationLabel)
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        NSLayoutConstraint.activate([
+            locationLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            ])
+        
+    }
     
     func configure(location: String) {
         locationLabel.text = location

@@ -15,10 +15,10 @@ class UserInfoView: UIView {
     
     var mainView: UIView = {
         let v = UIView()
-        v.backgroundColor = .tableViewCellGray
+        v.backgroundColor = .cellGray
         v.layer.cornerRadius = 30
-        v.layer.shadowRadius = 0
-        v.layer.shadowOffset = CGSize(width: 0, height: 3)
+        v.layer.shadowRadius = 2
+        v.layer.shadowOffset = CGSize(width: 0, height: 2)
         v.layer.shadowOpacity = 0.16
         v.translatesAutoresizingMaskIntoConstraints = false
         
@@ -29,7 +29,7 @@ class UserInfoView: UIView {
         let v = UIView()
         v.backgroundColor = .secondaryColor
         v.layer.cornerRadius = 14
-        v.layer.shadowRadius = 0
+        v.layer.shadowRadius = 2
         v.layer.shadowOffset = CGSize(width: 0, height: 2)
         v.layer.shadowOpacity = 0.16
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -44,10 +44,10 @@ class UserInfoView: UIView {
     
     //bool propety
     @IBInspectable var isShown: Bool = true {
-        didSet{
+        didSet {
             subViewLabel.text = self.isShown ? "Hide" : "Show"
             self.resetConstraints(isShown: isShown)
-            NotificationCenter.default.post(name: .viewDidChangeConstraintsNotification, object: nil)
+            NotificationCenter.default.post(name: .viewDidChangeConstraints, object: nil)
         }
     }
     

@@ -76,7 +76,7 @@ class WaitingScreenView: UIView {
             startGame.topAnchor.constraint(equalTo: leaveGame.bottomAnchor, constant: -24),
             startGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
             startGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
             
         ])
     }

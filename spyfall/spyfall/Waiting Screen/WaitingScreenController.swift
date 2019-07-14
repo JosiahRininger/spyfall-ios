@@ -24,6 +24,7 @@ class WaitingScreenController: UIViewController {
     var chosenPacks = [String]()
     var chosenLocation = String()
     var isStarted = false
+    var segued = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,14 +53,25 @@ class WaitingScreenController: UIViewController {
         if isStarted == true {
             return
         } else {
+            // Set isStarted to true
+            isStarted = true
+            db.collection("games").document(accessCode).updateData(["started": true]) { err in
+                if let err = err {
+                    print("Error writing document: \(err)")
+                } else {
+                    print("Document successfully written!")
+                }
+            }
+            
             var roles = [String]()
             
-            db.collection(chosenPacks[0]).document(chosenLocation).getDocument { (document, error) in
+            db.collection(chosenPacks[0]).document(chosenLocation).getDocument { document, error in
                 if let document = document, document.exists {
                     let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
                     print("*", dataDescription)
                     print("Document data: \(dataDescription)")
-                } else {
+                }
+                if error != nil {
                     print("Document does not exist")
                 }
                 print("*", document?["roles"] ?? "0")
@@ -79,7 +91,7 @@ class WaitingScreenController: UIViewController {
                 
                 for playerObject in self.playerObjectList {
                     // Add playerObjectList field to document
-                    self.db.collection("games").document(self.accessCode).updateData(["playerObjectList" : FieldValue.arrayUnion([[
+                    self.db.collection("games").document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
                         "role": playerObject.role,
                         "username": playerObject.username,
                         "votes": playerObject.votes
@@ -90,16 +102,6 @@ class WaitingScreenController: UIViewController {
                                 print("Document successfully written!")
                             }
                     }
-                }
-            }
-            
-            // Set isStarted to true
-            isStarted = true
-            db.collection("games").document(accessCode).updateData(["started" : true]) { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    print("Document successfully written!")
                 }
             }
         }
@@ -115,7 +117,7 @@ class WaitingScreenController: UIViewController {
     
     //     adds players username to firestore
     func addUsernameToPlayerList() {
-        db.collection("games").document(accessCode).updateData(["playerList" : FieldValue.arrayUnion([currentUsername])]) { err in
+        db.collection("games").document(accessCode).updateData(["playerList": FieldValue.arrayUnion([currentUsername])]) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
@@ -141,26 +143,32 @@ class WaitingScreenController: UIViewController {
                 }
                 
                 // update playerList and tableView
-                self.playerList = playerListData as! [String]
-                self.isStarted = isStartedData as! Bool
-                self.chosenPacks = chosenPacksData as! [String]
-                self.chosenLocation = chosenLocationData as! String
+                if let playerList = playerListData as? [String],
+                    let isStarted = isStartedData as? Bool,
+                    let chosenPacks = chosenPacksData as? [String],
+                    let chosenLocation = chosenLocationData as? String {
+                    self.playerList = playerList
+                    self.isStarted = isStarted
+                    self.chosenPacks = chosenPacks
+                    self.chosenLocation = chosenLocation
+                }
+
                 self.waitingScreenView.tableHeight.constant = CGFloat(self.playerList.count) * UIElementSizes.tableViewCellHeight
                 self.waitingScreenView.tableView.reloadData()
                 self.waitingScreenView.tableView.setNeedsUpdateConstraints()
                 self.waitingScreenView.tableView.layoutIfNeeded()
                 
                 // Check for segue
-//                if let playerObjects = document.get("playerObjectList") as? [[String : Any]] {
-//                    if playerObjects.last?["role"] as? String == "The Spy!" {
-                if self.isStarted {
-                    self.segueToGameSessionController()
-//                    }
+                if let playerObjects = document.get("playerObjectList") as? [[String : Any]] {
+                    if playerObjects.last?["role"] as? String == "The Spy!" && !self.segued {
+                            self.segueToGameSessionController()
+                    }
                 }
         }
     }
     
     private func segueToGameSessionController() {
+        segued.toggle()
         let nextScreen = GameSessionController()
         nextScreen.currentUsername = currentUsername
         nextScreen.accessCode = self.accessCode
