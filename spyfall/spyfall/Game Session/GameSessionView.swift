@@ -45,7 +45,7 @@ class GameSessionView: UIView {
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 0)
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)
         
-        playersCollectionView.register(UsernameCollectionViewCell.self, forCellWithReuseIdentifier: playersCollectionViewCellId)
+        playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: playersCollectionViewCellId)
         locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: locationsCollectionViewCellId)
         
         addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)
@@ -68,19 +68,20 @@ class GameSessionView: UIView {
             
             playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             playersLabel.topAnchor.constraint(equalTo: userInfoView.subView.bottomAnchor, constant: 24),
-            playersLabel.bottomAnchor.constraint(equalTo: playersCollectionView.topAnchor, constant: -14),
+            playersLabel.bottomAnchor.constraint(equalTo: playersCollectionView.topAnchor, constant: -4),
 
             playersCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             playersCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
             
             locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            locationsLabel.topAnchor.constraint(equalTo: playersCollectionView.bottomAnchor, constant: 48),
-            locationsLabel.bottomAnchor.constraint(equalTo: locationsCollectionView.topAnchor, constant: -14),
+            locationsLabel.topAnchor.constraint(equalTo: playersCollectionView.bottomAnchor, constant: 30),
+            locationsLabel.bottomAnchor.constraint(equalTo: locationsCollectionView.topAnchor, constant: -4),
             
             locationsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             locationsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
             
             endGame.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24),
+            endGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
             endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
             

@@ -14,13 +14,18 @@ class LocationsCollectionViewCell: UICollectionViewCell {
 
     var isTapped: Bool = false {
         didSet {
-            setNeedsDisplay()
+            switch self.isTapped {
+            case true:
+                print("flip")
+            //                usernameLabel.attributedText
+            case false:
+                print("flop")
+            }
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         setupView()
         
     }
@@ -30,6 +35,7 @@ class LocationsCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupView() {
+        isUserInteractionEnabled = true
         backgroundColor = .cellGray
         layer.cornerRadius = 9
         

@@ -47,24 +47,19 @@ class UserInfoView: UIView {
         didSet {
             subViewLabel.text = self.isShown ? "Hide" : "Show"
             self.resetConstraints(isShown: isShown)
-            NotificationCenter.default.post(name: .viewDidChangeConstraints, object: nil)
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))
+        subView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))
         setupView()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))
+        subView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))
         setupView()
-    }
-    
-    func animate() {
-        
     }
     
     @objc func tapped(sender: UITapGestureRecognizer) {

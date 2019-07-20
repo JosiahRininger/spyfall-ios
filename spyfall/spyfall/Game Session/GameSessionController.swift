@@ -23,6 +23,7 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     var currentUsername = String()
     var accessCode = String()
     var chosenPacks = [String]()
+    var firstPlayer = String()
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
         didSet {
@@ -32,6 +33,11 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        gameSessionView.playersCollectionView.delegate = self
+        gameSessionView.playersCollectionView.dataSource = self
+        gameSessionView.locationsCollectionView.delegate = self
+        gameSessionView.locationsCollectionView.dataSource = self
         
         setupView()
         callNetworkManager()
@@ -55,15 +61,9 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     private func setupView() {
-        gameSessionView.playersCollectionView.delegate = self
-        gameSessionView.playersCollectionView.dataSource = self
-        gameSessionView.locationsCollectionView.delegate = self
-        gameSessionView.locationsCollectionView.dataSource = self
-        
-//        scrollView.frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         scrollView.backgroundColor = .primaryWhite
-//        scrollView.isScrollEnabled = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
+        gameSessionView.translatesAutoresizingMaskIntoConstraints = false
         
         view.backgroundColor = .primaryWhite
         view.addSubview(scrollView)
@@ -74,21 +74,25 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         
         scrollView.addSubview(gameSessionView)
+        gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-        scrollView.contentSize = gameSessionView.bounds.size
+//        scrollView.contentSize = gameSessionView.bounds.size
     }
     
     @objc func updateGame() {
         usernameList = gameData.usernameList
         locationList = gameData.locationList
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = "Location: \(gameData.chosenLocation)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : "Location: \(gameData.chosenLocation)"
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
+        firstPlayer = usernameList.randomElement() ?? ""
         
         setupTimer()
         
-        gameSessionView.playersCollectionHeight.constant = CGFloat(usernameList.count) * UIElementSizes.collectionViewCellHeight
-        gameSessionView.locationsCollectionHeight.constant = CGFloat(locationList.count) * UIElementSizes.collectionViewCellHeight
+        gameSessionView.playersCollectionHeight.constant = CGFloat((usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
+        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
         gameSessionView.playersCollectionView.reloadData()
         gameSessionView.locationsCollectionView.reloadData()
         gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
@@ -97,6 +101,7 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
         gameSessionView.locationsCollectionView.layoutIfNeeded()
         gameSessionView.setNeedsUpdateConstraints()
         gameSessionView.layoutIfNeeded()
+        print(scrollView.bounds.height, gameSessionView.bounds.height)
     }
     
     func setupTimer() {
@@ -120,29 +125,44 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
 private typealias CollectionViewDelegateAndProtocols = GameSessionController
 extension CollectionViewDelegateAndProtocols {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == gameSessionView.playersCollectionView ? usernameList.count : locationList.count
+        
+        switch collectionView {
+        case gameSessionView.playersCollectionView:
+            return usernameList.count
+            
+        default:
+            return locationList.count
+            
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if collectionView == gameSessionView.playersCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.playersCollectionViewCellId, for: indexPath) as? UsernameCollectionViewCell else {
-                fatalError()
-            }
-
-            // configures the cells
-            cell.configure(username: usernameList[indexPath.row])
-
+        
+        switch collectionView {
+        case gameSessionView.playersCollectionView:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
+            cell.configure(username: usernameList[indexPath.row], isFirstPlayer: usernameList[indexPath.row] == firstPlayer)
             return cell
-
-        } else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else {
-                fatalError()
-            }
-
-            // configures the cells
+            
+        default:
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(location: locationList[indexPath.row])
-
             return cell
+            
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        switch collectionView {
+        case gameSessionView.playersCollectionView:
+            let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? PlayersCollectionViewCell
+            cell?.isTapped.toggle()
+            
+        default:
+            let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? LocationsCollectionViewCell
+            cell?.isTapped.toggle()
+            
         }
     }
 
@@ -150,6 +170,6 @@ extension CollectionViewDelegateAndProtocols {
 
 extension GameSessionController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIElementSizes.windowWidth - 8, height: UIElementSizes.collectionViewCellHeight)
+        return CGSize(width: (collectionView.frame.size.width - (7 * 2)) / 2, height: UIElementSizes.collectionViewCellHeight)
     }
 }

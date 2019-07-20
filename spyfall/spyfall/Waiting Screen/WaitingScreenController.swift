@@ -14,6 +14,7 @@ class WaitingScreenController: UIViewController {
     
     let cellId: String = "playerListCell"
     
+    var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
     
     let db = Firestore.firestore()
@@ -44,8 +45,24 @@ class WaitingScreenController: UIViewController {
     }
     
     private func setupView() {
+        scrollView.backgroundColor = .primaryWhite
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        waitingScreenView.translatesAutoresizingMaskIntoConstraints = false
         
-        view = waitingScreenView
+        view.backgroundColor = .primaryWhite
+        view.addSubview(scrollView)
+        
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        scrollView.addSubview(waitingScreenView)
+        waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        //        scrollView.contentSize = waitingScreenView.bounds.size
     }
     
     // check if Start Game has been clicked
@@ -109,7 +126,7 @@ class WaitingScreenController: UIViewController {
     
     //     deletes player from game and deletes game if playerList is empty
     @objc func leaveGameWasTapped(sender: UIButton) {
-        playerList = playerList.filter() { $0 != currentUsername }
+        playerList = playerList.filter { $0 != currentUsername }
         db.collection("games").document(accessCode).updateData(["playerList": playerList])
         if playerList.isEmpty { db.collection("games").document(accessCode).delete()}
         waitingScreenView.tableView.reloadData()
@@ -159,7 +176,7 @@ class WaitingScreenController: UIViewController {
                 self.waitingScreenView.tableView.layoutIfNeeded()
                 
                 // Check for segue
-                if let playerObjects = document.get("playerObjectList") as? [[String : Any]] {
+                if let playerObjects = document.get("playerObjectList") as? [[String: Any]] {
                     if playerObjects.last?["role"] as? String == "The Spy!" && !self.segued {
                             self.segueToGameSessionController()
                     }
@@ -186,7 +203,7 @@ class WaitingScreenController: UIViewController {
         view.endEditing(true)
         
         // updates the tableView cells to new username
-        NotificationCenter.default.post(name: NSNotification.Name("editingOver"), object: nil)
+        NotificationCenter.default.post(name: .editingOver, object: nil)
         waitingScreenView.tableView.reloadData()
     }
 }

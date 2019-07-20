@@ -59,7 +59,6 @@ enum UIElementsManager {
         return pv
     }
     
-    
     static func createGenericTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
@@ -141,7 +140,15 @@ enum UIElementsManager {
     }
     
     static func createCollectionView() -> UICollectionView {
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        let layout = UICollectionViewFlowLayout()
+//        let width = UIElementSizes.navigationTabBarItemWidth
+//        let height = UIScreen.main.bounds.height / 10
+//        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4, height: UIElementSizes.navigationTabBarItemHeight)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+//        layout.minimumInteritemSpacing =
+//        layout.minimumLineSpacing = 14
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isScrollEnabled = false
         cv.backgroundColor = .primaryWhite
         cv.translatesAutoresizingMaskIntoConstraints = false

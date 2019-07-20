@@ -31,6 +31,6 @@ class HomeController: UIViewController {
     }
     
     @objc func segueToJoinGameController() {
-//        present(JoinGameController(), animated: true, completion: nil)
+        present(JoinGameController(), animated: true, completion: nil)
     }
 }

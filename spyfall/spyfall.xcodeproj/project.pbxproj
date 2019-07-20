@@ -36,7 +36,7 @@
 		D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */; };
 		D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */; };
 		D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */; };
-		D7FF08EA228FB98600C1ED43 /* UsernameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */; };
+		D7FF08EA228FB98600C1ED43 /* PlayersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* PlayersCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,7 +72,7 @@
 		D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenController.swift; sourceTree = "<group>"; };
 		D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
 		D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsCollectionViewCell.swift; sourceTree = "<group>"; };
-		D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsernameCollectionViewCell.swift; sourceTree = "<group>"; };
+		D7FF08E9228FB98600C1ED43 /* PlayersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersCollectionViewCell.swift; sourceTree = "<group>"; };
 		DDAF57F132F329FCB6CBFE96 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -218,7 +218,7 @@
 			children = (
 				D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */,
 				D7A72D3922BFCE75005D1831 /* GameSessionView.swift */,
-				D7FF08E9228FB98600C1ED43 /* UsernameCollectionViewCell.swift */,
+				D7FF08E9228FB98600C1ED43 /* PlayersCollectionViewCell.swift */,
 				D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */,
 			);
 			path = "Game Session";
@@ -388,7 +388,7 @@
 				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
 				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,
 				D706257B225B87E600A80B76 /* NewGameController.swift in Sources */,
-				D7FF08EA228FB98600C1ED43 /* UsernameCollectionViewCell.swift in Sources */,
+				D7FF08EA228FB98600C1ED43 /* PlayersCollectionViewCell.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
 				D7030EEA22BB226D002CB9B2 /* WaitingScreenView.swift in Sources */,
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,

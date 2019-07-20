@@ -22,7 +22,8 @@ class NewGameController: UIViewController {
         super.viewDidLoad()
         
         newGameView.create.addTarget(self, action: #selector(createGameAction), for: .touchUpInside)
-        
+        newGameView.back.addTarget(self, action: #selector(segueToHomeController), for: .touchUpInside)
+
         newGameView.timeLimitTextField.addTarget(self, action: #selector(resignedFirstResponder(_:)), for: .editingChanged)
         
         setupView()
@@ -33,6 +34,10 @@ class NewGameController: UIViewController {
     private func setupView() {
         
         view = newGameView
+    }
+    
+    @objc func segueToHomeController() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func createGameAction() {
@@ -55,7 +60,7 @@ class NewGameController: UIViewController {
         
         // Grab random location
         chosenPacks.shuffle()
-        db.collection(chosenPacks[0]).getDocuments() { querySnapshot, err in
+        db.collection(chosenPacks[0]).getDocuments { querySnapshot, err in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {

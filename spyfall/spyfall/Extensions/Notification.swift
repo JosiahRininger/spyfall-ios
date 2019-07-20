@@ -9,6 +9,6 @@
 import UIKit
 
 extension Notification.Name {
+    static let editingOver = NSNotification.Name("editingOver")
     static let gameDataRetrieved = NSNotification.Name("gameDataRetrieved")
-    static let viewDidChangeConstraints = NSNotification.Name("viewDidChangeConstraints")
 }

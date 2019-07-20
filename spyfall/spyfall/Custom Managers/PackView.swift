@@ -69,7 +69,7 @@ class PackView: UIView {
     }()
     
     //bool propety
-    @IBInspectable var isChecked:Bool = false {
+    @IBInspectable var isChecked: Bool = false {
         didSet {
             if self.isChecked {
                 checkAnimationView.isHidden = false

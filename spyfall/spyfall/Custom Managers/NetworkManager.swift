@@ -11,7 +11,7 @@ import FirebaseDatabase
 import FirebaseFirestore
 
 class NetworkManager {
-    typealias GameDataHandler = ((GameData) -> Void)
+    typealias GameDataHandler = (GameData) -> Void
     typealias LocationListHandler = ([String]) -> Void
     
     static let db = Firestore.firestore()
@@ -65,17 +65,22 @@ class NetworkManager {
     
     static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
         var locationList = [String]()
+        var locationDataReady = 1
         
         for pack in chosenPacks {
-            self.db.collection(pack).getDocuments() { querySnapshot, err in
+            self.db.collection(pack).getDocuments { querySnapshot, err in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    for doc in querySnapshot!.documents { locationList.append(doc.documentID as String) }
+                    for doc in querySnapshot!.documents {
+                        locationList.append(doc.documentID as String) }
                 }
-                if pack == chosenPacks.last {
-                    completion(locationList)
+                
+                switch locationDataReady {
+                case chosenPacks.count: completion(locationList)
+                default: locationDataReady += 1
                 }
+                
             }
         }
     }

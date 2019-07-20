@@ -16,7 +16,7 @@ struct UIElementSizes {
     static var statusBarHeight: CGFloat = 40
     
     static var tableViewCellHeight: CGFloat = 64
-    static var collectionViewCellHeight: CGFloat = 64
+    static var collectionViewCellHeight: CGFloat = 40
     
     static var buttonWidth: CGFloat = 144
     static var buttonHeight: CGFloat = 61

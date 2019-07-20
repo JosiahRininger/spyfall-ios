@@ -62,7 +62,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeUsername))
             pencilImageView.addGestureRecognizer(tapGesture)
             pencilImageView.isUserInteractionEnabled = true
-            NotificationCenter.default.addObserver(self, selector: #selector(disableUsernameInteraction), name: NSNotification.Name("editingOver"), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(disableUsernameInteraction), name: .editingOver, object: nil)
             return usernameLabel.text!
         } else {
             usernameLabel.text = username
