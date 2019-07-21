@@ -69,7 +69,7 @@ enum UIElementsManager {
         t.leftViewMode = .always
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9
-        t.layer.borderColor = UIColor.primaryGray.cgColor
+        t.layer.borderColor = UIColor.secondaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
         t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
         
@@ -85,7 +85,7 @@ enum UIElementsManager {
         t.keyboardType = .numberPad
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9
-        t.layer.borderColor = UIColor.primaryGray.cgColor
+        t.layer.borderColor = UIColor.secondaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
         t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
         t.widthAnchor.constraint(equalToConstant: UIElementSizes.numberTextFieldWidth).isActive = true

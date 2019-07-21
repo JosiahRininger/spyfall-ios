@@ -35,7 +35,7 @@ extension UIColor {
     
     static let primaryWhite: UIColor = .hexToColor(hexString: "#FCFCFC")
     static let secondaryColor: UIColor = .hexToColor(hexString: "#D65656")
-    static let primaryGray: UIColor = .hexToColor(hexString: "#707070")
+    static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let textGray: UIColor = .hexToColor(hexString: "#585858")
     static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")

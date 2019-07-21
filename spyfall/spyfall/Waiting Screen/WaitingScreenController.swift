@@ -129,7 +129,7 @@ class WaitingScreenController: UIViewController {
         playerList = playerList.filter { $0 != currentUsername }
         db.collection("games").document(accessCode).updateData(["playerList": playerList])
         if playerList.isEmpty { db.collection("games").document(accessCode).delete()}
-        waitingScreenView.tableView.reloadData()
+        present(HomeController(), animated: false, completion: nil)
     }
     
     //     adds players username to firestore

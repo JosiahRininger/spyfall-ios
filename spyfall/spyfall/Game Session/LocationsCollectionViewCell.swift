@@ -16,10 +16,11 @@ class LocationsCollectionViewCell: UICollectionViewCell {
         didSet {
             switch self.isTapped {
             case true:
-                print("flip")
-            //                usernameLabel.attributedText
+                locationLabel.attributedText = NSAttributedString(string: locationLabel.attributedText?.string ?? "", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+                locationLabel.textColor = .secondaryGray
             case false:
-                print("flop")
+                locationLabel.attributedText = NSAttributedString(string: locationLabel.attributedText?.string ?? "", attributes: .none)
+                locationLabel.textColor = .black
             }
         }
     }

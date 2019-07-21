@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class NewGameController: UIViewController {
+class NewGameController: UIViewController, UITextFieldDelegate {
     
     var newGameView = NewGameView()
     
@@ -24,6 +24,8 @@ class NewGameController: UIViewController {
         newGameView.create.addTarget(self, action: #selector(createGameAction), for: .touchUpInside)
         newGameView.back.addTarget(self, action: #selector(segueToHomeController), for: .touchUpInside)
 
+        newGameView.usernameTextField.delegate = self
+        newGameView.timeLimitTextField.delegate = self
         newGameView.timeLimitTextField.addTarget(self, action: #selector(resignedFirstResponder(_:)), for: .editingChanged)
         
         setupView()
@@ -129,6 +131,7 @@ class NewGameController: UIViewController {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
+        doneButton.tintColor = .secondaryColor
         toolBar.setItems([doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         newGameView.usernameTextField.inputAccessoryView = toolBar

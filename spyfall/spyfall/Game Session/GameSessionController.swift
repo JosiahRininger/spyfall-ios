@@ -39,6 +39,8 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
         gameSessionView.locationsCollectionView.delegate = self
         gameSessionView.locationsCollectionView.dataSource = self
         
+        gameSessionView.endGame.addTarget(self, action: #selector(endGameWasTapped), for: .touchUpInside)
+        
         setupView()
         callNetworkManager()
     }
@@ -84,24 +86,40 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     @objc func updateGame() {
         usernameList = gameData.usernameList
         locationList = gameData.locationList
+        
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
         gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : "Location: \(gameData.chosenLocation)"
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
+        
         firstPlayer = usernameList.randomElement() ?? ""
         
         setupTimer()
+        updateCollectionViews()
         
-        gameSessionView.playersCollectionHeight.constant = CGFloat((usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
-        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
-        gameSessionView.playersCollectionView.reloadData()
-        gameSessionView.locationsCollectionView.reloadData()
-        gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
-        gameSessionView.locationsCollectionView.setNeedsUpdateConstraints()
-        gameSessionView.playersCollectionView.layoutIfNeeded()
-        gameSessionView.locationsCollectionView.layoutIfNeeded()
         gameSessionView.setNeedsUpdateConstraints()
         gameSessionView.layoutIfNeeded()
         print(scrollView.bounds.height, gameSessionView.bounds.height)
+    }
+    
+    @objc func endGameWasTapped() {
+        if !timerIsDone() { return }
+        
+        present(HomeController(), animated: false, completion: nil)
+    }
+    
+    func timerIsDone() -> Bool {
+        let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
+        sentAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+            self.present(HomeController(), animated: false, completion: nil)
+        }))
+        sentAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        if gameSessionView.timerLabel.text != "0:00" {
+            sentAlert.title = "Are you sure you want to end the game?"
+        } else {
+            return true
+        }
+        self.present(sentAlert, animated: true, completion: nil)
+        return false
     }
     
     func setupTimer() {
@@ -118,6 +136,17 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
                 self.timer.invalidate()
             }
         })
+    }
+    
+    func updateCollectionViews() {
+        gameSessionView.playersCollectionHeight.constant = CGFloat((usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
+        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
+        gameSessionView.playersCollectionView.reloadData()
+        gameSessionView.locationsCollectionView.reloadData()
+        gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
+        gameSessionView.locationsCollectionView.setNeedsUpdateConstraints()
+        gameSessionView.playersCollectionView.layoutIfNeeded()
+        gameSessionView.locationsCollectionView.layoutIfNeeded()
     }
     
 }
@@ -160,7 +189,7 @@ extension CollectionViewDelegateAndProtocols {
             cell?.isTapped.toggle()
             
         default:
-            let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? LocationsCollectionViewCell
+            let cell = gameSessionView.locationsCollectionView.cellForItem(at: indexPath) as? LocationsCollectionViewCell
             cell?.isTapped.toggle()
             
         }

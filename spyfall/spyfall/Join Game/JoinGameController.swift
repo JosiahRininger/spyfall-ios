@@ -10,15 +10,22 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class JoinGameController: UIViewController {
+class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupKeyboard()
+        joinGameView.join.addTarget(self, action: #selector(segueToWaitingScreenController), for: .touchUpInside)
+        joinGameView.back.addTarget(self, action: #selector(segueToHomeController), for: .touchUpInside)
+        
+        joinGameView.usernameTextField.delegate = self
+        joinGameView.accessCodeTextField.delegate = self
+        
         setupView()
+        createToolBar()
+        setupKeyboard()
     }
     
     func setupView() {
@@ -55,6 +62,17 @@ class JoinGameController: UIViewController {
         }
         self.present(sentAlert, animated: true, completion: nil)
         return false
+    }
+    
+    func createToolBar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(JoinGameController.dismissKeyboard))
+        doneButton.tintColor = .secondaryColor
+        toolBar.setItems([doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        joinGameView.usernameTextField.inputAccessoryView = toolBar
+        joinGameView.accessCodeTextField.inputAccessoryView = toolBar
     }
     
     func setupKeyboard() {

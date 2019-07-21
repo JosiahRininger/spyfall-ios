@@ -26,10 +26,11 @@ class PlayersCollectionViewCell: UICollectionViewCell {
         didSet {
             switch self.isTapped {
             case true:
-                print("flip")
-//                usernameLabel.attributedText
+                usernameLabel.attributedText = NSAttributedString(string: usernameLabel.attributedText?.string ?? "", attributes: [NSAttributedString.Key.strikethroughStyle: NSUnderlineStyle.single.rawValue])
+                usernameLabel.textColor = .secondaryGray
             case false:
-                print("flop")
+                usernameLabel.attributedText = NSAttributedString(string: usernameLabel.attributedText?.string ?? "", attributes: .none)
+                usernameLabel.textColor = .black
             }
         }
     }
