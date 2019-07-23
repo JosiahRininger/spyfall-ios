@@ -29,9 +29,8 @@ struct UIElementSizes {
     static var numberTextFieldWidth: CGFloat = 52
     
     static var circleViewHeightAndWidth: CGFloat = 20
+    static var pencilHeightAndWidth: CGFloat = 20
+    static var settingsButtonHeightAndWidth: CGFloat = 44
     
     static var padding: CGFloat = 30
-    
-    static var pencilHeightAndWidth: CGFloat = 20
-    
 }

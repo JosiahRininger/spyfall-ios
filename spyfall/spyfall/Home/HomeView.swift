@@ -9,6 +9,8 @@
 import UIKit
 
 class HomeView: UIView {
+    
+    var settings = UIElementsManager.createSettingsButton()
 
     var welcomeToLabel = UIElementsManager.createHeaderLabel(with: "Welcome to", fontSize: 45)
     var spyfallLabel = UIElementsManager.createHeaderLabel(with: "Spyfall", fontSize: 81)
@@ -45,7 +47,7 @@ class HomeView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        addSubviews(welcomeToLabel, spyfallLabel, newGame, joinGame, infoView, rulesLabel)
+        addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, infoView, rulesLabel)
         
         setupConstraints()
     }
@@ -66,6 +68,9 @@ class HomeView: UIView {
             newGame.bottomAnchor.constraint(equalTo: joinGame.topAnchor, constant: -24),
             newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            
+            settings.topAnchor.constraint(equalTo: topAnchor, constant: UIElementSizes.statusBarHeight + 24),
+            settings.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             
             welcomeToLabel.topAnchor.constraint(equalTo: topAnchor, constant: 153),
             welcomeToLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),

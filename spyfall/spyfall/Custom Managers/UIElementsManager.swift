@@ -28,6 +28,22 @@ enum UIElementsManager {
         return b
     }
     
+    static func createSettingsButton() -> UIButton {
+        let b = UIButton()
+        b.setImage(UIImage(named: "Settings_Icon"), for: .normal)
+//        b.imageView?.contentMode = .scaleAspectFill
+//        b.contentMode = .scaleAspectFill
+        b.imageRect(forContentRect: b.frame)
+        b.layer.shadowRadius = 4
+        b.layer.shadowOffset = CGSize(width: 0, height: 4)
+        b.layer.shadowOpacity = 0.16
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
+        b.widthAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
+        
+        return b
+    }
+    
     static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {
         let pv = PackView()
         pv.boundsLayerView.backgroundColor = packColor
