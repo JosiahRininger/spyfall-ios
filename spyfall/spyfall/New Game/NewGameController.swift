@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class NewGameController: UIViewController, UITextFieldDelegate {
+final class NewGameController: UIViewController, UITextFieldDelegate {
     
     var newGameView = NewGameView()
     
@@ -99,31 +99,33 @@ class NewGameController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldsAreValid() -> Bool {
-        let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
-        sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = CreateAlertController().with(title: "",
+                                                 message: nil,
+                                                 actions: UIAlertAction(title: "OK", style: .default, handler: nil))
         if newGameView.usernameTextField.text?.isEmpty ?? true {
-            sentAlert.title = "Please enter a username"
+            alert.title = "Please enter a username"
         } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
-            sentAlert.title = "Please enter a username less than 25 characters"
+            alert.title = "Please enter a username less than 25 characters"
         } else if !newGameView.packOneView.isChecked
             && !newGameView.packTwoView.isChecked
             && !newGameView.specialPackView.isChecked {
-            sentAlert.title = "Please select pack(s)"
+            alert.title = "Please select pack(s)"
         } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
-            sentAlert.title = "Please enter a time limit"
+            alert.title = "Please enter a time limit"
         } else {
             return true
         }
-        self.present(sentAlert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         return false
     }
     
     @objc func resignedFirstResponder(_ sender: Any) {
         if Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 > 10 {
             newGameView.timeLimitTextField.text = ""
-            let sentAlert = UIAlertController(title: "Please enter a time limit that is equal to or less than 10", message: nil, preferredStyle: .alert)
-            sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(sentAlert, animated: true, completion: nil)
+            let alert = CreateAlertController().with(title: "Please enter a time limit that is equal to or less than 10",
+                                                     message: nil,
+                                                     actions: UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -132,7 +134,8 @@ class NewGameController: UIViewController, UITextFieldDelegate {
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
         doneButton.tintColor = .secondaryColor
-        toolBar.setItems([doneButton], animated: false)
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         newGameView.usernameTextField.inputAccessoryView = toolBar
         newGameView.timeLimitTextField.inputAccessoryView = toolBar

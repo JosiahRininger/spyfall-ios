@@ -10,16 +10,16 @@ import UIKit
 
 class JoinGameView: UIView {
     
-    var joinGameLabel = UIElementsManager.createHeaderLabel(with: "Join Game", fontSize: 40)
+    var joinGameLabel = UIElementsManager.createLabel(with: "Join Game", fontSize: 40, isHeader: true)
 
-    var usernameLabel = UIElementsManager.createHeaderLabel(with: "Enter a username:", fontSize: 24)
-    var usernameTextField = UIElementsManager.createGenericTextField(with: "Username")
+    var usernameLabel = UIElementsManager.createLabel(with: "Enter a username:", fontSize: 24, isHeader: true)
+    var usernameTextField = UIElementsManager.createTextField(with: "Username")
     
-    var accessCodeLabel = UIElementsManager.createHeaderLabel(with: "Enter an access code:", fontSize: 24)
-    var accessCodeTextField = UIElementsManager.createGenericTextField(with: "Access code")
+    var accessCodeLabel = UIElementsManager.createLabel(with: "Enter an access code:", fontSize: 24, isHeader: true)
+    var accessCodeTextField = UIElementsManager.createTextField(with: "Access code")
     
-    var back = UIElementsManager.createGenericButton(with: "Back", color: .white)
-    var join = UIElementsManager.createGenericButton(with: "Join")
+    var back = UIElementsManager.createButton(with: "Back", color: .white)
+    var join = UIElementsManager.createButton(with: "Join")
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -12,70 +12,19 @@ import Lottie
 
 enum UIElementsManager {
     
-    static func createGenericButton(with title: String, color: UIColor = .secondaryColor) -> UIButton {
-        let b = UIButton()
-        b.backgroundColor = color
-        b.setTitleColor(color != .white ? .primaryWhite : .black, for: .normal)
-        b.setTitle(title, for: .normal)
-        b.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        b.layer.cornerRadius = 30
-        b.layer.shadowRadius = 4
-        b.layer.shadowOffset = CGSize(width: 0, height: 4)
-        b.layer.shadowOpacity = 0.16
-        b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
+    static func createLabel(with title: String, fontSize: CGFloat, color: UIColor = .black, isHeader: Bool = false) -> UILabel {
+        let l = UILabel()
+        l.text = title
+        l.textColor = color
+        l.textAlignment = isHeader ? .center : .natural
+        l.font = isHeader ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
+        l.adjustsFontSizeToFitWidth = true
+        l.translatesAutoresizingMaskIntoConstraints = false
         
-        return b
+        return l
     }
     
-    static func createSettingsButton() -> UIButton {
-        let b = UIButton()
-        b.setImage(UIImage(named: "Settings_Icon"), for: .normal)
-//        b.imageView?.contentMode = .scaleAspectFill
-//        b.contentMode = .scaleAspectFill
-        b.imageRect(forContentRect: b.frame)
-        b.layer.shadowRadius = 4
-        b.layer.shadowOffset = CGSize(width: 0, height: 4)
-        b.layer.shadowOpacity = 0.16
-        b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
-        b.widthAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
-        
-        return b
-    }
-    
-    static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {
-        let pv = PackView()
-        pv.boundsLayerView.backgroundColor = packColor
-        pv.numberLabel.text = packNumberString
-        pv.packNameLabel.text = packName
-        pv.layer.cornerRadius = 9
-        pv.layer.shadowRadius = 4
-        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
-        pv.layer.shadowOpacity = 0.16
-        pv.isUserInteractionEnabled = true
-        pv.translatesAutoresizingMaskIntoConstraints = false
-        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
-        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
-        
-        return pv
-    }
-    
-    static func createUserInfoView() -> UserInfoView {
-        let pv = UserInfoView()
-        pv.layer.cornerRadius = 9
-        pv.layer.shadowRadius = 4
-        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
-        pv.layer.shadowOpacity = 0.16
-        pv.isUserInteractionEnabled = true
-        pv.translatesAutoresizingMaskIntoConstraints = false
-        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
-        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
-        
-        return pv
-    }
-    
-    static func createGenericTextField(with placeholder: String) -> UITextField {
+    static func createTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
         t.backgroundColor = .white
         t.textColor = .black
@@ -109,27 +58,92 @@ enum UIElementsManager {
         return t
     }
     
-    static func createGenericLabel(with title: String, fontSize: CGFloat, color: UIColor = .black) -> UILabel {
-        let l = UILabel()
-        l.text = title
-        l.textColor = color
-        l.font = .systemFont(ofSize: fontSize)
-        l.adjustsFontSizeToFitWidth = true
-        l.translatesAutoresizingMaskIntoConstraints = false
+    static func createButton(with title: String, color: UIColor = .secondaryColor) -> UIButton {
+        let b = UIButton()
+        b.backgroundColor = color
+        b.setTitleColor(color != .white ? .primaryWhite : .black, for: .normal)
+        b.setTitle(title, for: .normal)
+        b.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        b.layer.cornerRadius = 30
+        b.layer.shadowRadius = 4
+        b.layer.shadowOffset = CGSize(width: 0, height: 4)
+        b.layer.shadowOpacity = 0.16
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
         
-        return l
+        return b
     }
     
-    static func createHeaderLabel(with title: String, fontSize: CGFloat, color: UIColor = .black) -> UILabel {
-        let l = UILabel()
-        l.text = title
-        l.textColor = color
-        l.textAlignment = .center
-        l.font = .boldSystemFont(ofSize: fontSize)
-        l.adjustsFontSizeToFitWidth = true
-        l.translatesAutoresizingMaskIntoConstraints = false
+    static func createImageView(with imageName: String) -> UIImageView {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: imageName)
+        imageView.contentMode = .scaleAspectFit
         
-        return l
+        return imageView
+    }
+    
+    static func createSettingsButton() -> UIButton {
+        let b = UIButton()
+        b.setBackgroundImage(UIImage(named: "Settings_Icon"), for: .normal)
+        b.layer.shadowRadius = 4
+        b.layer.shadowOffset = CGSize(width: 0, height: 4)
+        b.layer.shadowOpacity = 0.16
+        b.translatesAutoresizingMaskIntoConstraints = false
+        b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
+        b.widthAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
+        
+        return b
+    }
+    
+    static func createView() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        return view
+    }
+    
+    static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {
+        let pv = PackView()
+        pv.boundsLayerView.backgroundColor = packColor
+        pv.numberLabel.text = packNumberString
+        pv.packNameLabel.text = packName
+        pv.layer.cornerRadius = 9
+        pv.layer.shadowRadius = 4
+        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
+        pv.layer.shadowOpacity = 0.16
+        pv.isUserInteractionEnabled = true
+        pv.translatesAutoresizingMaskIntoConstraints = false
+        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
+        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        
+        return pv
+    }
+    
+    static func createStackView() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .leading
+        stackView.distribution = .fillEqually
+        stackView.layoutMargins = UIEdgeInsets(top: 10, left: UIElementSizes.padding, bottom: 10, right: UIElementSizes.padding)
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+
+        return stackView
+    }
+    
+    static func createUserInfoView() -> UserInfoView {
+        let uv = UserInfoView()
+        uv.layer.cornerRadius = 9
+        uv.layer.shadowRadius = 4
+        uv.layer.shadowOffset = CGSize(width: 0, height: 4)
+        uv.layer.shadowOpacity = 0.16
+        uv.isUserInteractionEnabled = true
+        uv.translatesAutoresizingMaskIntoConstraints = false
+        uv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
+        uv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        
+        return uv
     }
     
     static func createCircleView() -> UIView {

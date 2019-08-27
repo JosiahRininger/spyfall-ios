@@ -12,11 +12,11 @@ class HomeView: UIView {
     
     var settings = UIElementsManager.createSettingsButton()
 
-    var welcomeToLabel = UIElementsManager.createHeaderLabel(with: "Welcome to", fontSize: 45)
-    var spyfallLabel = UIElementsManager.createHeaderLabel(with: "Spyfall", fontSize: 81)
+    var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, isHeader: true)
+    var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, isHeader: true)
     
-    var newGame = UIElementsManager.createGenericButton(with: "New Game", color: .white)
-    var joinGame = UIElementsManager.createGenericButton(with: "Join Game")
+    var newGame = UIElementsManager.createButton(with: "New Game", color: .white)
+    var joinGame = UIElementsManager.createButton(with: "Join Game")
     
     var infoView: UIView = {
         var v = UIElementsManager.createCircleView()
@@ -24,14 +24,14 @@ class HomeView: UIView {
         v.layer.shadowOffset = CGSize(width: 0, height: 3)
         v.layer.shadowOpacity = 0.16
         
-        var i = UIElementsManager.createHeaderLabel(with: "i", fontSize: 14, color: .primaryWhite)
+        var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .primaryWhite, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
         
         return v
     }()
-    var rulesLabel = UIElementsManager.createGenericLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
+    var rulesLabel = UIElementsManager.createLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

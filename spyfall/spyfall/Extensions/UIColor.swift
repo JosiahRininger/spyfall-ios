@@ -34,12 +34,27 @@ extension UIColor {
     }
     
     static let primaryWhite: UIColor = .hexToColor(hexString: "#FCFCFC")
-    static let secondaryColor: UIColor = .hexToColor(hexString: "#D65656")
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let textGray: UIColor = .hexToColor(hexString: "#585858")
     static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")
-    static let cellGray: UIColor = .hexToColor(hexString: "#F4F4F4")
-
+    static let cellGray: UIColor = .hexToColor(hexString: "#F0F0F0")
+    
+    // Secondary Color Options
+    static let customPurple: UIColor = .hexToColor(hexString: "#9533C7")
+    static let customBlue: UIColor = .hexToColor(hexString: "#00A0EF")
+    static let customGreen: UIColor = .hexToColor(hexString: "#2FD566")
+    static let customOrange: UIColor = .hexToColor(hexString: "#FF5800")
+    static let customRed: UIColor = .hexToColor(hexString: "#E3212F")
+    
+    // Set of all Secondary Color Options
+    static let colorSet: Set = [UIColor.customPurple,
+                                UIColor.customBlue,
+                                UIColor.customGreen,
+                                UIColor.customOrange,
+                                UIColor.customRed]
+    
+    // Secondary Color used throughout Application
+    static let secondaryColor: UIColor = UIColor.colorSet.randomElement() ?? UIColor.blue
 }

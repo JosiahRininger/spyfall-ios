@@ -26,10 +26,9 @@
 #include <set>
 #include <vector>
 
-#import "Firestore/Source/Public/FIRTimestamp.h"
-
+#include "Firestore/core/include/firebase/firestore/timestamp.h"
 #include "Firestore/core/src/firebase/firestore/immutable/sorted_set.h"
-#include "Firestore/core/src/firebase/firestore/local/document_reference.h"
+#include "Firestore/core/src/firebase/firestore/local/document_key_reference.h"
 #include "Firestore/core/src/firebase/firestore/local/mutation_queue.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key.h"
 #include "Firestore/core/src/firebase/firestore/model/document_key_set.h"
@@ -59,7 +58,8 @@ class MemoryMutationQueue : public MutationQueue {
                         NSData* _Nullable stream_token) override;
 
   FSTMutationBatch* AddMutationBatch(
-      FIRTimestamp* local_write_time,
+      const Timestamp& local_write_time,
+      std::vector<FSTMutation*>&& base_mutations,
       std::vector<FSTMutation*>&& mutations) override;
 
   void RemoveMutationBatch(FSTMutationBatch* batch) override;
@@ -93,8 +93,8 @@ class MemoryMutationQueue : public MutationQueue {
   void SetLastStreamToken(NSData* _Nullable token) override;
 
  private:
-  using DocumentReferenceSet =
-      immutable::SortedSet<DocumentReference, DocumentReference::ByKey>;
+  using DocumentKeyReferenceSet =
+      immutable::SortedSet<DocumentKeyReference, DocumentKeyReference::ByKey>;
 
   std::vector<FSTMutationBatch*> AllMutationBatchesWithIds(
       const std::set<model::BatchId>& batch_ids);
@@ -110,7 +110,8 @@ class MemoryMutationQueue : public MutationQueue {
    */
   int IndexOfBatchId(model::BatchId batch_id);
 
-  FSTMemoryPersistence* persistence_;
+  // This instance is owned by FSTMemoryPersistence; avoid a retain cycle.
+  __weak FSTMemoryPersistence* persistence_;
   /**
    * A FIFO queue of all mutations to apply to the backend. Mutations are added
    * to the end of the queue as they're written, and removed from the front of
@@ -145,7 +146,7 @@ class MemoryMutationQueue : public MutationQueue {
   NSData* _Nullable last_stream_token_;
 
   /** An ordered mapping between documents and the mutation batch IDs. */
-  DocumentReferenceSet batches_by_document_key_;
+  DocumentKeyReferenceSet batches_by_document_key_;
 };
 
 }  // namespace local

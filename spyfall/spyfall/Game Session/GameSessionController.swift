@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class GameSessionController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+final class GameSessionController: UIViewController {
 
     var scrollView = UIScrollView()
     var gameSessionView = GameSessionView()
@@ -57,7 +57,7 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func callNetworkManager() {
-        NetworkManager.retrieveGameData(accessCode: self.accessCode, currentUsername: self.currentUsername, chosenPacks: self.chosenPacks) { result in
+        FirebaseManager.retrieveGameData(accessCode: self.accessCode, currentUsername: self.currentUsername, chosenPacks: self.chosenPacks) { result in
             self.gameData = result
         }
     }
@@ -69,17 +69,18 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
         
         view.backgroundColor = .primaryWhite
         view.addSubview(scrollView)
-        
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
         scrollView.addSubview(gameSessionView)
-        gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            ])
 //        scrollView.contentSize = gameSessionView.bounds.size
     }
     
@@ -108,17 +109,18 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func timerIsDone() -> Bool {
-        let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
-        sentAlert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
-            self.present(HomeController(), animated: false, completion: nil)
-        }))
-        sentAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        let alert = CreateAlertController().with(title: "",
+                                                 message: nil,
+                                                 actions: UIAlertAction(title: "Yes", style: .default, handler: { _ in
+                                                    self.present(HomeController(), animated: false, completion: nil)
+                                                 }),
+                                                 UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
         if gameSessionView.timerLabel.text != "0:00" {
-            sentAlert.title = "Are you sure you want to end the game?"
+            alert.title = "Are you sure you want to end the game?"
         } else {
             return true
         }
-        self.present(sentAlert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         return false
     }
     
@@ -151,17 +153,15 @@ class GameSessionController: UIViewController, UICollectionViewDelegate, UIColle
     
 }
 
-private typealias CollectionViewDelegateAndProtocols = GameSessionController
-extension CollectionViewDelegateAndProtocols {
+// MARK: - Collection View Delegate & Data Source
+extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch collectionView {
         case gameSessionView.playersCollectionView:
             return usernameList.count
-            
         default:
             return locationList.count
-            
         }
     }
 
@@ -169,7 +169,7 @@ extension CollectionViewDelegateAndProtocols {
         
         switch collectionView {
         case gameSessionView.playersCollectionView:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(username: usernameList[indexPath.row], isFirstPlayer: usernameList[indexPath.row] == firstPlayer)
             return cell
             
@@ -199,6 +199,6 @@ extension CollectionViewDelegateAndProtocols {
 
 extension GameSessionController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.frame.size.width - (7 * 2)) / 2, height: UIElementSizes.collectionViewCellHeight)
+        return CGSize(width: (collectionView.frame.size.width - 14) / 2, height: UIElementSizes.collectionViewCellHeight)
     }
 }

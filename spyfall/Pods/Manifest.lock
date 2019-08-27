@@ -1,112 +1,123 @@
 PODS:
-  - BoringSSL-GRPC (0.0.2):
-    - BoringSSL-GRPC/Implementation (= 0.0.2)
-    - BoringSSL-GRPC/Interface (= 0.0.2)
-  - BoringSSL-GRPC/Implementation (0.0.2):
-    - BoringSSL-GRPC/Interface (= 0.0.2)
-  - BoringSSL-GRPC/Interface (0.0.2)
-  - Firebase/Core (5.18.0):
+  - BoringSSL-GRPC (0.0.3):
+    - BoringSSL-GRPC/Implementation (= 0.0.3)
+    - BoringSSL-GRPC/Interface (= 0.0.3)
+  - BoringSSL-GRPC/Implementation (0.0.3):
+    - BoringSSL-GRPC/Interface (= 0.0.3)
+  - BoringSSL-GRPC/Interface (0.0.3)
+  - Firebase/Core (6.6.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 5.7.0)
-  - Firebase/CoreOnly (5.18.0):
-    - FirebaseCore (= 5.3.1)
-  - Firebase/Database (5.18.0):
+    - FirebaseAnalytics (= 6.1.0)
+  - Firebase/CoreOnly (6.6.0):
+    - FirebaseCore (= 6.2.0)
+  - Firebase/Database (6.6.0):
     - Firebase/CoreOnly
-    - FirebaseDatabase (= 5.1.0)
-  - Firebase/Firestore (5.18.0):
+    - FirebaseDatabase (~> 6.0.0)
+  - Firebase/Firestore (6.6.0):
     - Firebase/CoreOnly
-    - FirebaseFirestore (= 1.0.2)
-  - FirebaseAnalytics (5.7.0):
-    - FirebaseCore (~> 5.3)
-    - FirebaseInstanceID (~> 3.6)
-    - GoogleAppMeasurement (= 5.7.0)
-    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
-    - GoogleUtilities/MethodSwizzler (~> 5.2)
-    - GoogleUtilities/Network (~> 5.2)
-    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+    - FirebaseFirestore (~> 1.4.3)
+  - FirebaseAnalytics (6.1.0):
+    - FirebaseCore (~> 6.2)
+    - FirebaseInstanceID (~> 4.2)
+    - GoogleAppMeasurement (= 6.1.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
   - FirebaseAuthInterop (1.0.0)
-  - FirebaseCore (5.3.1):
-    - GoogleUtilities/Logger (~> 5.2)
-  - FirebaseDatabase (5.1.0):
+  - FirebaseCore (6.2.0):
+    - FirebaseCoreDiagnostics (~> 1.0)
+    - FirebaseCoreDiagnosticsInterop (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.2)
+    - GoogleUtilities/Logger (~> 6.2)
+  - FirebaseCoreDiagnostics (1.0.1):
+    - FirebaseCoreDiagnosticsInterop (~> 1.0)
+    - GoogleDataTransportCCTSupport (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.2)
+    - GoogleUtilities/Logger (~> 6.2)
+  - FirebaseCoreDiagnosticsInterop (1.0.0)
+  - FirebaseDatabase (6.0.0):
     - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 5.2)
+    - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.18)
-  - FirebaseFirestore (1.0.2):
+  - FirebaseFirestore (1.4.3):
     - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 5.2)
-    - FirebaseFirestore/abseil-cpp (= 1.0.2)
-    - "gRPC-C++ (= 0.0.6)"
+    - FirebaseCore (~> 6.2)
+    - FirebaseFirestore/abseil-cpp (= 1.4.3)
+    - "gRPC-C++ (= 0.0.9)"
     - leveldb-library (~> 1.20)
     - nanopb (~> 0.3.901)
     - Protobuf (~> 3.1)
-  - FirebaseFirestore/abseil-cpp (1.0.2):
+  - FirebaseFirestore/abseil-cpp (1.4.3):
     - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 5.2)
-    - "gRPC-C++ (= 0.0.6)"
+    - FirebaseCore (~> 6.2)
+    - "gRPC-C++ (= 0.0.9)"
     - leveldb-library (~> 1.20)
     - nanopb (~> 0.3.901)
     - Protobuf (~> 3.1)
-  - FirebaseInstanceID (3.7.0):
-    - FirebaseCore (~> 5.2)
-    - GoogleUtilities/Environment (~> 5.2)
-    - GoogleUtilities/UserDefaults (~> 5.2)
-  - GoogleAppMeasurement (5.7.0):
-    - GoogleUtilities/AppDelegateSwizzler (~> 5.2)
-    - GoogleUtilities/MethodSwizzler (~> 5.2)
-    - GoogleUtilities/Network (~> 5.2)
-    - "GoogleUtilities/NSData+zlib (~> 5.2)"
+  - FirebaseInstanceID (4.2.3):
+    - FirebaseCore (~> 6.0)
+    - GoogleUtilities/Environment (~> 6.0)
+    - GoogleUtilities/UserDefaults (~> 6.0)
+  - GoogleAppMeasurement (6.1.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
     - nanopb (~> 0.3)
-  - GoogleUtilities/AppDelegateSwizzler (5.5.0):
+  - GoogleDataTransport (1.1.1)
+  - GoogleDataTransportCCTSupport (1.0.1):
+    - GoogleDataTransport (~> 1.1)
+    - nanopb
+  - GoogleUtilities/AppDelegateSwizzler (6.2.5):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (5.5.0)
-  - GoogleUtilities/Logger (5.5.0):
+  - GoogleUtilities/Environment (6.2.5)
+  - GoogleUtilities/Logger (6.2.5):
     - GoogleUtilities/Environment
-  - GoogleUtilities/MethodSwizzler (5.5.0):
+  - GoogleUtilities/MethodSwizzler (6.2.5):
     - GoogleUtilities/Logger
-  - GoogleUtilities/Network (5.5.0):
+  - GoogleUtilities/Network (6.2.5):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (5.5.0)"
-  - GoogleUtilities/Reachability (5.5.0):
+  - "GoogleUtilities/NSData+zlib (6.2.5)"
+  - GoogleUtilities/Reachability (6.2.5):
     - GoogleUtilities/Logger
-  - GoogleUtilities/UserDefaults (5.5.0):
+  - GoogleUtilities/UserDefaults (6.2.5):
     - GoogleUtilities/Logger
-  - "gRPC-C++ (0.0.6)":
-    - "gRPC-C++/Implementation (= 0.0.6)"
-    - "gRPC-C++/Interface (= 0.0.6)"
-  - "gRPC-C++/Implementation (0.0.6)":
-    - "gRPC-C++/Interface (= 0.0.6)"
-    - gRPC-Core (= 1.17.0)
+  - "gRPC-C++ (0.0.9)":
+    - "gRPC-C++/Implementation (= 0.0.9)"
+    - "gRPC-C++/Interface (= 0.0.9)"
+  - "gRPC-C++/Implementation (0.0.9)":
+    - "gRPC-C++/Interface (= 0.0.9)"
+    - gRPC-Core (= 1.21.0)
     - nanopb (~> 0.3)
-  - "gRPC-C++/Interface (0.0.6)"
-  - gRPC-Core (1.17.0):
-    - gRPC-Core/Implementation (= 1.17.0)
-    - gRPC-Core/Interface (= 1.17.0)
-  - gRPC-Core/Implementation (1.17.0):
-    - BoringSSL-GRPC (= 0.0.2)
-    - gRPC-Core/Interface (= 1.17.0)
+  - "gRPC-C++/Interface (0.0.9)"
+  - gRPC-Core (1.21.0):
+    - gRPC-Core/Implementation (= 1.21.0)
+    - gRPC-Core/Interface (= 1.21.0)
+  - gRPC-Core/Implementation (1.21.0):
+    - BoringSSL-GRPC (= 0.0.3)
+    - gRPC-Core/Interface (= 1.21.0)
     - nanopb (~> 0.3)
-  - gRPC-Core/Interface (1.17.0)
+  - gRPC-Core/Interface (1.21.0)
   - leveldb-library (1.20)
-  - lottie-ios (3.1.0)
+  - lottie-ios (3.1.2)
   - nanopb (0.3.901):
     - nanopb/decode (= 0.3.901)
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
-  - Protobuf (3.7.0)
-  - SwiftLint (0.33.0)
+  - Protobuf (3.9.0)
 
 DEPENDENCIES:
-  - Firebase/Core
-  - Firebase/Database
-  - Firebase/Firestore
-  - lottie-ios
-  - SwiftLint
+  - Firebase/Core (~> 6.6.0)
+  - Firebase/Database (~> 6.6.0)
+  - Firebase/Firestore (~> 6.6.0)
+  - lottie-ios (~> 3.1.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -115,10 +126,14 @@ SPEC REPOS:
     - FirebaseAnalytics
     - FirebaseAuthInterop
     - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreDiagnosticsInterop
     - FirebaseDatabase
     - FirebaseFirestore
     - FirebaseInstanceID
     - GoogleAppMeasurement
+    - GoogleDataTransport
+    - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -126,27 +141,29 @@ SPEC REPOS:
     - lottie-ios
     - nanopb
     - Protobuf
-    - SwiftLint
 
 SPEC CHECKSUMS:
-  BoringSSL-GRPC: 2a230d9cd93e7ce39916044f645cebb31f37dde6
-  Firebase: 02f3281965c075426141a0ce1277e9de6649cab9
-  FirebaseAnalytics: 23851fe602c872130a2c5c55040b302120346cc2
+  BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
+  Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
+  FirebaseAnalytics: 48414ae5cbf6976d8a2f7177e0466540e5ab33ce
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
-  FirebaseCore: 52f851b30e11360f1e67cf04b1edfebf0a47a2d3
-  FirebaseDatabase: 23acb0c53cd4d4070a427b60100b2e4aaa97c45d
-  FirebaseFirestore: ccdaffb8a73c591ff61872b8f7905ad0c237ef50
-  FirebaseInstanceID: bd6fc5a258884e206fd5c474ebe4f5b00e21770e
-  GoogleAppMeasurement: 6cf307834da065863f9faf4c0de0a936d81dd832
-  GoogleUtilities: 6481e6318c5fcabaaa8513ef8120f329055d7c10
-  "gRPC-C++": e76441995900ac90e9bd98644ab4733f12521edf
-  gRPC-Core: 4028031ed2c5267cca0d846c876d8046b1ecb9b6
+  FirebaseCore: 8c9e08bce0c72a3affd83927d8184cf244918bc8
+  FirebaseCoreDiagnostics: 4c04ae09d0ab027c30179828c6bb47764df1bd13
+  FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
+  FirebaseDatabase: f48e067716864be2b855cf716b927ef375d6cfa0
+  FirebaseFirestore: d65bd28e77a8cdc045be6353c6e1e146efdf92dc
+  FirebaseInstanceID: 8b42755db950682e7de0d167bc6fb26a57b244af
+  GoogleAppMeasurement: 47285fa897e5a125df56b9ef8750a1d81e4598a8
+  GoogleDataTransport: ffbadce4ab93c88fb9dd8e6366c47bfcb4a32193
+  GoogleDataTransportCCTSupport: 3451e7d8ba19093e533362a6d78d6d9014c6a037
+  GoogleUtilities: e7dc37039b19df7fe543479d3e4a02ac8d11bb69
+  "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
+  gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
-  lottie-ios: 9467723922dfff46f6d4e3019c32594a62440b7c
+  lottie-ios: 49cd85b1f24f61a7708ad7ec76a523ab2d0e3100
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
-  Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
-  SwiftLint: fed9c66336e41fc74dc48a73678380718f0c8b0e
+  Protobuf: 1097ca58584c8d9be81bfbf2c5ff5975648dd87a
 
-PODFILE CHECKSUM: 52f589cad586d35bcd1c1c88f03c8e357dd21811
+PODFILE CHECKSUM: 6cd866dd2f54439efc1ed00005c9893baa455085
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.7.5

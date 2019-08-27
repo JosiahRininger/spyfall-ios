@@ -52,7 +52,7 @@ const AsyncQueue::Milliseconds kIdleTimeout{std::chrono::seconds(60)};
 
 }  // namespace
 
-Stream::Stream(AsyncQueue* worker_queue,
+Stream::Stream(const std::shared_ptr<AsyncQueue>& worker_queue,
                CredentialsProvider* credentials_provider,
                GrpcConnection* grpc_connection,
                TimerId backoff_timer_id,
@@ -278,12 +278,12 @@ void Stream::Close(const Status& status) {
 }
 
 void Stream::HandleErrorStatus(const Status& status) {
-  if (status.code() == FirestoreErrorCode::ResourceExhausted) {
+  if (status.code() == Error::ResourceExhausted) {
     LOG_DEBUG(
         "%s Using maximum backoff delay to prevent overloading the backend.",
         GetDebugDescription());
     backoff_.ResetToMax();
-  } else if (status.code() == FirestoreErrorCode::Unauthenticated) {
+  } else if (status.code() == Error::Unauthenticated) {
     // "unauthenticated" error means the token was rejected. Try force
     // refreshing it in case it just expired.
     credentials_provider_->InvalidateToken();

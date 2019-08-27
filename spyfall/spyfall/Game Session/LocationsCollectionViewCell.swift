@@ -10,7 +10,7 @@ import UIKit
 
 class LocationsCollectionViewCell: UICollectionViewCell {
     
-    let locationLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 16)
+    let locationLabel = UIElementsManager.createLabel(with: "", fontSize: 16)
 
     var isTapped: Bool = false {
         didSet {

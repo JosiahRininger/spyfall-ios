@@ -21,9 +21,9 @@ class PlayersWaitingTableViewCell: UITableViewCell {
         return view
     }()
 
-    var rowNumberLabel = UIElementsManager.createHeaderLabel(with: "", fontSize: 19)
+    var rowNumberLabel = UIElementsManager.createLabel(with: "", fontSize: 19, isHeader: true)
 
-    var usernameLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 16, color: .textGray)
+    var usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16, color: .textGray)
     
     var pencilImageView: UIImageView = {
         let iv = UIImageView()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeController: UIViewController {
+final class HomeController: UIViewController {
 
     var homeView = HomeView()
     
@@ -17,6 +17,7 @@ class HomeController: UIViewController {
         
         homeView.newGame.addTarget(self, action: #selector(segueToNewGameController), for: .touchUpInside)
         homeView.joinGame.addTarget(self, action: #selector(segueToJoinGameController), for: .touchUpInside)
+        homeView.settings.addTarget(self, action: #selector(segueToSettingsController), for: .touchUpInside)
         
         setupView()
     }
@@ -32,5 +33,9 @@ class HomeController: UIViewController {
     
     @objc func segueToJoinGameController() {
         present(JoinGameController(), animated: true, completion: nil)
+    }
+    
+    @objc func segueToSettingsController() {
+        present(SettingsController(), animated: true, completion: nil)
     }
 }

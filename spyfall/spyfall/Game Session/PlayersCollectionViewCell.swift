@@ -10,11 +10,11 @@ import UIKit
 
 class PlayersCollectionViewCell: UICollectionViewCell {
     
-    let usernameLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 16)
+    let usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16)
     
     var firstView: UIView = {
         var v = UIElementsManager.createCircleView()
-        var i = UIElementsManager.createHeaderLabel(with: "1st", fontSize: 11, color: .primaryWhite)
+        var i = UIElementsManager.createLabel(with: "1st", fontSize: 9, color: .primaryWhite, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
@@ -61,7 +61,6 @@ class PlayersCollectionViewCell: UICollectionViewCell {
             firstView.centerYAnchor.constraint(equalTo: topAnchor, constant: 5),
             firstView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 1)
             ])
-        
     }
     
     func configure(username: String, isFirstPlayer: Bool) {

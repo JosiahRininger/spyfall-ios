@@ -17,21 +17,19 @@
 #ifndef FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_UTIL_TO_STRING_H_
 #define FIRESTORE_CORE_SRC_FIREBASE_FIRESTORE_UTIL_TO_STRING_H_
 
-#if __OBJC__
-#import <Foundation/Foundation.h>
-#endif  // __OBJC__
-
 #include <algorithm>
 #include <numeric>
 #include <string>
 #include <type_traits>
 #include <utility>
 
+#include "Firestore/core/src/firebase/firestore/objc/objc_type_traits.h"
 #include "Firestore/core/src/firebase/firestore/util/string_apple.h"
 #include "Firestore/core/src/firebase/firestore/util/string_format.h"
 #include "Firestore/core/src/firebase/firestore/util/type_traits.h"
 #include "absl/meta/type_traits.h"
 #include "absl/strings/str_join.h"
+#include "absl/types/optional.h"
 
 namespace firebase {
 namespace firestore {
@@ -117,13 +115,13 @@ template <int I>
 struct ToStringChoice : ToStringChoice<I + 1> {};
 
 template <>
-struct ToStringChoice<5> {};
+struct ToStringChoice<6> {};
 
 #if __OBJC__
 
 // Objective-C class
 template <typename T,
-          typename = absl::enable_if_t<is_objective_c_pointer<T>::value>>
+          typename = absl::enable_if_t<objc::is_objc_pointer<T>::value>>
 std::string ToStringImpl(T value, ToStringChoice<0>) {
   return MakeString([value description]);
 }
@@ -143,10 +141,19 @@ std::string ToStringImpl(const T& value, ToStringChoice<2>) {
   return value;
 }
 
+// `absl::optional`
+template <typename T,
+          typename = absl::enable_if_t<
+              std::is_same<absl::optional<typename T::value_type>, T>::value>>
+std::string ToStringImpl(const T& maybe_value, ToStringChoice<3>) {
+  return maybe_value.has_value() ? ToString(maybe_value.value())
+                                 : std::string{"nullopt"};
+}
+
 // Associative container
 template <typename T,
           typename = absl::enable_if_t<is_associative_container<T>::value>>
-std::string ToStringImpl(const T& value, ToStringChoice<3>) {
+std::string ToStringImpl(const T& value, ToStringChoice<4>) {
   std::string contents = absl::StrJoin(
       value, ", ", [](std::string* out, const typename T::value_type& kv) {
         out->append(ToString(kv.first));
@@ -158,7 +165,7 @@ std::string ToStringImpl(const T& value, ToStringChoice<3>) {
 
 // Container
 template <typename T, typename = absl::enable_if_t<is_iterable<T>::value>>
-std::string ToStringImpl(const T& value, ToStringChoice<4>) {
+std::string ToStringImpl(const T& value, ToStringChoice<5>) {
   std::string contents = absl::StrJoin(
       value, ", ", [](std::string* out, const typename T::value_type& element) {
         out->append(ToString(element));
@@ -168,7 +175,7 @@ std::string ToStringImpl(const T& value, ToStringChoice<4>) {
 
 // Fallback
 template <typename T>
-std::string ToStringImpl(const T& value, ToStringChoice<5>) {
+std::string ToStringImpl(const T& value, ToStringChoice<6>) {
   FormatArg arg{value};
   return std::string{arg.data(), arg.data() + arg.size()};
 }

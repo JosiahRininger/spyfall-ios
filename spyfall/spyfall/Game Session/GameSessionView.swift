@@ -10,23 +10,22 @@ import UIKit
 
 class GameSessionView: UIView {
     
-    var timerLabel = UIElementsManager.createHeaderLabel(with: "8:00", fontSize: 48)
+    var timerLabel = UIElementsManager.createLabel(with: "8:00", fontSize: 48, isHeader: true)
     
     var userInfoView = UIElementsManager.createUserInfoView()
     
-    var playersLabel = UIElementsManager.createHeaderLabel(with: "Players:", fontSize: 24)
+    var playersLabel = UIElementsManager.createLabel(with: "Players:", fontSize: 24, isHeader: true)
     
-    let playersCollectionViewCellId: String = "playersCollectionViewCellId"
     var playersCollectionHeight = NSLayoutConstraint()
     var playersCollectionView = UIElementsManager.createCollectionView()
     
-    var locationsLabel = UIElementsManager.createHeaderLabel(with: "Locations:", fontSize: 24)
+    var locationsLabel = UIElementsManager.createLabel(with: "Locations:", fontSize: 24, isHeader: true)
     
     let locationsCollectionViewCellId: String = "locationsCollectionViewCellId"
     var locationsCollectionHeight = NSLayoutConstraint()
     var locationsCollectionView = UIElementsManager.createCollectionView()
     
-    var endGame = UIElementsManager.createGenericButton(with: "End Game")
+    var endGame = UIElementsManager.createButton(with: "End Game")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,7 +44,7 @@ class GameSessionView: UIView {
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 0)
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)
         
-        playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: playersCollectionViewCellId)
+        playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.playersCollectionViewCellId)
         locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: locationsCollectionViewCellId)
         
         addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)

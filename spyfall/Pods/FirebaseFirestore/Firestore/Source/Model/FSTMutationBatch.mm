@@ -24,36 +24,49 @@
 #import "Firestore/Source/Model/FSTDocument.h"
 #import "Firestore/Source/Model/FSTMutation.h"
 
+#include "Firestore/core/src/firebase/firestore/model/document_map.h"
+#include "Firestore/core/src/firebase/firestore/objc/objc_compatibility.h"
+#include "Firestore/core/src/firebase/firestore/timestamp_internal.h"
 #include "Firestore/core/src/firebase/firestore/util/hard_assert.h"
 #include "Firestore/core/src/firebase/firestore/util/hashing.h"
-#include "Firestore/core/src/firebase/firestore/util/objc_compatibility.h"
 
-namespace objc = firebase::firestore::util::objc;
+namespace objc = firebase::firestore::objc;
+using firebase::Timestamp;
+using firebase::TimestampInternal;
 using firebase::firestore::model::BatchId;
 using firebase::firestore::model::DocumentKey;
 using firebase::firestore::model::DocumentKeyHash;
 using firebase::firestore::model::DocumentKeySet;
 using firebase::firestore::model::DocumentVersionMap;
+using firebase::firestore::model::MaybeDocumentMap;
 using firebase::firestore::model::SnapshotVersion;
 using firebase::firestore::util::Hash;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation FSTMutationBatch {
+  Timestamp _localWriteTime;
+  std::vector<FSTMutation *> _baseMutations;
   std::vector<FSTMutation *> _mutations;
 }
 
 - (instancetype)initWithBatchID:(BatchId)batchID
-                 localWriteTime:(FIRTimestamp *)localWriteTime
+                 localWriteTime:(const Timestamp &)localWriteTime
+                  baseMutations:(std::vector<FSTMutation *> &&)baseMutations
                       mutations:(std::vector<FSTMutation *> &&)mutations {
   HARD_ASSERT(!mutations.empty(), "Cannot create an empty mutation batch");
   self = [super init];
   if (self) {
     _batchID = batchID;
     _localWriteTime = localWriteTime;
+    _baseMutations = std::move(baseMutations);
     _mutations = std::move(mutations);
   }
   return self;
+}
+
+- (const std::vector<FSTMutation *> &)baseMutations {
+  return _baseMutations;
 }
 
 - (const std::vector<FSTMutation *> &)mutations {
@@ -68,15 +81,17 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   FSTMutationBatch *otherBatch = (FSTMutationBatch *)other;
-  return self.batchID == otherBatch.batchID &&
-         [self.localWriteTime isEqual:otherBatch.localWriteTime] &&
-         std::equal(_mutations.begin(), _mutations.end(), otherBatch.mutations.begin(),
-                    [](FSTMutation *lhs, FSTMutation *rhs) { return [lhs isEqual:rhs]; });
+  return self.batchID == otherBatch.batchID && self.localWriteTime == otherBatch.localWriteTime &&
+         objc::Equals(_baseMutations, otherBatch.baseMutations) &&
+         objc::Equals(_mutations, otherBatch.mutations);
 }
 
 - (NSUInteger)hash {
   NSUInteger result = (NSUInteger)self.batchID;
-  result = result * 31 + self.localWriteTime.hash;
+  result = result * 31 + TimestampInternal::Hash(self.localWriteTime);
+  for (FSTMutation *mutation : _baseMutations) {
+    result = result * 31 + [mutation hash];
+  }
   for (FSTMutation *mutation : _mutations) {
     result = result * 31 + [mutation hash];
   }
@@ -84,9 +99,9 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (NSString *)description {
-  return
-      [NSString stringWithFormat:@"<FSTMutationBatch: id=%d, localWriteTime=%@, mutations=%@>",
-                                 self.batchID, self.localWriteTime, objc::Description(_mutations)];
+  return [NSString stringWithFormat:@"<FSTMutationBatch: id=%d, localWriteTime=%s, mutations=%@>",
+                                    self.batchID, self.localWriteTime.ToString().c_str(),
+                                    objc::Description(_mutations)];
 }
 
 - (FSTMaybeDocument *_Nullable)applyToRemoteDocument:(FSTMaybeDocument *_Nullable)maybeDoc
@@ -116,8 +131,20 @@ NS_ASSUME_NONNULL_BEGIN
   HARD_ASSERT(!maybeDoc || maybeDoc.key == documentKey,
               "applyTo: key %s doesn't match maybeDoc key %s", documentKey.ToString(),
               maybeDoc.key.ToString());
+
+  // First, apply the base state. This allows us to apply non-idempotent transform against a
+  // consistent set of values.
+  for (FSTMutation *mutation : _baseMutations) {
+    if (mutation.key == documentKey) {
+      maybeDoc = [mutation applyToLocalDocument:maybeDoc
+                                   baseDocument:maybeDoc
+                                 localWriteTime:self.localWriteTime];
+    }
+  }
+
   FSTMaybeDocument *baseDoc = maybeDoc;
 
+  // Second, apply all user-provided mutations.
   for (FSTMutation *mutation : _mutations) {
     if (mutation.key == documentKey) {
       maybeDoc = [mutation applyToLocalDocument:maybeDoc
@@ -126,6 +153,24 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   return maybeDoc;
+}
+
+- (MaybeDocumentMap)applyToLocalDocumentSet:(const MaybeDocumentMap &)documentSet {
+  // TODO(mrschmidt): This implementation is O(n^2). If we iterate through the mutations first (as
+  // done in `applyToLocalDocument:documentKey:`), we can reduce the complexity to O(n).
+
+  MaybeDocumentMap mutatedDocuments = documentSet;
+  for (FSTMutation *mutation : _mutations) {
+    const DocumentKey &key = mutation.key;
+    auto maybeDocument = mutatedDocuments.find(key);
+    FSTMaybeDocument *mutatedDocument = [self
+        applyToLocalDocument:(maybeDocument != mutatedDocuments.end() ? maybeDocument->second : nil)
+                 documentKey:key];
+    if (mutatedDocument) {
+      mutatedDocuments = mutatedDocuments.insert(key, mutatedDocument);
+    }
+  }
+  return mutatedDocuments;
 }
 
 - (DocumentKeySet)keys {

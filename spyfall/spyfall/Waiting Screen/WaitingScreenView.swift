@@ -11,22 +11,20 @@ import UIKit
 class WaitingScreenView: UIView {
     
     var waitingForPlayersLabel: UILabel = {
-        let l = UIElementsManager.createHeaderLabel(with: "Waiting for players...", fontSize: 40)
+        let l = UIElementsManager.createLabel(with: "Waiting for players...", fontSize: 40, isHeader: true)
         l.textAlignment = .left
         
         return l
     }()
     
-    var accessCodeLabel = UIElementsManager.createHeaderLabel(with: "access code", fontSize: 19)
-    var codeLabel = UIElementsManager.createGenericLabel(with: "", fontSize: 18)
-    
-    let cellId: String = "playerListCellId"
-    
+    var accessCodeLabel = UIElementsManager.createLabel(with: "access code", fontSize: 19, isHeader: true)
+    var codeLabel = UIElementsManager.createLabel(with: "", fontSize: 18)
+        
     var tableHeight = NSLayoutConstraint()
     var tableView = UIElementsManager.createTableView()
 
-    var leaveGame = UIElementsManager.createGenericButton(with: "Leave Game", color: .white)
-    var startGame = UIElementsManager.createGenericButton(with: "Start Game")
+    var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .white)
+    var startGame = UIElementsManager.createButton(with: "Start Game")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,7 +40,7 @@ class WaitingScreenView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: cellId)
+        tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: Constants.IDs.playerListCellId)
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
         addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)

@@ -10,7 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class JoinGameController: UIViewController, UITextFieldDelegate {
+final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
     
@@ -49,18 +49,19 @@ class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldsAreValid() -> Bool {
-        let sentAlert = UIAlertController(title: "", message: nil, preferredStyle: .alert)
-        sentAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = CreateAlertController().with(title: "",
+                                                 message: nil,
+                                                 actions: UIAlertAction(title: "OK", style: .default, handler: nil))
         if joinGameView.usernameTextField.text?.isEmpty ?? true {
-            sentAlert.title = "Please enter a username"
+            alert.title = "Please enter a username"
         } else if joinGameView.usernameTextField.text?.count ?? 25 > 24 {
-            sentAlert.title = "Please enter a username less than 25 characters"
+            alert.title = "Please enter a username less than 25 characters"
         } else if joinGameView.accessCodeTextField.text?.isEmpty ?? true {
-            sentAlert.title = "Please enter an access code"
+            alert.title = "Please enter an access code"
         } else {
             return true
         }
-        self.present(sentAlert, animated: true, completion: nil)
+        self.present(alert, animated: true, completion: nil)
         return false
     }
     
@@ -69,7 +70,8 @@ class JoinGameController: UIViewController, UITextFieldDelegate {
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(JoinGameController.dismissKeyboard))
         doneButton.tintColor = .secondaryColor
-        toolBar.setItems([doneButton], animated: false)
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         joinGameView.usernameTextField.inputAccessoryView = toolBar
         joinGameView.accessCodeTextField.inputAccessoryView = toolBar

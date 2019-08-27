@@ -10,9 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 
-class WaitingScreenController: UIViewController {
-    
-    let cellId: String = "playerListCell"
+final class WaitingScreenController: UIViewController {
     
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
@@ -72,7 +70,7 @@ class WaitingScreenController: UIViewController {
         } else {
             // Set isStarted to true
             isStarted = true
-            db.collection("games").document(accessCode).updateData(["started": true]) { err in
+            db.collection(Constants.DBCollections.games).document(accessCode).updateData(["started": true]) { err in
                 if let err = err {
                     print("Error writing document: \(err)")
                 } else {
@@ -108,7 +106,7 @@ class WaitingScreenController: UIViewController {
                 
                 for playerObject in self.playerObjectList {
                     // Add playerObjectList field to document
-                    self.db.collection("games").document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
+                    self.db.collection(Constants.DBCollections.games).document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
                         "role": playerObject.role,
                         "username": playerObject.username,
                         "votes": playerObject.votes
@@ -127,14 +125,14 @@ class WaitingScreenController: UIViewController {
     //     deletes player from game and deletes game if playerList is empty
     @objc func leaveGameWasTapped(sender: UIButton) {
         playerList = playerList.filter { $0 != currentUsername }
-        db.collection("games").document(accessCode).updateData(["playerList": playerList])
-        if playerList.isEmpty { db.collection("games").document(accessCode).delete()}
+        db.collection(Constants.DBCollections.games).document(accessCode).updateData(["playerList": playerList])
+        if playerList.isEmpty { db.collection(Constants.DBCollections.games).document(accessCode).delete()}
         present(HomeController(), animated: false, completion: nil)
     }
     
     //     adds players username to firestore
     func addUsernameToPlayerList() {
-        db.collection("games").document(accessCode).updateData(["playerList": FieldValue.arrayUnion([currentUsername])]) { err in
+        db.collection(Constants.DBCollections.games).document(accessCode).updateData(["playerList": FieldValue.arrayUnion([currentUsername])]) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
@@ -145,7 +143,7 @@ class WaitingScreenController: UIViewController {
     
     // listenor that updates playerList and tableView when firestore playerList is updated
     func updatePlayerList() {
-        db.collection("games").document(accessCode)
+        db.collection(Constants.DBCollections.games).document(accessCode)
             .addSnapshotListener { documentSnapshot, error in
                 guard let document = documentSnapshot else {
                     print("Error fetching document: \(error!)")
@@ -217,7 +215,7 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var isUser = Bool()
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: waitingScreenView.cellId) as? PlayersWaitingTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.IDs.playerListCellId) as? PlayersWaitingTableViewCell else {
             fatalError()
         }
         
@@ -230,7 +228,7 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
         if editedUsername != currentUsername && isUser {
             currentUsername = editedUsername
             playerList[indexPath.row] = editedUsername
-            db.collection("games").document(accessCode).updateData(["playerList": playerList])
+            db.collection(Constants.DBCollections.games).document(accessCode).updateData(["playerList": playerList])
         }
         return cell
     }
