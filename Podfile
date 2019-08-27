@@ -10,5 +10,6 @@ target 'spyfall' do
   pod 'Firebase/Database', '6.6.0'
   pod 'Firebase/Firestore', '6.6.0'
   pod 'lottie-ios', '3.1.1'
+  pod 'SwiftLint', '0.33.1', :configurations => ['Debug']
 
 end
