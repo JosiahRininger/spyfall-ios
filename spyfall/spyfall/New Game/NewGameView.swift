@@ -37,8 +37,7 @@ class NewGameView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
