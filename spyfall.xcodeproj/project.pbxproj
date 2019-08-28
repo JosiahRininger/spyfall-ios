@@ -32,6 +32,7 @@
 		D769B74D2314611B003F05E3 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */; };
 		D769B7512314764F003F05E3 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7502314764F003F05E3 /* UIImageView.swift */; };
 		D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
+		D769B7552316FBCA003F05E3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7542316FBCA003F05E3 /* NavigationController.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
 		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
@@ -81,6 +82,7 @@
 		D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		D769B7502314764F003F05E3 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		D769B75223158B63003F05E3 /* CustomPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpView.swift; sourceTree = "<group>"; };
+		D769B7542316FBCA003F05E3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = ../../../../Documents/NavigationController.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 		D7E3D7B8230B8314007F7936 /* Custom Classes */ = {
 			isa = PBXGroup;
 			children = (
+				D769B7542316FBCA003F05E3 /* NavigationController.swift */,
 				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
 				D7A72D3722BED262005D1831 /* PackView.swift */,
@@ -436,6 +439,7 @@
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
 				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
 				D7030EE022BA85D8002CB9B2 /* FirebaseManager.swift in Sources */,
+				D769B7552316FBCA003F05E3 /* NavigationController.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
 				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,
@@ -587,7 +591,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BPW45ZHW4H;
 				INFOPLIST_FILE = spyfall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -608,7 +612,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = BPW45ZHW4H;
 				INFOPLIST_FILE = spyfall/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (

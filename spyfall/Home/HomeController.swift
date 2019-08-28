@@ -28,17 +28,14 @@ final class HomeController: UIViewController {
     }
     
     @objc func segueToNewGameController() {
-        let navigationController = UINavigationController()
-        navigationController.addChild(NewGameController())
-        navigationController.isNavigationBarHidden = true
-        present(navigationController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(NewGameController(), animated: true)
     }
     
     @objc func segueToJoinGameController() {
-        present(JoinGameController(), animated: true, completion: nil)
+        self.navigationController?.pushViewController(JoinGameController(), animated: true)
     }
     
     @objc func segueToSettingsController() {
-        present(SettingsController(), animated: true, completion: nil)
+        self.navigationController?.pushViewController(SettingsController(), animated: true)
     }
 }

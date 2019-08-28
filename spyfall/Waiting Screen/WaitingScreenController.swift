@@ -127,7 +127,7 @@ final class WaitingScreenController: UIViewController {
         playerList = playerList.filter { $0 != currentUsername }
         db.collection(Constants.DBCollections.games).document(accessCode).updateData(["playerList": playerList])
         if playerList.isEmpty { db.collection(Constants.DBCollections.games).document(accessCode).delete()}
-        present(HomeController(), animated: false, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     //     adds players username to firestore

@@ -34,7 +34,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func segueToHomeController() {
-        dismiss(animated: true, completion: nil)
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func segueToWaitingScreenController() {

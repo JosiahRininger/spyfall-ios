@@ -25,7 +25,7 @@ final class GameSessionController: UIViewController {
     var chosenPacks = [String]()
     var firstPlayer = String()
     private var currentTimeLeft: TimeInterval = 0
-    private let maxTimeInterval: TimeInterval = 1//0 * 60 // Minutes * Seconds
+    private var maxTimeInterval: TimeInterval = Double()
     private var startDate: Date?
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
@@ -92,9 +92,10 @@ final class GameSessionController: UIViewController {
         locationList = gameData.locationList
         
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "GameSessionLocation".localize(), gameData.chosenLocation)
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "GameSessionLocation", gameData.chosenLocation)
 
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
+        maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
         
         firstPlayer = usernameList.randomElement() ?? ""
         
@@ -108,7 +109,7 @@ final class GameSessionController: UIViewController {
     
     @objc func endGameWasTapped() {
         guard timerIsDone() else { return }
-        navigationController?.dismiss(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     func timerIsDone() -> Bool {
@@ -118,7 +119,7 @@ final class GameSessionController: UIViewController {
             actions: UIAlertAction(
                 title: "Yes",
                 style: .default,
-                handler: { [weak self] _ in self?.navigationController?.dismiss(animated: true) }
+                handler: { [weak self] _ in self?.navigationController?.popToRootViewController(animated: true) }
             ),
             UIAlertAction(title: "Cancel", style: .cancel)
         )
