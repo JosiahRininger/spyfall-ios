@@ -142,8 +142,11 @@ final class GameSessionController: UIViewController {
 
     private func updateGameSessionView() {
         guard let startDate = startDate else { timer.invalidate(); return }
+
         let interval = Date().timeIntervalSince(startDate)
-        currentTimeLeft = max(0, maxTimeInterval - interval)
+        let newTimeLeft = max(0, maxTimeInterval - interval)
+        guard newTimeLeft != currentTimeLeft else { return }
+        currentTimeLeft = newTimeLeft
 
         if currentTimeLeft == 0 {
             gameSessionView.timerLabel.text = "0:00"
