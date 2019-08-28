@@ -1,5 +1,6 @@
 # Uncomment the next line to define a global platform for your project
-# platform :ios, '9.0'
+platform :ios, '10.0'
+inhibit_all_warnings!
 
 target 'spyfall' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
@@ -9,5 +10,6 @@ target 'spyfall' do
   pod 'Firebase/Database', '6.6.0'
   pod 'Firebase/Firestore', '6.6.0'
   pod 'lottie-ios', '3.1.1'
+  pod 'SwiftLint', '0.33.1', :configurations => ['Debug']
 
 end
