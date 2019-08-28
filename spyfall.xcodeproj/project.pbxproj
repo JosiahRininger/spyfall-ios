@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		4CA6AD247BD4A3ACC76D065C /* Pods_spyfall.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A5E78ACF9E88A2CE982E0D /* Pods_spyfall.framework */; };
+		BF713A0223160B920045F8DC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF713A0123160B920045F8DC /* Localizable.strings */; };
+		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
 		D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
 		D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
 		D7030EE022BA85D8002CB9B2 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDF22BA85D8002CB9B2 /* FirebaseManager.swift */; };
@@ -52,6 +54,8 @@
 /* Begin PBXFileReference section */
 		50E788B6CDB902663FA8ADD2 /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
 		66A5E78ACF9E88A2CE982E0D /* Pods_spyfall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spyfall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF713A0123160B920045F8DC /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		BF713A0323160C110045F8DC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		C456859BAF3C89D73A30C5BC /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 		D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
 		D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 			children = (
 				D7A72D3F22C19013005D1831 /* check_animation.json */,
 				D706256122586D3800A80B76 /* AppDelegate.swift */,
+				BF713A0123160B920045F8DC /* Localizable.strings */,
 				D7798B1022B86831006D7615 /* Extensions */,
 				D7E3D7B8230B8314007F7936 /* Custom Classes */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
@@ -221,6 +226,7 @@
 				D769B74823145F80003F05E3 /* Encodable.swift */,
 				D769B74A23145FA3003F05E3 /* Decodable.swift */,
 				D769B7502314764F003F05E3 /* UIImageView.swift */,
+				BF713A0323160C110045F8DC /* String.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -331,6 +337,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF713A0223160B920045F8DC /* Localizable.strings in Resources */,
 				D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */,
 				D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
@@ -435,6 +442,7 @@
 				D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */,
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */,
 				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
+				BF713A0423160C110045F8DC /* String.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,

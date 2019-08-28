@@ -15,7 +15,7 @@ class HomeView: UIView {
     var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, isHeader: true)
     var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, isHeader: true)
     
-    var newGame = UIElementsManager.createButton(with: "New Game", color: .white)
+    var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .white)
     var joinGame = UIElementsManager.createButton(with: "Join Game")
     
     var infoView: UIView = {
