@@ -25,7 +25,7 @@ final class GameSessionController: UIViewController {
     var chosenPacks = [String]()
     var firstPlayer = String()
     private var currentTimeLeft: TimeInterval = 0
-    private let maxTimeInterval: TimeInterval = 10 * 60 // Minutes * Seconds
+    private let maxTimeInterval: TimeInterval = 1//0 * 60 // Minutes * Seconds
     private var startDate: Date?
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
@@ -92,7 +92,8 @@ final class GameSessionController: UIViewController {
         locationList = gameData.locationList
         
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : "Location: \(gameData.chosenLocation)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "GameSessionLocation".localize(), gameData.chosenLocation)
+
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
         
         firstPlayer = usernameList.randomElement() ?? ""
@@ -106,24 +107,22 @@ final class GameSessionController: UIViewController {
     }
     
     @objc func endGameWasTapped() {
-        if !timerIsDone() { return }
-        
-        present(HomeController(), animated: false, completion: nil)
+        guard timerIsDone() else { return }
+        navigationController?.dismiss(animated: true)
     }
     
     func timerIsDone() -> Bool {
-        let alert = CreateAlertController().with(title: "",
-                                                 message: nil,
-                                                 actions: UIAlertAction(title: "Yes", style: .default, handler: { _ in
-                                                    self.present(HomeController(), animated: false, completion: nil)
-                                                 }),
-                                                 UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        if gameSessionView.timerLabel.text != "0:00" {
-            alert.title = "Are you sure you want to end the game?"
-        } else {
-            return true
-        }
-        self.present(alert, animated: true, completion: nil)
+        guard currentTimeLeft != 0 else { return true }
+        let alert = CreateAlertController().with(
+            title: "Are you sure you want to end the game?",
+            actions: UIAlertAction(
+                title: "Yes",
+                style: .default,
+                handler: { [weak self] _ in self?.navigationController?.dismiss(animated: true) }
+            ),
+            UIAlertAction(title: "Cancel", style: .cancel)
+        )
+        present(alert, animated: true)
         return false
     }
 

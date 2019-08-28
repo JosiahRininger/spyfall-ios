@@ -9,7 +9,7 @@
 import UIKit
 
 class CreateAlertController {
-    func with(title: String?, message: String?, preferredStyle: UIAlertController.Style = .alert, actions: UIAlertAction...) -> UIAlertController {
+    func with(title: String = "", message: String? = nil, preferredStyle: UIAlertController.Style = .alert, actions: UIAlertAction...) -> UIAlertController {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: preferredStyle)
         actions.forEach { alertController.addAction($0) }
         return alertController
