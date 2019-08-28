@@ -188,7 +188,7 @@ final class WaitingScreenController: UIViewController {
         nextScreen.currentUsername = currentUsername
         nextScreen.accessCode = self.accessCode
         nextScreen.chosenPacks = self.chosenPacks
-        present(nextScreen, animated: true, completion: nil)
+        navigationController?.pushViewController(nextScreen, animated: true)
     }
 
     func setUpKeyboard() {

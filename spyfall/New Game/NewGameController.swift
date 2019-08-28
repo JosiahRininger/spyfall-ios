@@ -62,7 +62,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         
         // Grab random location
         chosenPacks.shuffle()
-        db.collection(chosenPacks[0]).getDocuments { querySnapshot, err in
+        db.collection(chosenPacks[0]).getDocuments { [unowned self] querySnapshot, err in
             if let err = err {
                 print("Error getting documents: \(err)")
             } else {
@@ -94,7 +94,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
             let nextScreen = WaitingScreenController()
             nextScreen.currentUsername = self.newGameView.usernameTextField.text!
             nextScreen.accessCode = self.accessCode
-            self.present(nextScreen, animated: true, completion: nil)
+            self.navigationController?.pushViewController(nextScreen, animated: true)
         }
     }
 
