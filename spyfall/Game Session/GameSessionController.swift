@@ -24,6 +24,9 @@ final class GameSessionController: UIViewController {
     var accessCode = String()
     var chosenPacks = [String]()
     var firstPlayer = String()
+    private var currentTimeLeft: TimeInterval = 0
+    private let maxTimeInterval: TimeInterval = 10 * 60 // Minutes * Seconds
+    private var startDate: Date?
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
         didSet {
@@ -123,21 +126,33 @@ final class GameSessionController: UIViewController {
         self.present(alert, animated: true, completion: nil)
         return false
     }
-    
-    func setupTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { _ in
-            var minutes: Int = Int(String(self.gameSessionView.timerLabel.text?.split(separator: ":")[0] ?? "0")) ?? 0
-            var seconds: Int = Int(String(self.gameSessionView.timerLabel.text?.split(separator: ":")[1] ?? "0")) ?? 0
 
-            seconds = seconds == 0 ? 59 : seconds - 1
-            if seconds == 59 { minutes -= 1 }
+    private func string(fromTime interval: TimeInterval) -> String {
+        let interval = Int(interval)
+        let seconds = interval % 60
+        let minutes = (interval / 60) % 60
+        return String(format: "%01d:%02d", minutes, seconds)
+    }
 
-            self.gameSessionView.timerLabel.text = seconds > 9 ? "\(minutes):\(seconds)" : "\(minutes):0\(seconds)"
+    private func setupTimer() {
+        startDate = Date()
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            self?.updateGameSessionView()
+        }
+    }
 
-            if self.gameSessionView.timerLabel.text == "0:00" {
-                self.timer.invalidate()
-            }
-        })
+    private func updateGameSessionView() {
+        guard let startDate = startDate else { timer.invalidate(); return }
+        let interval = Date().timeIntervalSince(startDate)
+        currentTimeLeft = max(0, maxTimeInterval - interval)
+
+        if currentTimeLeft == 0 {
+            gameSessionView.timerLabel.text = "0:00"
+            timer.invalidate()
+            self.startDate = nil
+        } else {
+            gameSessionView.timerLabel.text = string(fromTime: currentTimeLeft)
+        }
     }
     
     func updateCollectionViews() {

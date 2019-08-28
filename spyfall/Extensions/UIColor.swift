@@ -59,9 +59,6 @@ extension UIColor {
     static let secondaryColor: UIColor = UIColor.colorSet.randomElement() ?? UIColor.blue
 }
 
-
-
-
 //
 //import UIKit
 //typealias ACTION = (() -> ())?
