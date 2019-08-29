@@ -25,7 +25,7 @@ final class GameSessionController: UIViewController {
     var chosenPacks = [String]()
     var firstPlayer = String()
     private var currentTimeLeft: TimeInterval = 0
-    private var maxTimeInterval: TimeInterval = Double()
+    private var maxTimeInterval: TimeInterval = TimeInterval()
     private var startDate: Date?
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
