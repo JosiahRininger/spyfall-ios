@@ -10,7 +10,7 @@ import Foundation
 import FirebaseDatabase
 import FirebaseFirestore
 
-class FirebaseManager {
+class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
     typealias LocationListHandler = ([String]) -> Void
     
@@ -25,7 +25,7 @@ class FirebaseManager {
             gameData.locationList = result
             gameDataReady[1] ? completion(gameData) : gameDataReady[0].toggle()
         })
-        db.collection(Constants.DBCollections.games).document(accessCode).getDocument { document, error in
+        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
             var gameObject = [String: Any]()
             if let document = document, document.exists {
                 gameObject = (document.data())!
@@ -73,6 +73,28 @@ class FirebaseManager {
                 } else {
                     for doc in querySnapshot!.documents {
                         locationList.append(doc.documentID as String) }
+                }
+                switch locationDataReady {
+                case chosenPacks.count: completion(locationList)
+                default: locationDataReady += 1
+                }
+            }
+        }
+    }
+    
+    static func RetrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
+        var locationList = [String]()
+        var locationDataReady = 1
+        
+        for pack in chosenPacks {
+            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, err in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    if let docs = querySnapshot!.data() {
+                        for doc in docs {
+                            locationList.append(doc.key) }
+                    }
                 }
                 switch locationDataReady {
                 case chosenPacks.count: completion(locationList)

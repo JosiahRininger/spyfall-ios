@@ -10,8 +10,11 @@ import Foundation
 
 extension Constants {
     /// Our firestore collection names
-    struct DBCollections {
+    struct DBStrings {
         static let games = "games"
         static let packs = "packs"
+        static let standardPackOne = "pack 1"
+        static let standardPackTwo = "pack 2"
+        static let specialPackOne = "special pack"
     }
 }

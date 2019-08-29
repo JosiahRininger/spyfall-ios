@@ -60,7 +60,7 @@ final class GameSessionController: UIViewController {
     }
     
     func callNetworkManager() {
-        FirebaseManager.retrieveGameData(accessCode: self.accessCode, currentUsername: self.currentUsername, chosenPacks: self.chosenPacks) { result in
+        FirestoreManager.retrieveGameData(accessCode: self.accessCode, currentUsername: self.currentUsername, chosenPacks: self.chosenPacks) { result in
             self.gameData = result
         }
     }

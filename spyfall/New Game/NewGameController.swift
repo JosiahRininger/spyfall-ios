@@ -46,9 +46,9 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         if !textFieldsAreValid() { return }
         // store selected location packs
         var chosenPacks = [String]()
-        if newGameView.packOneView.isChecked { chosenPacks.append("pack 1") }
-        if newGameView.packTwoView.isChecked { chosenPacks.append("pack 2") }
-        if newGameView.specialPackView.isChecked { chosenPacks.append("special pack") }
+        if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }
+        if newGameView.packTwoView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackTwo) }
+        if newGameView.specialPackView.isChecked { chosenPacks.append(Constants.DBStrings.specialPackOne) }
         
         // create Player object
         let newPlayer = newGameView.usernameTextField.text!
@@ -67,7 +67,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
                 print("Error getting documents: \(err)")
             } else {
                 let document = querySnapshot!.documents.randomElement()
-//                self.chosenLocation = document!.data()["location"] as! String
                 if let chosenLocation = document?.data()["location"] as? String {
                     self.chosenLocation = chosenLocation
                 }
@@ -78,7 +77,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
             }
             
             // Add a new document with a generated ID
-            db.collection("games").document(self.accessCode).setData([
+            db.collection(Constants.DBStrings.games).document(self.accessCode).setData([
                 "playerList": [newPlayer],
                 "timeLimit": self.timeLimit,
                 "started": false,
