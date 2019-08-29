@@ -44,14 +44,12 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         if let currentUsername = self.joinGameView.usernameTextField.text, let accessCode = self.joinGameView.accessCodeTextField.text {
             nextScreen.currentUsername = currentUsername
             nextScreen.accessCode = accessCode
-            self.present(nextScreen, animated: true, completion: nil)
+            navigationController?.pushViewController(nextScreen, animated: true)
         }
     }
     
     func textFieldsAreValid() -> Bool {
-        let alert = CreateAlertController().with(title: "",
-                                                 message: nil,
-                                                 actions: UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
         if joinGameView.usernameTextField.text?.isEmpty ?? true {
             alert.title = "Please enter a username"
         } else if joinGameView.usernameTextField.text?.count ?? 25 > 24 {
@@ -61,7 +59,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         } else {
             return true
         }
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true)
         return false
     }
     

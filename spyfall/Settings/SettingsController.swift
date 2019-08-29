@@ -16,6 +16,8 @@ final class SettingsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        settingsView.back.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
+        
         let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
         settingsView.infoView.addGestureRecognizer(infoTapGesture)
         
@@ -24,6 +26,10 @@ final class SettingsController: UIViewController {
     
     func setupView() {
         view = settingsView
+    }
+    
+    @objc func backTapped() {
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func infoTapped() {

@@ -99,9 +99,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldsAreValid() -> Bool {
-        let alert = CreateAlertController().with(title: "",
-                                                 message: nil,
-                                                 actions: UIAlertAction(title: "OK", style: .default, handler: nil))
+        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
         if newGameView.usernameTextField.text?.isEmpty ?? true {
             alert.title = "Please enter a username"
         } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
@@ -115,7 +113,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         } else {
             return true
         }
-        self.present(alert, animated: true, completion: nil)
+        self.present(alert, animated: true)
         return false
     }
     
@@ -123,9 +121,8 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         if Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 > 10 {
             newGameView.timeLimitTextField.text = ""
             let alert = CreateAlertController().with(title: "Please enter a time limit that is equal to or less than 10",
-                                                     message: nil,
-                                                     actions: UIAlertAction(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
+                                                     actions: UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
         }
     }
     
