@@ -49,14 +49,14 @@ extension UIColor {
     static let customRed: UIColor = .hexToColor(hexString: "#E3212F")
     
     // Set of all Secondary Color Options
-    static let colorSet: Set = [UIColor.customPurple,
-                                UIColor.customBlue,
-                                UIColor.customGreen,
-                                UIColor.customOrange,
-                                UIColor.customRed]
+    static let colors = ["purple": UIColor.customPurple,
+                         "blue": UIColor.customBlue,
+                         "green": UIColor.customGreen,
+                         "orange": UIColor.customOrange,
+                         "red": UIColor.customRed]
     
     // Secondary Color used throughout Application
-    static let secondaryColor: UIColor = UIColor.colorSet.randomElement() ?? UIColor.blue
+    static let secondaryColor: UIColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
 }
 
 //

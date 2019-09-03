@@ -26,9 +26,7 @@ class UserInfoView: UIView {
         let v = UIView()
         v.backgroundColor = .secondaryColor
         v.layer.cornerRadius = 14
-        v.layer.shadowRadius = 2
-        v.layer.shadowOffset = CGSize(width: 0, height: 2)
-        v.layer.shadowOpacity = 0.16
+        v.addShadowWith(radius: 2, offset: CGSize(width: 0, height: 2), opacity: 0.16)
         v.translatesAutoresizingMaskIntoConstraints = false
         
         return v

@@ -23,6 +23,8 @@
 		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
 		D70CF92322D3CC840093AB94 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70CF92222D3CC840093AB94 /* GameData.swift */; };
 		D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
+		D72DCD29231DA2C70075020D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD28231DA2C60075020D /* UIView.swift */; };
+		D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD2A231DBAC40075020D /* ColorsCell.swift */; };
 		D769B743231459BB003F05E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B742231459BB003F05E3 /* Constants.swift */; };
 		D769B74523145A59003F05E3 /* DBStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74423145A59003F05E3 /* DBStrings.swift */; };
 		D769B74723145BE3003F05E3 /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74623145BE3003F05E3 /* IDs.swift */; };
@@ -74,6 +76,8 @@
 		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
 		D70CF92222D3CC840093AB94 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		D726325E228CD60900E385E8 /* JoinGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameController.swift; sourceTree = "<group>"; };
+		D72DCD28231DA2C60075020D /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
+		D72DCD2A231DBAC40075020D /* ColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCell.swift; sourceTree = "<group>"; };
 		D769B742231459BB003F05E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D769B74423145A59003F05E3 /* DBStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStrings.swift; sourceTree = "<group>"; };
 		D769B74623145BE3003F05E3 /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
@@ -128,6 +132,7 @@
 			children = (
 				D704EB0822EC7D7B0083DA2A /* SettingsController.swift */,
 				D704EB0A22EC85AB0083DA2A /* SettingsView.swift */,
+				D72DCD2A231DBAC40075020D /* ColorsCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -157,8 +162,8 @@
 				D706256122586D3800A80B76 /* AppDelegate.swift */,
 				BF713A0123160B920045F8DC /* Localizable.strings */,
 				D7798B1022B86831006D7615 /* Extensions */,
-				D7E3D7B8230B8314007F7936 /* Custom Classes */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
+				D7E3D7B8230B8314007F7936 /* Custom Classes */,
 				D7FDF39D22ADAA9D00A65BCD /* Models */,
 				D706257622586D9500A80B76 /* Home */,
 				D704EB0722EC7CF70083DA2A /* Settings */,
@@ -204,9 +209,9 @@
 		D7798B0D22B866E5006D7615 /* Custom Managers */ = {
 			isa = PBXGroup;
 			children = (
-				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
 				D7798B1722B869AC006D7615 /* UIElementSizes.swift */,
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
+				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
 			);
 			path = "Custom Managers";
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 				D769B74A23145FA3003F05E3 /* Decodable.swift */,
 				D769B7502314764F003F05E3 /* UIImageView.swift */,
 				BF713A0323160C110045F8DC /* String.swift */,
+				D72DCD28231DA2C60075020D /* UIView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -229,14 +235,14 @@
 			isa = PBXGroup;
 			children = (
 				D769B7542316FBCA003F05E3 /* NavigationController.swift */,
-				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
+				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
+				D769B75223158B63003F05E3 /* CustomPopUpView.swift */,
 				D7A72D3722BED262005D1831 /* PackView.swift */,
 				D769B742231459BB003F05E3 /* Constants.swift */,
 				D769B74423145A59003F05E3 /* DBStrings.swift */,
 				D769B74623145BE3003F05E3 /* IDs.swift */,
 				D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */,
-				D769B75223158B63003F05E3 /* CustomPopUpView.swift */,
 			);
 			path = "Custom Classes";
 			sourceTree = "<group>";
@@ -418,6 +424,7 @@
 				D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D7030EEC22BBC3F1002CB9B2 /* AddSubview.swift in Sources */,
+				D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */,
 				D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D769B74923145F80003F05E3 /* Encodable.swift in Sources */,
@@ -447,6 +454,7 @@
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */,
 				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
 				BF713A0423160C110045F8DC /* String.swift in Sources */,
+				D72DCD29231DA2C70075020D /* UIView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  LineView.swift
+//  UIElementsManager.swift
 //  spyfall
 //
 //  Created by Josiah Rininger on 6/17/19.
@@ -65,9 +65,7 @@ enum UIElementsManager {
         b.setTitle(title, for: .normal)
         b.titleLabel?.font = .boldSystemFont(ofSize: 20)
         b.layer.cornerRadius = 30
-        b.layer.shadowRadius = 4
-        b.layer.shadowOffset = CGSize(width: 0, height: 4)
-        b.layer.shadowOpacity = 0.16
+        b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
         
@@ -86,9 +84,7 @@ enum UIElementsManager {
     static func createSettingsButton() -> UIButton {
         let b = UIButton()
         b.setBackgroundImage(UIImage(named: "Settings_Icon"), for: .normal)
-        b.layer.shadowRadius = 4
-        b.layer.shadowOffset = CGSize(width: 0, height: 4)
-        b.layer.shadowOpacity = 0.16
+        b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
         b.widthAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
@@ -109,9 +105,7 @@ enum UIElementsManager {
         pv.numberLabel.text = packNumberString
         pv.packNameLabel.text = packName
         pv.layer.cornerRadius = 9
-        pv.layer.shadowRadius = 4
-        pv.layer.shadowOffset = CGSize(width: 0, height: 4)
-        pv.layer.shadowOpacity = 0.16
+        pv.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         pv.isUserInteractionEnabled = true
         pv.translatesAutoresizingMaskIntoConstraints = false
         pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
@@ -135,9 +129,7 @@ enum UIElementsManager {
     static func createUserInfoView() -> UserInfoView {
         let uv = UserInfoView()
         uv.layer.cornerRadius = 9
-        uv.layer.shadowRadius = 4
-        uv.layer.shadowOffset = CGSize(width: 0, height: 4)
-        uv.layer.shadowOpacity = 0.16
+        uv.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         uv.isUserInteractionEnabled = true
         uv.translatesAutoresizingMaskIntoConstraints = false
         uv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true

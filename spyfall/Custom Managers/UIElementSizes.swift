@@ -32,6 +32,9 @@ struct UIElementSizes {
     static var pencilHeightAndWidth: CGFloat = 20
     static var settingsButtonHeightAndWidth: CGFloat = 35
     
+    static var colorWidth: CGFloat = windowWidth / 6
+    static var colorHeight: CGFloat = colorWidth * 0.84
+    
     static var iconHeightAndWidth: CGFloat = 50
     
     static var padding: CGFloat = 30

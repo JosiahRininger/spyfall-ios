@@ -14,19 +14,28 @@ class SettingsView: UIView {
     
     var settingsStackView = UIElementsManager.createStackView()
     
-    var infoView = UIElementsManager.createView()
     var colorView = UIElementsManager.createView()
+    var infoView = UIElementsManager.createView()
     var adView = UIElementsManager.createView()
     
-    var infoImageView = UIElementsManager.createImageView(with: "info_icon")
     var colorImageView = UIElementsManager.createImageView(with: "color_icon")
+    var infoImageView = UIElementsManager.createImageView(with: "info_icon")
     var adImageView = UIElementsManager.createImageView(with: "ad_icon")
     
-    var infoLabel = UIElementsManager.createLabel(with: "Info", fontSize: 30, isHeader: true)
-    var colorLabel = UIElementsManager.createLabel(with: "Color", fontSize: 30, isHeader: true)
+    var colorLabel = UIElementsManager.createLabel(with: "Theme", fontSize: 30, isHeader: true)
+    var infoLabel = UIElementsManager.createLabel(with: "About", fontSize: 30, isHeader: true)
     var adLabel = UIElementsManager.createLabel(with: "Ad", fontSize: 30, isHeader: true)
     
     var back = UIElementsManager.createButton(with: "Back", color: .white)
+    
+    lazy var colorPopUpView = CustomPopUpView(frame: .zero, title: "Change Theme", twoButtons: true)
+    lazy var colorsCollectionView = UIElementsManager.createCollectionView()
+    
+    lazy var infoPopUpView = CustomPopUpView(frame: .zero, title: "Info about Creators")
+    lazy var summaryLabel = UIElementsManager.createLabel(with: "This is a summary about Josiah Rininger and Eli Dangerfield, the creators of Spyfall!", fontSize: 14)
+    
+    lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "Remove Ads?", twoButtons: true)
+    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Would you like to upgrade Spyfall to remove all ads?", fontSize: 14)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,15 +51,22 @@ class SettingsView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
+        colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCellId)
+        
         addSubview(settingsLabel)
         addSubviews(settingsLabel, settingsStackView, back)
-        infoView.addSubviews(infoImageView, infoLabel)
         colorView.addSubviews(colorImageView, colorLabel)
+        infoView.addSubviews(infoImageView, infoLabel)
         adView.addSubviews(adImageView, adLabel)
-        settingsStackView.addArrangedSubview(infoView)
         settingsStackView.addArrangedSubview(colorView)
+        settingsStackView.addArrangedSubview(infoView)
         settingsStackView.addArrangedSubview(adView)
         setupConstraints()
+        
+        addSubviews(colorPopUpView, infoPopUpView, adPopUpView)
+        setupColorPopUpView()
+        setupInfoPopUpView()
+        setupAdPopUpView()
     }
     
     func setupConstraints() {
@@ -63,14 +79,6 @@ class SettingsView: UIView {
             settingsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             settingsStackView.heightAnchor.constraint(equalToConstant: UIElementSizes.windowHeight / 3),
             
-            infoImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
-            infoImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
-            infoImageView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
-            infoImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor),
-            infoLabel.centerYAnchor.constraint(equalTo: infoImageView.centerYAnchor),
-            infoLabel.leadingAnchor.constraint(equalTo: infoImageView.trailingAnchor, constant: 16),
-            infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -8),
-            
             colorImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
             colorImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
             colorImageView.centerYAnchor.constraint(equalTo: colorView.centerYAnchor),
@@ -78,6 +86,14 @@ class SettingsView: UIView {
             colorLabel.centerYAnchor.constraint(equalTo: colorImageView.centerYAnchor),
             colorLabel.leadingAnchor.constraint(equalTo: colorImageView.trailingAnchor, constant: 16),
             colorLabel.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -8),
+            
+            infoImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
+            infoImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
+            infoImageView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
+            infoImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor),
+            infoLabel.centerYAnchor.constraint(equalTo: infoImageView.centerYAnchor),
+            infoLabel.leadingAnchor.constraint(equalTo: infoImageView.trailingAnchor, constant: 16),
+            infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -8),
             
             adImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
             adImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
@@ -94,4 +110,24 @@ class SettingsView: UIView {
             ])
     }
     
+    func setupColorPopUpView() {
+        colorPopUpView.addSubview(colorsCollectionView)
+        
+        NSLayoutConstraint.activate([
+            colorsCollectionView.topAnchor.constraint(equalTo: colorPopUpView.titleLabel.bottomAnchor, constant: 5),
+            colorsCollectionView.leadingAnchor.constraint(equalTo: colorPopUpView.popUpView.leadingAnchor, constant: 10),
+            colorsCollectionView.trailingAnchor.constraint(equalTo: colorPopUpView.popUpView.trailingAnchor, constant: -10),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: 200),//CGFloat(4 / (UIColor.colors.count + 1)) * CGFloat(UIElementSizes.colorHeight + 20)),
+            
+            colorPopUpView.doneButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 10)
+            ])
+    }
+    
+    func setupInfoPopUpView() {
+        
+    }
+    
+    func setupAdPopUpView() {
+        
+    }
 }
