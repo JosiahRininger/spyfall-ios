@@ -44,6 +44,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     
     @objc func createGameAction() {
         if !textFieldsAreValid() { return }
+        newGameView.create.isUserInteractionEnabled = false
         // store selected location packs
         var chosenPacks = [String]()
         if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }

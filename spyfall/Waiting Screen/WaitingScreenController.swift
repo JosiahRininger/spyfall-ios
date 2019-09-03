@@ -68,6 +68,7 @@ final class WaitingScreenController: UIViewController {
         if isStarted == true {
             return
         } else {
+            waitingScreenView.startGame.isUserInteractionEnabled = false
             // Set isStarted to true
             isStarted = true
             db.collection(Constants.DBStrings.games).document(accessCode).updateData(["started": true]) { err in
@@ -80,23 +81,10 @@ final class WaitingScreenController: UIViewController {
             
             var roles = [String]()
             
-            db.collection(chosenPacks[0]).document(chosenLocation).getDocument { document, error in
-                if let document = document, document.exists {
-                    let dataDescription = document.data().map(String.init(describing:)) ?? "nil"
-                    print("*", dataDescription)
-                    print("Document data: \(dataDescription)")
-                }
-                if error != nil {
-                    print("Document does not exist")
-                }
-                print("*", document?["roles"] ?? "0")
-                guard let rolesList = document?["roles"] as? [String] else {
-                    print("Error writing document")
-                    return
-                }
+            FirestoreManager.retrieveRoles(chosenPack: chosenPacks[0], chosenLocation: chosenLocation) { result in
                 
                 // Assigns each player a role
-                roles = rolesList
+                roles = result
                 self.playerList.shuffle()
                 roles.shuffle()
                 for i in 0..<(self.playerList.count - 1) {

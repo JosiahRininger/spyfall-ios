@@ -1,5 +1,5 @@
 //
-//  FirebaseManager.swift
+//  FirestoreManager.swift
 //  spyfall
 //
 //  Created by Josiah Rininger on 6/19/19.
@@ -13,18 +13,18 @@ import FirebaseFirestore
 class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
     typealias LocationListHandler = ([String]) -> Void
+    typealias RolesHandler = ([String]) -> Void
     
     static let db = Firestore.firestore()
     
     static func retrieveGameData(accessCode: String, currentUsername: String, chosenPacks: [String], completion: @escaping GameDataHandler) {
-        
         var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String]())
         var gameDataReady = [false, false]
         
-        retrieveLocationList(chosenPacks: chosenPacks, completion: { result in
+        retrieveLocationList(chosenPacks: chosenPacks) { result in
             gameData.locationList = result
             gameDataReady[1] ? completion(gameData) : gameDataReady[0].toggle()
-        })
+        }
         db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
             var gameObject = [String: Any]()
             if let document = document, document.exists {
@@ -67,12 +67,15 @@ class FirestoreManager {
         var locationDataReady = 1
         
         for pack in chosenPacks {
-            self.db.collection(pack).getDocuments { querySnapshot, err in
+            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, err in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
-                    for doc in querySnapshot!.documents {
-                        locationList.append(doc.documentID as String) }
+                    if let docs = querySnapshot!.data() {
+                        for doc in docs {
+                            locationList.append(doc.key)
+                        }
+                    }
                 }
                 switch locationDataReady {
                 case chosenPacks.count: completion(locationList)
@@ -82,25 +85,19 @@ class FirestoreManager {
         }
     }
     
-    static func RetrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
-        var locationList = [String]()
-        var locationDataReady = 1
-        
-        for pack in chosenPacks {
-            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, err in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    if let docs = querySnapshot!.data() {
-                        for doc in docs {
-                            locationList.append(doc.key) }
+    static func retrieveRoles(chosenPack: String, chosenLocation: String, completion: @escaping RolesHandler) {
+        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
+            var roles = [String]()
+            if let error = error {
+                print("Error getting documents: \(error)")
+            } else {
+                if let docs = querySnapshot!.data() as? [String: [String]] {
+                    for doc in docs where doc.key == chosenLocation {
+                        roles = doc.value
                     }
                 }
-                switch locationDataReady {
-                case chosenPacks.count: completion(locationList)
-                default: locationDataReady += 1
-                }
             }
+            completion(roles)
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  DBCollections.swift
+//  DBStrings.swift
 //  spyfall
 //
 //  Created by Josiah Rininger on 8/26/19.
@@ -13,8 +13,8 @@ extension Constants {
     struct DBStrings {
         static let games = "games"
         static let packs = "packs"
-        static let standardPackOne = "pack 1"
-        static let standardPackTwo = "pack 2"
-        static let specialPackOne = "special pack"
+        static let standardPackOne = "Standard Pack 1"
+        static let standardPackTwo = "Standard Pack 2"
+        static let specialPackOne = "Special Pack 1"
     }
 }

@@ -20,9 +20,7 @@ class HomeView: UIView {
     
     var infoView: UIView = {
         var v = UIElementsManager.createCircleView()
-        v.layer.shadowRadius = 3
-        v.layer.shadowOffset = CGSize(width: 0, height: 3)
-        v.layer.shadowOpacity = 0.16
+        v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
         
         var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .primaryWhite, isHeader: true)
         v.addSubview(i)
