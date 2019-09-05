@@ -11,13 +11,13 @@ import UIKit
 class WaitingScreenView: UIView {
     
     var waitingForPlayersLabel: UILabel = {
-        let l = UIElementsManager.createLabel(with: "Waiting for players...", fontSize: 40, isHeader: true)
+        let l = UIElementsManager.createLabel(with: "Waiting for players...", fontSize: 40, textAlignment: .center, isHeader: true)
         l.textAlignment = .left
         
         return l
     }()
     
-    var accessCodeLabel = UIElementsManager.createLabel(with: "access code", fontSize: 19, isHeader: true)
+    var accessCodeLabel = UIElementsManager.createLabel(with: "access code", fontSize: 19, textAlignment: .center, isHeader: true)
     var codeLabel = UIElementsManager.createLabel(with: "", fontSize: 18)
         
     var tableHeight = NSLayoutConstraint()

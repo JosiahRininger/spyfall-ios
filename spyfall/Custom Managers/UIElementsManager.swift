@@ -12,12 +12,13 @@ import Lottie
 
 enum UIElementsManager {
     
-    static func createLabel(with title: String, fontSize: CGFloat, color: UIColor = .black, isHeader: Bool = false) -> UILabel {
+    static func createLabel(with title: String, fontSize: CGFloat, numberOfLines: Int = 1, color: UIColor = .black, textAlignment: NSTextAlignment = .natural, isHeader: Bool = false) -> UILabel {
         let l = UILabel()
         l.text = title
         l.textColor = color
-        l.textAlignment = isHeader ? .center : .natural
+        l.textAlignment = textAlignment
         l.font = isHeader ? .boldSystemFont(ofSize: fontSize) : .systemFont(ofSize: fontSize)
+        l.numberOfLines = numberOfLines
         l.adjustsFontSizeToFitWidth = true
         l.translatesAutoresizingMaskIntoConstraints = false
         
@@ -58,8 +59,8 @@ enum UIElementsManager {
         return t
     }
     
-    static func createButton(with title: String, color: UIColor = .secondaryColor) -> UIButton {
-        let b = UIButton()
+    static func createButton(with title: String, color: UIColor = .secondaryColor) -> Button {
+        let b = Button()
         b.backgroundColor = color
         b.setTitleColor(color != .white ? .primaryWhite : .black, for: .normal)
         b.setTitle(title, for: .normal)
@@ -81,8 +82,8 @@ enum UIElementsManager {
         return imageView
     }
     
-    static func createSettingsButton() -> UIButton {
-        let b = UIButton()
+    static func createSettingsButton() -> Button {
+        let b = Button()
         b.setBackgroundImage(UIImage(named: "Settings_Icon"), for: .normal)
         b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
@@ -92,11 +93,12 @@ enum UIElementsManager {
         return b
     }
     
-    static func createView() -> UIView {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
+    static func createView(isUserInteractionEnabled: Bool = false) -> UIView {
+        let v = UIView()
+        v.isUserInteractionEnabled = isUserInteractionEnabled
+        v.translatesAutoresizingMaskIntoConstraints = false
         
-        return view
+        return v
     }
     
     static func createPackView(packColor: UIColor, packNumberString: String, packName: String) -> PackView {

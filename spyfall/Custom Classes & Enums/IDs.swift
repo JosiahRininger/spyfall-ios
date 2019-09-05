@@ -13,6 +13,7 @@ extension Constants {
     struct IDs {
         static let playerListCellId = "playerListCellId"
         static let playersCollectionViewCellId = "playersCollectionViewCellId"
-        static let colorsCellId = "colorsCellId"
+        static let locationsCollectionViewCellId = "locationsCollectionViewCellId"
+        static let colorsCollectionViewCellId = "colorsCollectionViewCellId"
     }
 }

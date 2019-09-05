@@ -192,7 +192,7 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
             return cell
             
         default:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: gameSessionView.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else { return UICollectionViewCell() }
             cell.configure(location: locationList[indexPath.row])
             return cell
             

@@ -33,6 +33,7 @@ extension UIColor {
         return color
     }
     
+    // Theme Colors Used
     static let primaryWhite: UIColor = .hexToColor(hexString: "#FCFCFC")
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let textGray: UIColor = .hexToColor(hexString: "#585858")
@@ -49,65 +50,12 @@ extension UIColor {
     static let customRed: UIColor = .hexToColor(hexString: "#E3212F")
     
     // Set of all Secondary Color Options
-    static let colors = ["purple": UIColor.customPurple,
-                         "blue": UIColor.customBlue,
-                         "green": UIColor.customGreen,
-                         "orange": UIColor.customOrange,
-                         "red": UIColor.customRed]
+    static let colors = [ColorOptions.purple.rawValue: UIColor.customPurple,
+                         ColorOptions.blue.rawValue: UIColor.customBlue,
+                         ColorOptions.green.rawValue: UIColor.customGreen,
+                         ColorOptions.orange.rawValue: UIColor.customOrange,
+                         ColorOptions.red.rawValue: UIColor.customRed]
     
     // Secondary Color used throughout Application
-    static let secondaryColor: UIColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
+    static var secondaryColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
 }
-
-//
-//import UIKit
-//typealias ACTION = (() -> ())?
-//
-////final such that swift compiler doesnt use dynamic dispatch, performance increase
-//final class ActionButton: UIButton {
-//
-//    var action: ACTION = nil
-//    var callback: ((Bool) -> ())?
-//
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        setupButton()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        setupButton()
-//    }
-//
-//    func setupButton() {
-//        addTarget(self, action: #selector(handleAction), for: .touchUpInside)
-//        setShadow()
-//        setTitleColor(UIColor.white, for: .normal)
-//        backgroundColor = UIColor.blue
-//        titleLabel?.font = UIFont(name: "AvenirNext-DemiBold", size: 18)
-//    }
-//
-//    @objc
-//    func handleAction() {
-//        action?()
-//    }
-//
-//    //    @objc
-//    //    func handleActionTwo() {
-//    //        callback?(true)
-//    //    }
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        //have to set this here as the height is not known until this callback
-//        layer.cornerRadius = bounds.height / 2.0
-//    }
-//
-//    private func setShadow() {
-//        layer.shadowColor = UIColor.black.cgColor
-//        layer.shadowOffset = CGSize(width: 0.0, height: 6.0)
-//        layer.shadowRadius = 8
-//        layer.shadowOpacity = 0.5
-//        clipsToBounds = true
-//        layer.masksToBounds = false
-//    }
-//}

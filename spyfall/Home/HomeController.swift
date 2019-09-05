@@ -21,6 +21,13 @@ final class HomeController: UIViewController {
         
         setupView()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        homeView.infoView.backgroundColor = .secondaryColor
+        homeView.rulesLabel.textColor = .secondaryColor
+        homeView.joinGame.backgroundColor = .secondaryColor
+    }
 
     private func setupView() {
         

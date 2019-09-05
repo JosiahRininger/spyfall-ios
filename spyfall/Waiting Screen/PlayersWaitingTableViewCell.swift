@@ -21,7 +21,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
         return view
     }()
 
-    var rowNumberLabel = UIElementsManager.createLabel(with: "", fontSize: 19, isHeader: true)
+    var rowNumberLabel = UIElementsManager.createLabel(with: "", fontSize: 19, textAlignment: .center, isHeader: true)
 
     var usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16, color: .textGray)
     

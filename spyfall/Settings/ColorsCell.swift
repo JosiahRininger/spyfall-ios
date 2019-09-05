@@ -12,22 +12,32 @@ import Lottie
 class ColorsCell: UICollectionViewCell {
     
     var cellBackgroundView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 9
-        view.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
-        view.layer.masksToBounds = false
-        view.isUserInteractionEnabled = true
-        view.translatesAutoresizingMaskIntoConstraints = false
+        let v = UIView()
+        v.layer.cornerRadius = 9
+        v.backgroundColor = .white
+        v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
+        v.layer.masksToBounds = false
+        v.translatesAutoresizingMaskIntoConstraints = false
         
-        return view
+        return v
     }()
     
-    var label = UIElementsManager.createLabel(with: "", fontSize: 18, color: .textGray)
+    var contentsLayer: UIView = {
+        let v = UIView()
+        v.layer.cornerRadius = 9
+        v.clipsToBounds = true
+        v.translatesAutoresizingMaskIntoConstraints = false
+        
+        return v
+    }()
+    
+    var label = UIElementsManager.createLabel(with: "", fontSize: 12, numberOfLines: 2, color: .textGray, textAlignment: .center)
     
     var checkAnimationView: AnimationView = {
         let av = AnimationView(name: "check_animation")
         av.animationSpeed = 2.0
         av.tintColor = .secondaryColor
+//        av.isUserInteractionEnabled = true
         av.translatesAutoresizingMaskIntoConstraints = false
         
         return av
@@ -44,13 +54,14 @@ class ColorsCell: UICollectionViewCell {
     }()
     
     //bool propety
-    @IBInspectable var isChecked: Bool = false {
+    var isChecked: Bool = false {
         didSet {
-            if self.isChecked {
+            switch self.isChecked {
+            case true:
                 checkAnimationView.isHidden = false
                 checkAnimationView.play()
                 transparentView.isHidden = false
-            } else {
+            case false:
                 checkAnimationView.isHidden = true
                 checkAnimationView.stop()
                 transparentView.isHidden = true
@@ -73,12 +84,14 @@ class ColorsCell: UICollectionViewCell {
         backgroundColor = .primaryWhite
         
         addSubview(cellBackgroundView)
-        cellBackgroundView.addSubview(label)
+        cellBackgroundView.addSubview(contentsLayer)
+        contentsLayer.addSubviews(label, transparentView, checkAnimationView)
         setupConstraints()
     }
     
-    func configure(color: UIColor, label: String = "") {
+    func configure(color: UIColor = .white, labelText: String = "") {
         cellBackgroundView.backgroundColor = color
+        self.label.text = labelText
     }
     
     private func setupConstraints() {
@@ -88,8 +101,14 @@ class ColorsCell: UICollectionViewCell {
             cellBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             cellBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
             
+            contentsLayer.topAnchor.constraint(equalTo: cellBackgroundView.topAnchor),
+            contentsLayer.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor),
+            contentsLayer.trailingAnchor.constraint(equalTo: cellBackgroundView.trailingAnchor),
+            contentsLayer.bottomAnchor.constraint(equalTo: cellBackgroundView.bottomAnchor),
+            
             label.centerXAnchor.constraint(equalTo: centerXAnchor),
             label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            label.widthAnchor.constraint(equalTo: cellBackgroundView.widthAnchor),
             
             transparentView.leadingAnchor.constraint(equalTo: leadingAnchor),
             transparentView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -99,7 +118,7 @@ class ColorsCell: UICollectionViewCell {
             checkAnimationView.leadingAnchor.constraint(equalTo: leadingAnchor),
             checkAnimationView.trailingAnchor.constraint(equalTo: trailingAnchor),
             checkAnimationView.topAnchor.constraint(equalTo: topAnchor),
-            checkAnimationView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            checkAnimationView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
     }
     
