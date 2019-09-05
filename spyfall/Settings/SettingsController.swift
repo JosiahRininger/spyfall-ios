@@ -17,7 +17,7 @@ final class SettingsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        UIColor.colors.forEach { colors.append($0.value) }
+        getColors()
         retrieveSavedColor()
         
         settingsView.colorsCollectionView.delegate = self
@@ -46,12 +46,16 @@ final class SettingsController: UIViewController {
             UIColor.secondaryColor = self?.retrieveSavedColor() ?? UIColor.blue
             self?.settingsView.colorPopUpView.doneButton.backgroundColor = .secondaryColor
             self?.settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
+            self?.settingsView.emailLabel.textColor = .secondaryColor
             self?.settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
         }
         
         // Sets up the actions around the info pop up
         let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
         settingsView.infoView.addGestureRecognizer(infoTapGesture)
+        let emailTapGesture = UITapGestureRecognizer(target: self, action: #selector(emailTapped))
+        settingsView.emailLabel.isUserInteractionEnabled = true
+        settingsView.emailLabel.addGestureRecognizer(emailTapGesture)
         settingsView.infoPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
         
         // Sets up the actions around the remove ad pop up
@@ -76,13 +80,23 @@ final class SettingsController: UIViewController {
         settingsView.infoPopUpView.isHidden = false
     }
     
+    @objc func emailTapped() {
+        if let text = settingsView.emailLabel.text, let url = URL(string: "mailto:\(text)") {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
+    
     @objc func adTapped() {
         settingsView.settingsStackView.isUserInteractionEnabled = false
         settingsView.back.isUserInteractionEnabled = false
         settingsView.adPopUpView.isHidden = false
     }
     
-    private func retrieveSavedColor() -> UIColor {
+    @discardableResult private func retrieveSavedColor() -> UIColor {
         guard let colorString = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.secondaryColor) as? String else { return UIColor.clear }
         switch colorString {
         case ColorOptions.purple.rawValue: selectedColor = .customPurple
@@ -104,7 +118,15 @@ final class SettingsController: UIViewController {
         self.settingsView.adPopUpView.isHidden = true
     }
     
-    fileprivate func checkUserDefaults() {
+    private func getColors() {
+        colors.append(.customPurple)
+        colors.append(.customBlue)
+        colors.append(.customGreen)
+        colors.append(.customOrange)
+        colors.append(.customRed)
+    }
+    
+    private func checkUserDefaults() {
         if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
             switch selectedColor {
             case .customPurple:
