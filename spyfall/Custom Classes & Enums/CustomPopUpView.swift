@@ -24,12 +24,12 @@ class CustomPopUpView: UIView {
         return v
     }()
 
-    lazy var titleLabel = UIElementsManager.createLabel(with: "", fontSize: 30, isHeader: true)
+    lazy var titleLabel = UIElementsManager.createLabel(with: "", fontSize: 30, textAlignment: .center, isHeader: true)
     
-    lazy var contentsView = UIElementsManager.createView()
+    lazy var contentsView = UIElementsManager.createView(isUserInteractionEnabled: true)
     
-    lazy var cancelButton = UIElementsManager.createButton(with: "Cancel", color: .white)
-    lazy var doneButton = UIElementsManager.createButton(with: "OK")
+    lazy var cancelButton = UIElementsManager.createButton(with: "", color: .white)
+    lazy var doneButton = UIElementsManager.createButton(with: "")
     
     init(frame: CGRect, title: String, twoButtons: Bool = false) {
         super.init(frame: frame)
@@ -48,7 +48,7 @@ class CustomPopUpView: UIView {
         backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
         
         isHidden = true
-        isUserInteractionEnabled = false
+        isUserInteractionEnabled = true
         
         addSubviews(popUpView)
         popUpView.addSubviews(titleLabel, contentsView, doneButton)

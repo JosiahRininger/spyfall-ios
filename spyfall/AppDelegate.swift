@@ -17,6 +17,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
+        
+        if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
+            switch colorString {
+            case ColorOptions.purple.rawValue: UIColor.secondaryColor = UIColor.customPurple
+            case ColorOptions.blue.rawValue: UIColor.secondaryColor = UIColor.customBlue
+            case ColorOptions.green.rawValue: UIColor.secondaryColor = UIColor.customGreen
+            case ColorOptions.orange.rawValue: UIColor.secondaryColor = UIColor.customOrange
+            case ColorOptions.red.rawValue: UIColor.secondaryColor = UIColor.customRed
+            case ColorOptions.random.rawValue: UIColor.secondaryColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
+            default: print("Could not correctly")
+            }
+        } else {
+            UserDefaults.standard.set("random", forKey: Constants.UserDefaultKeys.secondaryColor)
+            UIColor.secondaryColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
+        }
+        
         window?.rootViewController = NavigationController(rootViewController: HomeController())
         
         FirebaseApp.configure()

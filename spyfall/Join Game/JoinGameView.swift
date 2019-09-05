@@ -10,12 +10,12 @@ import UIKit
 
 class JoinGameView: UIView {
     
-    var joinGameLabel = UIElementsManager.createLabel(with: "Join Game", fontSize: 40, isHeader: true)
+    var joinGameLabel = UIElementsManager.createLabel(with: "Join Game", fontSize: 40, textAlignment: .center, isHeader: true)
 
-    var usernameLabel = UIElementsManager.createLabel(with: "Enter a username:", fontSize: 24, isHeader: true)
+    var usernameLabel = UIElementsManager.createLabel(with: "Enter a username:", fontSize: 24, textAlignment: .center, isHeader: true)
     var usernameTextField = UIElementsManager.createTextField(with: "Username")
     
-    var accessCodeLabel = UIElementsManager.createLabel(with: "Enter an access code:", fontSize: 24, isHeader: true)
+    var accessCodeLabel = UIElementsManager.createLabel(with: "Enter an access code:", fontSize: 24, textAlignment: .center, isHeader: true)
     var accessCodeTextField = UIElementsManager.createTextField(with: "Access code")
     
     var back = UIElementsManager.createButton(with: "Back", color: .white)

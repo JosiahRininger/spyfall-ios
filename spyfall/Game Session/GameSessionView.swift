@@ -10,18 +10,17 @@ import UIKit
 
 class GameSessionView: UIView {
     
-    var timerLabel = UIElementsManager.createLabel(with: "8:00", fontSize: 48, isHeader: true)
+    var timerLabel = UIElementsManager.createLabel(with: "8:00", fontSize: 48, textAlignment: .center, isHeader: true)
     
     var userInfoView = UIElementsManager.createUserInfoView()
     
-    var playersLabel = UIElementsManager.createLabel(with: "Players:", fontSize: 24, isHeader: true)
+    var playersLabel = UIElementsManager.createLabel(with: "Players:", fontSize: 24, textAlignment: .center, isHeader: true)
     
     var playersCollectionHeight = NSLayoutConstraint()
     var playersCollectionView = UIElementsManager.createCollectionView()
     
-    var locationsLabel = UIElementsManager.createLabel(with: "Locations:", fontSize: 24, isHeader: true)
+    var locationsLabel = UIElementsManager.createLabel(with: "Locations:", fontSize: 24, textAlignment: .center, isHeader: true)
     
-    let locationsCollectionViewCellId: String = "locationsCollectionViewCellId"
     var locationsCollectionHeight = NSLayoutConstraint()
     var locationsCollectionView = UIElementsManager.createCollectionView()
     
@@ -45,7 +44,7 @@ class GameSessionView: UIView {
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)
         
         playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.playersCollectionViewCellId)
-        locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: locationsCollectionViewCellId)
+        locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.locationsCollectionViewCellId)
         
         addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)
         setupConstraints()

@@ -11,24 +11,19 @@ import UIKit
 final class SettingsController: UIViewController {
 
     var settingsView = SettingsView()
-    var colors = [UIColor]()
-    var selectedColor = UIColor()
+    var colors: [UIColor] = []
+    var selectedColor = UIColor.clear
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         UIColor.colors.forEach { colors.append($0.value) }
+        retrieveSavedColor()
         
         settingsView.colorsCollectionView.delegate = self
         settingsView.colorsCollectionView.dataSource = self
         
-        settingsView.back.addTarget(self, action: #selector(backTapped), for: .touchUpInside)
-        let colorTapGesture = UITapGestureRecognizer(target: self, action: #selector(colorTapped))
-        settingsView.colorView.addGestureRecognizer(colorTapGesture)
-        let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
-        settingsView.infoView.addGestureRecognizer(infoTapGesture)
-        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(adTapped))
-        settingsView.adView.addGestureRecognizer(adTapGesture)
-        
+        setupButtonActions()
         setupView()
     }
     
@@ -36,22 +31,110 @@ final class SettingsController: UIViewController {
         view = settingsView
     }
     
-    @objc func backTapped() {
-        navigationController?.popViewController(animated: true)
+    private func setupButtonActions() {
+        settingsView.back.touchUpInside = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        
+        // Sets up the actions around the color pop up
+        let colorTapGesture = UITapGestureRecognizer(target: self, action: #selector(colorTapped))
+        settingsView.colorView.addGestureRecognizer(colorTapGesture)
+        settingsView.colorPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        settingsView.colorPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.resetViews()
+            self?.checkUserDefaults()
+            UIColor.secondaryColor = self?.retrieveSavedColor() ?? UIColor.blue
+            self?.settingsView.colorPopUpView.doneButton.backgroundColor = .secondaryColor
+            self?.settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
+            self?.settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
+        }
+        
+        // Sets up the actions around the info pop up
+        let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
+        settingsView.infoView.addGestureRecognizer(infoTapGesture)
+        settingsView.infoPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
+        
+        // Sets up the actions around the remove ad pop up
+        let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(adTapped))
+        settingsView.adView.addGestureRecognizer(adTapGesture)
+        settingsView.adPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        settingsView.adPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.resetViews()
+        }
     }
     
     @objc func colorTapped() {
+        settingsView.settingsStackView.isUserInteractionEnabled = false
+        settingsView.back.isUserInteractionEnabled = false
+        selectedColor = retrieveSavedColor()
         settingsView.colorPopUpView.isHidden = false
     }
     
     @objc func infoTapped() {
+        settingsView.settingsStackView.isUserInteractionEnabled = false
+        settingsView.back.isUserInteractionEnabled = false
         settingsView.infoPopUpView.isHidden = false
     }
     
     @objc func adTapped() {
+        settingsView.settingsStackView.isUserInteractionEnabled = false
+        settingsView.back.isUserInteractionEnabled = false
         settingsView.adPopUpView.isHidden = false
     }
-
+    
+    private func retrieveSavedColor() -> UIColor {
+        guard let colorString = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.secondaryColor) as? String else { return UIColor.clear }
+        switch colorString {
+        case ColorOptions.purple.rawValue: selectedColor = .customPurple
+        case ColorOptions.blue.rawValue: selectedColor = .customBlue
+        case ColorOptions.green.rawValue: selectedColor = .customGreen
+        case ColorOptions.orange.rawValue: selectedColor = .customOrange
+        case ColorOptions.red.rawValue: selectedColor = .customRed
+        case ColorOptions.random.rawValue: selectedColor = .white; return UIColor.colors.randomElement()?.value ?? UIColor.blue
+        default: return UIColor.colors.randomElement()?.value ?? UIColor.blue
+        }
+        return selectedColor
+    }
+    
+    private func resetViews() {
+        self.settingsView.settingsStackView.isUserInteractionEnabled = true
+        self.settingsView.back.isUserInteractionEnabled = true
+        self.settingsView.colorPopUpView.isHidden = true
+        self.settingsView.infoPopUpView.isHidden = true
+        self.settingsView.adPopUpView.isHidden = true
+    }
+    
+    fileprivate func checkUserDefaults() {
+        if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
+            switch selectedColor {
+            case .customPurple:
+                if colorString != ColorOptions.purple.rawValue {
+                    UserDefaults.standard.set(ColorOptions.purple.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            case .customBlue:
+                if colorString != ColorOptions.blue.rawValue {
+                    UserDefaults.standard.set(ColorOptions.blue.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            case .customGreen:
+                if colorString != ColorOptions.green.rawValue {
+                    UserDefaults.standard.set(ColorOptions.green.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            case .customOrange:
+                if colorString != ColorOptions.orange.rawValue {
+                    UserDefaults.standard.set(ColorOptions.orange.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            case .customRed:
+                if colorString != ColorOptions.red.rawValue {
+                    UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            case .white:
+                if colorString != ColorOptions.random.rawValue {
+                    UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+                }
+            default: print("Could not correctly retrieve user default")
+            }
+        }
+    }
 }
 
 extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSource {
@@ -61,18 +144,19 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.colorsCellId, for: indexPath) as? ColorsCell else { return UICollectionViewCell() }
-        cell.configure(color: colors[indexPath.row])
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.colorsCollectionViewCellId, for: indexPath) as? ColorsCell else { return UICollectionViewCell() }
+        indexPath.row < colors.count ? cell.configure(color: colors[indexPath.row]) : cell.configure(labelText: "Random Color")
         cell.isChecked = selectedColor == cell.cellBackgroundView.backgroundColor
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = settingsView.colorsCollectionView.cellForItem(at: indexPath) as? ColorsCell
-        cell?.isChecked = true
-        selectedColor = selectedColor == cell?.cellBackgroundView.backgroundColor ? UIColor() : cell?.cellBackgroundView.backgroundColor ?? UIColor()
-        collectionView.reloadData()
-//        UserDefaults.set
+        guard let cell = settingsView.colorsCollectionView.cellForItem(at: indexPath) as? ColorsCell else { return }
+        if cell.isChecked != true {
+            cell.isChecked = true
+            selectedColor = cell.cellBackgroundView.backgroundColor ?? UIColor.clear
+            collectionView.reloadData()
+        }
     }
 }
 

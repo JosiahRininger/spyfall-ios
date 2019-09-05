@@ -32,9 +32,9 @@ class UserInfoView: UIView {
         return v
     }()
     
-    var roleLabel = UIElementsManager.createLabel(with: "Role: ", fontSize: 24, isHeader: true)
+    var roleLabel = UIElementsManager.createLabel(with: "Role: ", fontSize: 24, textAlignment: .center, isHeader: true)
     var locationLabel = UIElementsManager.createLabel(with: "Location: ", fontSize: 17)
-    var subViewLabel = UIElementsManager.createLabel(with: "Hide", fontSize: 16, color: .white, isHeader: true)
+    var subViewLabel = UIElementsManager.createLabel(with: "Hide", fontSize: 16, color: .white, textAlignment: .center, isHeader: true)
     
     //bool propety
     @IBInspectable var isShown: Bool = true {

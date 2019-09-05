@@ -12,8 +12,8 @@ class HomeView: UIView {
     
     var settings = UIElementsManager.createSettingsButton()
 
-    var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, isHeader: true)
-    var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, isHeader: true)
+    var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, textAlignment: .center, isHeader: true)
+    var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, textAlignment: .center, isHeader: true)
     
     var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .white)
     var joinGame = UIElementsManager.createButton(with: "Join Game")
@@ -22,7 +22,7 @@ class HomeView: UIView {
         var v = UIElementsManager.createCircleView()
         v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
         
-        var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .primaryWhite, isHeader: true)
+        var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .primaryWhite, textAlignment: .center, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true

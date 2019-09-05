@@ -44,6 +44,8 @@
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
 		D7A72D3E22C14788005D1831 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3D22C14788005D1831 /* Notification.swift */; };
 		D7A72D4022C19017005D1831 /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = D7A72D3F22C19013005D1831 /* check_animation.json */; };
+		D7A9F653232053B300649F6D /* ColorOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F652232053B300649F6D /* ColorOptions.swift */; };
+		D7A9F655232068FD00649F6D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F654232068FD00649F6D /* Button.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
 		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
@@ -97,6 +99,8 @@
 		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		D7A72D3D22C14788005D1831 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		D7A72D3F22C19013005D1831 /* check_animation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = check_animation.json; sourceTree = "<group>"; };
+		D7A9F652232053B300649F6D /* ColorOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorOptions.swift; sourceTree = "<group>"; };
+		D7A9F654232068FD00649F6D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableViewCell.swift; sourceTree = "<group>"; };
@@ -163,7 +167,7 @@
 				BF713A0123160B920045F8DC /* Localizable.strings */,
 				D7798B1022B86831006D7615 /* Extensions */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
-				D7E3D7B8230B8314007F7936 /* Custom Classes */,
+				D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */,
 				D7FDF39D22ADAA9D00A65BCD /* Models */,
 				D706257622586D9500A80B76 /* Home */,
 				D704EB0722EC7CF70083DA2A /* Settings */,
@@ -231,10 +235,11 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
-		D7E3D7B8230B8314007F7936 /* Custom Classes */ = {
+		D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */ = {
 			isa = PBXGroup;
 			children = (
 				D769B7542316FBCA003F05E3 /* NavigationController.swift */,
+				D7A9F654232068FD00649F6D /* Button.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
 				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
 				D769B75223158B63003F05E3 /* CustomPopUpView.swift */,
@@ -243,8 +248,9 @@
 				D769B74423145A59003F05E3 /* DBStrings.swift */,
 				D769B74623145BE3003F05E3 /* IDs.swift */,
 				D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */,
+				D7A9F652232053B300649F6D /* ColorOptions.swift */,
 			);
-			path = "Custom Classes";
+			path = "Custom Classes & Enums";
 			sourceTree = "<group>";
 		};
 		D7FD37D5226660C60043A8D4 /* Waiting Screen */ = {
@@ -435,8 +441,10 @@
 				D7A72D3822BED262005D1831 /* PackView.swift in Sources */,
 				D706257822586DBC00A80B76 /* HomeController.swift in Sources */,
 				D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */,
+				D7A9F655232068FD00649F6D /* Button.swift in Sources */,
 				D706257B225B87E600A80B76 /* NewGameController.swift in Sources */,
 				D769B74523145A59003F05E3 /* DBStrings.swift in Sources */,
+				D7A9F653232053B300649F6D /* ColorOptions.swift in Sources */,
 				D769B743231459BB003F05E3 /* Constants.swift in Sources */,
 				D7FF08EA228FB98600C1ED43 /* PlayersCollectionViewCell.swift in Sources */,
 				D769B7512314764F003F05E3 /* UIImageView.swift in Sources */,

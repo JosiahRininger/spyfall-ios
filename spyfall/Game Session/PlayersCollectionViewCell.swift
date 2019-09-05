@@ -14,7 +14,7 @@ class PlayersCollectionViewCell: UICollectionViewCell {
     
     var firstView: UIView = {
         var v = UIElementsManager.createCircleView()
-        var i = UIElementsManager.createLabel(with: "1st", fontSize: 9, color: .primaryWhite, isHeader: true)
+        var i = UIElementsManager.createLabel(with: "1st", fontSize: 9, color: .primaryWhite, textAlignment: .center, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true

@@ -10,21 +10,21 @@ import UIKit
 
 class SettingsView: UIView {
     
-    var settingsLabel = UIElementsManager.createLabel(with: "Settings", fontSize: 40, isHeader: true)
+    var settingsLabel = UIElementsManager.createLabel(with: "Settings", fontSize: 40, textAlignment: .center, isHeader: true)
     
     var settingsStackView = UIElementsManager.createStackView()
     
-    var colorView = UIElementsManager.createView()
-    var infoView = UIElementsManager.createView()
-    var adView = UIElementsManager.createView()
+    var colorView = UIElementsManager.createView(isUserInteractionEnabled: true)
+    var infoView = UIElementsManager.createView(isUserInteractionEnabled: true)
+    var adView = UIElementsManager.createView(isUserInteractionEnabled: true)
     
     var colorImageView = UIElementsManager.createImageView(with: "color_icon")
     var infoImageView = UIElementsManager.createImageView(with: "info_icon")
     var adImageView = UIElementsManager.createImageView(with: "ad_icon")
     
-    var colorLabel = UIElementsManager.createLabel(with: "Theme", fontSize: 30, isHeader: true)
-    var infoLabel = UIElementsManager.createLabel(with: "About", fontSize: 30, isHeader: true)
-    var adLabel = UIElementsManager.createLabel(with: "Ad", fontSize: 30, isHeader: true)
+    var colorLabel = UIElementsManager.createLabel(with: "Theme", fontSize: 30, textAlignment: .center, isHeader: true)
+    var infoLabel = UIElementsManager.createLabel(with: "About", fontSize: 30, textAlignment: .center, isHeader: true)
+    var adLabel = UIElementsManager.createLabel(with: "Ad", fontSize: 30, textAlignment: .center, isHeader: true)
     
     var back = UIElementsManager.createButton(with: "Back", color: .white)
     
@@ -51,7 +51,7 @@ class SettingsView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCellId)
+        colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCollectionViewCellId)
         
         addSubview(settingsLabel)
         addSubviews(settingsLabel, settingsStackView, back)
@@ -112,22 +112,25 @@ class SettingsView: UIView {
     
     func setupColorPopUpView() {
         colorPopUpView.addSubview(colorsCollectionView)
+        colorPopUpView.cancelButton.setTitle("Cancel", for: .normal)
+        colorPopUpView.doneButton.setTitle("Change", for: .normal)
         
         NSLayoutConstraint.activate([
             colorsCollectionView.topAnchor.constraint(equalTo: colorPopUpView.titleLabel.bottomAnchor, constant: 5),
-            colorsCollectionView.leadingAnchor.constraint(equalTo: colorPopUpView.popUpView.leadingAnchor, constant: 10),
-            colorsCollectionView.trailingAnchor.constraint(equalTo: colorPopUpView.popUpView.trailingAnchor, constant: -10),
-            colorsCollectionView.heightAnchor.constraint(equalToConstant: 200),//CGFloat(4 / (UIColor.colors.count + 1)) * CGFloat(UIElementSizes.colorHeight + 20)),
+            colorsCollectionView.leadingAnchor.constraint(equalTo: colorPopUpView.popUpView.leadingAnchor, constant: 20),
+            colorsCollectionView.trailingAnchor.constraint(equalTo: colorPopUpView.popUpView.trailingAnchor, constant: -20),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: (CGFloat(4) / CGFloat(UIColor.colors.count + 1) + 1) * (UIElementSizes.colorHeight + CGFloat(30))),
             
             colorPopUpView.doneButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 10)
             ])
     }
     
     func setupInfoPopUpView() {
-        
+        infoPopUpView.doneButton.setTitle("OK", for: .normal)
     }
     
     func setupAdPopUpView() {
-        
+        adPopUpView.cancelButton.setTitle("Cancel", for: .normal)
+        adPopUpView.doneButton.setTitle("Remove", for: .normal)
     }
 }
