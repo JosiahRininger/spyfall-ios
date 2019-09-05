@@ -37,7 +37,6 @@ class ColorsCell: UICollectionViewCell {
         let av = AnimationView(name: "check_animation")
         av.animationSpeed = 2.0
         av.tintColor = .secondaryColor
-//        av.isUserInteractionEnabled = true
         av.translatesAutoresizingMaskIntoConstraints = false
         
         return av

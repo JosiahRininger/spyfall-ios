@@ -15,10 +15,6 @@ final class HomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        homeView.newGame.addTarget(self, action: #selector(segueToNewGameController), for: .touchUpInside)
-        homeView.joinGame.addTarget(self, action: #selector(segueToJoinGameController), for: .touchUpInside)
-        homeView.settings.addTarget(self, action: #selector(segueToSettingsController), for: .touchUpInside)
-        
         setupView()
     }
     
@@ -27,22 +23,43 @@ final class HomeController: UIViewController {
         homeView.infoView.backgroundColor = .secondaryColor
         homeView.rulesLabel.textColor = .secondaryColor
         homeView.joinGame.backgroundColor = .secondaryColor
+        homeView.rulesPopUpView.doneButton.backgroundColor = .secondaryColor
     }
 
     private func setupView() {
-        
         view = homeView
+        
+        setupButtons()
     }
     
-    @objc func segueToNewGameController() {
-        self.navigationController?.pushViewController(NewGameController(), animated: true)
+    fileprivate func setupButtons() {
+        
+        // Sets up homeView buttons
+        homeView.newGame.touchUpInside = { [weak self] in
+            self?.navigationController?.pushViewController(NewGameController(), animated: true)
+        }
+        homeView.joinGame.touchUpInside = { [weak self] in
+            self?.navigationController?.pushViewController(JoinGameController(), animated: true)
+        }
+        homeView.settings.touchUpInside = {  [weak self] in
+            self?.navigationController?.pushViewController(SettingsController(), animated: true)
+        }
+        
+        // Sets up the actions around the rules pop up
+        let rulesGesture = UITapGestureRecognizer(target: self, action: #selector(rulesViewTapped))
+        homeView.rulesView.addGestureRecognizer(rulesGesture)
+        homeView.rulesPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
     }
     
-    @objc func segueToJoinGameController() {
-        self.navigationController?.pushViewController(JoinGameController(), animated: true)
+    @objc func rulesViewTapped() {
+        homeView.newGame.isUserInteractionEnabled = false
+        homeView.joinGame.isUserInteractionEnabled = false
+        homeView.rulesPopUpView.isHidden = false
     }
     
-    @objc func segueToSettingsController() {
-        self.navigationController?.pushViewController(SettingsController(), animated: true)
+    private func resetViews() {
+        homeView.newGame.isUserInteractionEnabled = true
+        homeView.joinGame.isUserInteractionEnabled = true
+        homeView.rulesPopUpView.isHidden = true
     }
 }

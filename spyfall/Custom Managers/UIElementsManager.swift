@@ -165,10 +165,11 @@ enum UIElementsManager {
     
     static func createCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
+
 //        let width = UIElementSizes.navigationTabBarItemWidth
 //        let height = UIScreen.main.bounds.height / 10
 //        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4, height: UIElementSizes.navigationTabBarItemHeight)
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 //        layout.minimumInteritemSpacing =
 //        layout.minimumLineSpacing = 14
         

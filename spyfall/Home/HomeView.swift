@@ -18,6 +18,7 @@ class HomeView: UIView {
     var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .white)
     var joinGame = UIElementsManager.createButton(with: "Join Game")
     
+    var rulesView = UIElementsManager.createView(isUserInteractionEnabled: true)
     var infoView: UIView = {
         var v = UIElementsManager.createCircleView()
         v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
@@ -30,6 +31,9 @@ class HomeView: UIView {
         return v
     }()
     var rulesLabel = UIElementsManager.createLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
+    
+    var rulesPopUpView = CustomPopUpView(frame: .zero, title: "Rules")
+    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "*These are the rules*", fontSize: 24, color: .textGray, textAlignment: .center)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -45,9 +49,11 @@ class HomeView: UIView {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
         backgroundColor = .primaryWhite
         
-        addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, infoView, rulesLabel)
+        addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, rulesView, rulesPopUpView)
+        rulesView.addSubviews(infoView, rulesLabel)
         
         setupConstraints()
+        setupRulesPopUpView()
     }
     
     private func setupConstraints() {
@@ -58,6 +64,11 @@ class HomeView: UIView {
             
             rulesLabel.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
             rulesLabel.leadingAnchor.constraint(equalTo: centerXAnchor),
+            
+            rulesView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor),
+            rulesView.trailingAnchor.constraint(equalTo: rulesLabel.trailingAnchor),
+            rulesView.topAnchor.constraint(equalTo: infoView.topAnchor),
+            rulesView.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
             
             joinGame.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -37),
             joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
@@ -77,6 +88,19 @@ class HomeView: UIView {
             spyfallLabel.topAnchor.constraint(equalTo: welcomeToLabel.bottomAnchor),
             spyfallLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),
             spyfallLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding * 3)
+            ])
+    }
+    
+    private func setupRulesPopUpView() {
+        rulesPopUpView.addSubview(gameRulesLabel)
+        rulesPopUpView.doneButton.setTitle("OK", for: .normal)
+        
+        NSLayoutConstraint.activate([
+            gameRulesLabel.topAnchor.constraint(equalTo: rulesPopUpView.titleLabel.bottomAnchor, constant: 5),
+            gameRulesLabel.leadingAnchor.constraint(equalTo: rulesPopUpView.popUpView.leadingAnchor, constant: 20),
+            gameRulesLabel.trailingAnchor.constraint(equalTo: rulesPopUpView.popUpView.trailingAnchor, constant: -20),
+
+            rulesPopUpView.doneButton.topAnchor.constraint(equalTo: gameRulesLabel.bottomAnchor, constant: 15)
             ])
     }
     

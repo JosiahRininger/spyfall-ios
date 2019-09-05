@@ -33,7 +33,7 @@ struct UIElementSizes {
     static var settingsButtonHeightAndWidth: CGFloat = 35
     
     static var colorWidth: CGFloat = windowWidth / 6
-    static var colorHeight: CGFloat = colorWidth * 0.84
+    static var colorHeight: CGFloat = colorWidth * 0.88
     
     static var iconHeightAndWidth: CGFloat = 50
     
