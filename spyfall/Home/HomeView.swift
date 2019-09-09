@@ -71,12 +71,12 @@ class HomeView: UIView {
             rulesView.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
             
             joinGame.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -37),
-            joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
             
             newGame.bottomAnchor.constraint(equalTo: joinGame.topAnchor, constant: -24),
-            newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
             
             settings.topAnchor.constraint(equalTo: topAnchor, constant: UIElementSizes.statusBarHeight + 24),
             settings.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),

@@ -15,7 +15,7 @@ struct UIElementSizes {
 
     static var statusBarHeight: CGFloat = 40
     
-    static var tableViewCellHeight: CGFloat = 64
+    static var tableViewCellHeight: CGFloat = 70
     static var collectionViewCellHeight: CGFloat = 58
     
     static var buttonWidth: CGFloat = 144
@@ -30,12 +30,13 @@ struct UIElementSizes {
     
     static var circleViewHeightAndWidth: CGFloat = 22
     static var pencilHeightAndWidth: CGFloat = 20
-    static var settingsButtonHeightAndWidth: CGFloat = 35
+    static var settingsButtonHeightAndWidth: CGFloat = 30
     
     static var colorWidth: CGFloat = windowWidth / 6
     static var colorHeight: CGFloat = colorWidth * 0.88
     
-    static var iconHeightAndWidth: CGFloat = 50
+    static var iconHeightAndWidth: CGFloat = 40
     
     static var padding: CGFloat = 30
+    static var buttonPadding: CGFloat = 60
 }

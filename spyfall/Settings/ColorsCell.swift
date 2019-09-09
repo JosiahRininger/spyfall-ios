@@ -114,10 +114,10 @@ class ColorsCell: UICollectionViewCell {
             transparentView.topAnchor.constraint(equalTo: topAnchor),
             transparentView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            checkAnimationView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            checkAnimationView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            checkAnimationView.topAnchor.constraint(equalTo: topAnchor),
-            checkAnimationView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            checkAnimationView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            checkAnimationView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            checkAnimationView.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            checkAnimationView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -10)
             ])
     }
     
