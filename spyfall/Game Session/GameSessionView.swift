@@ -80,8 +80,8 @@ class GameSessionView: UIView {
             
             endGame.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24),
             endGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
-            endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
+            endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
             
             ])
     }

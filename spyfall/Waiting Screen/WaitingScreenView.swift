@@ -17,7 +17,7 @@ class WaitingScreenView: UIView {
         return l
     }()
     
-    var accessCodeLabel = UIElementsManager.createLabel(with: "access code", fontSize: 19, textAlignment: .center, isHeader: true)
+    var accessCodeLabel = UIElementsManager.createLabel(with: "Access code:", fontSize: 19, textAlignment: .center, isHeader: true)
     var codeLabel = UIElementsManager.createLabel(with: "", fontSize: 18)
         
     var tableHeight = NSLayoutConstraint()
@@ -68,13 +68,13 @@ class WaitingScreenView: UIView {
             
             leaveGame.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 18),
             leaveGame.bottomAnchor.constraint(equalTo: startGame.topAnchor, constant: -24),
-            leaveGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            leaveGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            leaveGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            leaveGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
             
             startGame.topAnchor.constraint(equalTo: leaveGame.bottomAnchor, constant: -24),
             startGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
-            startGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
+            startGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
             
         ])
     }

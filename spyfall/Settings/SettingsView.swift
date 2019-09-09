@@ -54,7 +54,6 @@ class SettingsView: UIView {
         
         colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCollectionViewCellId)
         
-        addSubview(settingsLabel)
         addSubviews(settingsLabel, settingsStackView, back)
         colorView.addSubviews(colorImageView, colorLabel)
         infoView.addSubviews(infoImageView, infoLabel)
@@ -106,8 +105,8 @@ class SettingsView: UIView {
             
             back.topAnchor.constraint(equalTo: settingsStackView.bottomAnchor, constant: 18),
             back.centerXAnchor.constraint(equalTo: centerXAnchor),
-            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
+            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
             ])
     }
     

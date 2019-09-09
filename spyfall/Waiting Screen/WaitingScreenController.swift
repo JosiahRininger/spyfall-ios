@@ -50,16 +50,18 @@ final class WaitingScreenController: UIViewController {
         view.backgroundColor = .primaryWhite
         view.addSubview(scrollView)
         
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        
         scrollView.addSubview(waitingScreenView)
-        waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        
+        waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+        waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+        waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
         //        scrollView.contentSize = waitingScreenView.bounds.size
     }
     
@@ -87,6 +89,9 @@ final class WaitingScreenController: UIViewController {
                 roles = result
                 self.playerList.shuffle()
                 roles.shuffle()
+                print("PlayerList: ", self.playerList)
+                print("PlayerObjectList: ", self.playerObjectList)
+                print("Roles: ", roles)
                 for i in 0..<(self.playerList.count - 1) {
                     self.playerObjectList.append(Player(role: roles[i], username: self.playerList[i], votes: 0))
                 }
@@ -173,7 +178,7 @@ final class WaitingScreenController: UIViewController {
     private func segueToGameSessionController() {
         segued.toggle()
         let nextScreen = GameSessionController()
-        nextScreen.currentUsername = currentUsername
+        nextScreen.currentUsername = self.currentUsername
         nextScreen.accessCode = self.accessCode
         nextScreen.chosenPacks = self.chosenPacks
         navigationController?.pushViewController(nextScreen, animated: true)

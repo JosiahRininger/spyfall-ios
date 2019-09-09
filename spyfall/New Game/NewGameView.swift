@@ -87,12 +87,12 @@ class NewGameView: UIView {
             disclaimerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             
             create.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -87),
-            create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
             
             back.bottomAnchor.constraint(equalTo: create.topAnchor, constant: -24),
-            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding)
+            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
             ])
     }
 

@@ -12,6 +12,7 @@ import FirebaseFirestore
 
 class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
+    typealias ChosenLocationHandler = (String) -> Void
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     
@@ -62,6 +63,20 @@ class FirestoreManager {
         }
     }
     
+    static func retrieveChosenLocation(chosenPack: String, completion: @escaping ChosenLocationHandler) {
+        var chosenLocation = String()
+        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, err in
+            if let err = err {
+                print("Error getting documents: \(err)")
+            } else {
+                if let docs = querySnapshot!.data(), let location = docs.randomElement()?.key {
+                    chosenLocation = location
+                }
+            }
+            completion(chosenLocation)
+        }
+    }
+    
     static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
         var locationList = [String]()
         var locationDataReady = 1
@@ -86,8 +101,8 @@ class FirestoreManager {
     }
     
     static func retrieveRoles(chosenPack: String, chosenLocation: String, completion: @escaping RolesHandler) {
+        var roles = [String]()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
-            var roles = [String]()
             if let error = error {
                 print("Error getting documents: \(error)")
             } else {

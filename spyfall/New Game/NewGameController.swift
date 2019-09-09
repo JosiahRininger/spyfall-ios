@@ -64,15 +64,10 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         
         // Grab random location
         chosenPacks.shuffle()
-        db.collection(chosenPacks[0]).getDocuments { [unowned self] querySnapshot, err in
-            if let err = err {
-                print("Error getting documents: \(err)")
-            } else {
-                let document = querySnapshot!.documents.randomElement()
-                if let chosenLocation = document?.data()["location"] as? String {
-                    self.chosenLocation = chosenLocation
-                }
-            }
+        
+        FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
+            
+            self.chosenLocation = result
             
             if let timeLimit = Int(self.newGameView.timeLimitTextField.text ?? "0") {
                 self.timeLimit = timeLimit
