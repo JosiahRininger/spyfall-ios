@@ -14,6 +14,7 @@ final class WaitingScreenController: UIViewController {
     
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
+    var customPopUp = ChangeNamePopUpView()
     
     let db = Firestore.firestore()
     var playerObjectList = [Player]()
@@ -24,17 +25,15 @@ final class WaitingScreenController: UIViewController {
     var chosenLocation = String()
     var isStarted = false
     var segued = false
+    var oldUsername: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        waitingScreenView.codeLabel.text = accessCode
-
-        waitingScreenView.startGame.addTarget(self, action: #selector(startGameWasTapped(sender:)), for: .touchUpInside)
-        waitingScreenView.leaveGame.addTarget(self, action: #selector(leaveGameWasTapped(sender:)), for: .touchUpInside)
-
         waitingScreenView.tableView.delegate = self
         waitingScreenView.tableView.dataSource = self
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
         
         setupView()
         addUsernameToPlayerList()
@@ -42,85 +41,103 @@ final class WaitingScreenController: UIViewController {
         setUpKeyboard()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        resetViews()
+    }
+    
     private func setupView() {
+        setupButtons()
+        
         scrollView.backgroundColor = .primaryWhite
+        scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         waitingScreenView.translatesAutoresizingMaskIntoConstraints = false
+        waitingScreenView.codeLabel.text = accessCode
         
         view.backgroundColor = .primaryWhite
-        view.addSubview(scrollView)
+        view.addSubviews(scrollView, customPopUp)
         
-        scrollView.addSubview(waitingScreenView)
         NSLayoutConstraint.activate([
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        
-        waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-        waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-        waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-        waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-        ])
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            ])
         //        scrollView.contentSize = waitingScreenView.bounds.size
     }
     
+    private func setupButtons() {
+        waitingScreenView.startGame.touchUpInside = { [weak self] in self?.startGameWasTapped() }
+        waitingScreenView.leaveGame.touchUpInside = { [weak self] in self?.leaveGameWasTapped() }
+        
+        // Sets up the actions around the change name pop up
+        customPopUp.changeNamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        customPopUp.changeNamePopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.finishChangingUsername()
+        }
+    }
+    
     // check if Start Game has been clicked
-    @objc func startGameWasTapped(sender: UIButton) {
-        if isStarted == true {
-            return
-        } else {
-            waitingScreenView.startGame.isUserInteractionEnabled = false
-            // Set isStarted to true
-            isStarted = true
-            db.collection(Constants.DBStrings.games).document(accessCode).updateData(["started": true]) { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    print("Document successfully written!")
-                }
+    func startGameWasTapped() {
+        if isStarted == true { return }
+        waitingScreenView.startGame.isUserInteractionEnabled = false
+        // Set isStarted to true
+        isStarted = true
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["started": true]) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
             }
+        }
+        
+        FirestoreManager.retrieveRoles(chosenPack: chosenPacks[0], chosenLocation: chosenLocation) { result in
+            // Assigns each player a role
+            var roles = result
+            self.playerList.shuffle()
+            roles.shuffle()
+            for i in 0..<(self.playerList.count - 1) {
+                self.playerObjectList.append(Player(role: roles[i], username: self.playerList[i], votes: 0))
+            }
+            self.playerObjectList.append(Player(role: "The Spy!", username: self.playerList.last!, votes: 0))
             
-            var roles = [String]()
-            
-            FirestoreManager.retrieveRoles(chosenPack: chosenPacks[0], chosenLocation: chosenLocation) { result in
-                
-                // Assigns each player a role
-                roles = result
-                self.playerList.shuffle()
-                roles.shuffle()
-                print("PlayerList: ", self.playerList)
-                print("PlayerObjectList: ", self.playerObjectList)
-                print("Roles: ", roles)
-                for i in 0..<(self.playerList.count - 1) {
-                    self.playerObjectList.append(Player(role: roles[i], username: self.playerList[i], votes: 0))
-                }
-                self.playerObjectList.append(Player(role: "The Spy!", username: self.playerList.last!, votes: 0))
-                
-                for playerObject in self.playerObjectList {
-                    // Add playerObjectList field to document
-                    self.db.collection(Constants.DBStrings.games).document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
-                        "role": playerObject.role,
-                        "username": playerObject.username,
-                        "votes": playerObject.votes
-                        ]])]) { err in
-                            if let err = err {
-                                print("Error writing document: \(err)")
-                            } else {
-                                print("Document successfully written!")
-                            }
-                    }
+            for playerObject in self.playerObjectList {
+                // Add playerObjectList field to document
+                self.db.collection(Constants.DBStrings.games).document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
+                    "role": playerObject.role,
+                    "username": playerObject.username,
+                    "votes": playerObject.votes
+                    ]])]) { err in
+                        if let err = err {
+                            print("Error writing document: \(err)")
+                        } else {
+                            print("Document successfully written!")
+                        }
                 }
             }
         }
     }
     
     //     deletes player from game and deletes game if playerList is empty
-    @objc func leaveGameWasTapped(sender: UIButton) {
+    func leaveGameWasTapped() {
         playerList = playerList.filter { $0 != currentUsername }
         db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
-        if playerList.isEmpty { db.collection(Constants.DBStrings.games).document(accessCode).delete()}
+        if playerList.isEmpty { db.collection(Constants.DBStrings.games).document(accessCode).delete() }
         navigationController?.popToRootViewController(animated: true)
+    }
+        
+    @objc func pencilTapped() {
+        customPopUp.textField.text = currentUsername
+        customPopUp.isUserInteractionEnabled = true
+        customPopUp.changeNamePopUpView.isHidden = false
+        waitingScreenView.leaveGame.isUserInteractionEnabled = false
+        waitingScreenView.startGame.isUserInteractionEnabled = false
     }
     
     //     adds players username to firestore
@@ -175,6 +192,38 @@ final class WaitingScreenController: UIViewController {
         }
     }
     
+    private func finishChangingUsername() {
+        if !textFieldIsValid() { return }
+        if let text = customPopUp.textField.text {
+            oldUsername = currentUsername
+            currentUsername = text
+            waitingScreenView.tableView.reloadData()
+        }
+        resetViews()
+    }
+    
+    func textFieldIsValid() -> Bool {
+        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
+        if customPopUp.textField.text?.isEmpty ?? true {
+            alert.title = "Please enter a username"
+        } else if customPopUp.textField.text?.count ?? 25 > 24 {
+            alert.title = "Please enter a username less than 25 characters"
+        } else if customPopUp.textField.text == currentUsername {
+            alert.title = "Please enter a new username"
+        } else {
+            return true
+        }
+        self.present(alert, animated: true)
+        return false
+    }
+    
+    private func resetViews() {
+        customPopUp.isUserInteractionEnabled = false
+        customPopUp.changeNamePopUpView.isHidden = true
+        waitingScreenView.leaveGame.isUserInteractionEnabled = true
+        waitingScreenView.startGame.isUserInteractionEnabled = true
+    }
+    
     private func segueToGameSessionController() {
         segued.toggle()
         let nextScreen = GameSessionController()
@@ -192,11 +241,7 @@ final class WaitingScreenController: UIViewController {
 
     @objc func dismissKeyboard() {
         view.endEditing(true)
-        
-        // updates the tableView cells to new username
-        NotificationCenter.default.post(name: .editingOver, object: nil)
-        waitingScreenView.tableView.reloadData()
-    }
+        }
 }
 
 // MARK: - Table View Delegate & Data Source
@@ -212,17 +257,20 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
             fatalError()
         }
         
+        // updates playerList when player changes name
+        if let oldUsername = oldUsername {
+            if playerList[indexPath.row] == oldUsername {
+                playerList[indexPath.row] = currentUsername
+                self.oldUsername = nil
+                db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
+            }
+        }
+        
         // configures the cells
         cell.selectionStyle = .none
         isUser = playerList[indexPath.row] == currentUsername
-        let editedUsername = cell.configure(username: (playerList[indexPath.row]), index: indexPath.row + 1, isCurrentUsername: isUser)
-
-        // updates playerList when player changes name
-        if editedUsername != currentUsername && isUser {
-            currentUsername = editedUsername
-            playerList[indexPath.row] = editedUsername
-            db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
-        }
+        cell.configure(username: (playerList[indexPath.row]), index: indexPath.row + 1, isCurrentUsername: isUser)
+        
         return cell
     }
 
