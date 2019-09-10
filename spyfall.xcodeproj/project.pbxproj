@@ -16,6 +16,7 @@
 		D7030EEC22BBC3F1002CB9B2 /* AddSubview.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EEB22BBC3F1002CB9B2 /* AddSubview.swift */; };
 		D704EB0922EC7D7B0083DA2A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0822EC7D7B0083DA2A /* SettingsController.swift */; };
 		D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0A22EC85AB0083DA2A /* SettingsView.swift */; };
+		D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */; };
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706256A22586D3900A80B76 /* LaunchScreen.storyboard */; };
@@ -69,6 +70,7 @@
 		D7030EEB22BBC3F1002CB9B2 /* AddSubview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSubview.swift; sourceTree = "<group>"; };
 		D704EB0822EC7D7B0083DA2A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		D704EB0A22EC85AB0083DA2A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNamePopUpView.swift; sourceTree = "<group>"; };
 		D706255E22586D3800A80B76 /* spyfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spyfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706256122586D3800A80B76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */,
 				D7030EE922BB226D002CB9B2 /* WaitingScreenView.swift */,
+				D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */,
 				D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */,
 			);
 			path = "Waiting Screen";
@@ -463,6 +466,7 @@
 				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
 				BF713A0423160C110045F8DC /* String.swift in Sources */,
 				D72DCD29231DA2C70075020D /* UIView.swift in Sources */,
+				D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,

@@ -52,23 +52,14 @@ class PlayersWaitingTableViewCell: UITableViewCell {
         setupConstraints()
     }
     
-    func configure(username: String, index: Int, isCurrentUsername: Bool) -> String {
+    func configure(username: String, index: Int, isCurrentUsername: Bool) {
         rowNumberLabel.text = String(index)
-        pencilImageView.isHidden = true
-        pencilImageView.isUserInteractionEnabled = false
-        if isCurrentUsername {
-            if usernameLabel.text == "" { usernameLabel.text = username }
-            pencilImageView.isHidden = false
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeUsername))
-            pencilImageView.addGestureRecognizer(tapGesture)
-            pencilImageView.isUserInteractionEnabled = true
-            NotificationCenter.default.addObserver(self, selector: #selector(disableUsernameInteraction), name: .editingOver, object: nil)
-            return usernameLabel.text!
-        } else {
-            usernameLabel.text = username
-            return username
-        }
+        usernameLabel.text = username
 
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeUsername))
+        pencilImageView.addGestureRecognizer(tapGesture)
+        pencilImageView.isHidden = !isCurrentUsername
+        pencilImageView.isUserInteractionEnabled = isCurrentUsername
     }
     
     private func setupConstraints() {
@@ -89,18 +80,12 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             pencilImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             pencilImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth),
             pencilImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth)
-            
             ])
 
     }
     
     @objc func changeUsername() {
-        usernameLabel.isUserInteractionEnabled = true
-        usernameLabel.becomeFirstResponder()
-    }
-    
-    @objc func disableUsernameInteraction() {
-        usernameLabel.isUserInteractionEnabled = false
+        NotificationCenter.default.post(name: .editUsername, object: nil)
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

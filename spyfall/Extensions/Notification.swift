@@ -9,6 +9,6 @@
 import UIKit
 
 extension Notification.Name {
-    static let editingOver = NSNotification.Name("editingOver")
+    static let editUsername = NSNotification.Name("editUsername")
     static let gameDataRetrieved = NSNotification.Name("gameDataRetrieved")
 }

@@ -104,7 +104,6 @@ final class GameSessionController: UIViewController {
         
         gameSessionView.setNeedsUpdateConstraints()
         gameSessionView.layoutIfNeeded()
-        print(scrollView.bounds.height, gameSessionView.bounds.height)
     }
     
     @objc func endGameWasTapped() {
