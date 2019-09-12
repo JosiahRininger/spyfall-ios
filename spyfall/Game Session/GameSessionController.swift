@@ -42,20 +42,17 @@ final class GameSessionController: UIViewController {
         gameSessionView.locationsCollectionView.delegate = self
         gameSessionView.locationsCollectionView.dataSource = self
         
-        gameSessionView.endGame.addTarget(self, action: #selector(endGameWasTapped), for: .touchUpInside)
-        
-        setupView()
         callNetworkManager()
+
+        setupView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updateGame), name: .gameDataRetrieved, object: nil)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -85,6 +82,26 @@ final class GameSessionController: UIViewController {
             gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
 //        scrollView.contentSize = gameSessionView.bounds.size
+        
+        setupButtons()
+    }
+    
+    private func setupButtons() {
+        gameSessionView.endGame.touchUpInside = { [weak self] in self?.endGameWasTapped() }
+
+        // Sets up the actions around the end game pop up
+        gameSessionView.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        gameSessionView.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
+    }
+    
+    private func resetViews() {
+        gameSessionView.userInfoView.isUserInteractionEnabled = true
+        gameSessionView.playersCollectionView.isUserInteractionEnabled = true
+        gameSessionView.locationsCollectionView.isUserInteractionEnabled = true
+        gameSessionView.endGame.isUserInteractionEnabled = true
+        gameSessionView.endGamePopUpView.isHidden = true
     }
     
     @objc func updateGame() {
@@ -113,16 +130,13 @@ final class GameSessionController: UIViewController {
     
     func timerIsDone() -> Bool {
         guard currentTimeLeft != 0 else { return true }
-        let alert = CreateAlertController().with(
-            title: "Are you sure you want to end the game?",
-            actions: UIAlertAction(
-                title: "Yes",
-                style: .default,
-                handler: { [weak self] _ in self?.navigationController?.popToRootViewController(animated: true) }
-            ),
-            UIAlertAction(title: "Cancel", style: .cancel)
-        )
-        present(alert, animated: true)
+        
+        gameSessionView.userInfoView.isUserInteractionEnabled = false
+        gameSessionView.playersCollectionView.isUserInteractionEnabled = false
+        gameSessionView.locationsCollectionView.isUserInteractionEnabled = false
+        gameSessionView.endGame.isUserInteractionEnabled = false
+        gameSessionView.endGamePopUpView.isHidden = false
+        
         return false
     }
 

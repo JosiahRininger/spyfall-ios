@@ -86,7 +86,7 @@ final class WaitingScreenController: UIViewController {
     // check if Start Game has been clicked
     func startGameWasTapped() {
         if isStarted == true { return }
-        waitingScreenView.startGame.isUserInteractionEnabled = false
+        
         // Set isStarted to true
         isStarted = true
         db.collection(Constants.DBStrings.games).document(accessCode).updateData(["started": true]) { err in
@@ -126,6 +126,7 @@ final class WaitingScreenController: UIViewController {
     
     //     deletes player from game and deletes game if playerList is empty
     func leaveGameWasTapped() {
+        if isStarted == true { return }
         playerList = playerList.filter { $0 != currentUsername }
         db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
         if playerList.isEmpty { db.collection(Constants.DBStrings.games).document(accessCode).delete() }

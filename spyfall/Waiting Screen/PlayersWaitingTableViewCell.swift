@@ -77,7 +77,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             usernameLabel.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
             
             pencilImageView.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
-            pencilImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
+            pencilImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18),
             pencilImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth),
             pencilImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth)
             ])
