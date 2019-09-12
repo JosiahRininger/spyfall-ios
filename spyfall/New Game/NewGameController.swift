@@ -44,6 +44,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     
     @objc func createGameAction() {
         if !textFieldsAreValid() { return }
+        newGameView.back.isUserInteractionEnabled = false
         newGameView.create.isUserInteractionEnabled = false
         
         // store selected location packs

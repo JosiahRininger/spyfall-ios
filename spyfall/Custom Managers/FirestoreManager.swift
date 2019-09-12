@@ -18,6 +18,7 @@ class FirestoreManager {
     
     static let db = Firestore.firestore()
     
+    // retrieves all the game data being used on the game session controller
     static func retrieveGameData(accessCode: String, currentUsername: String, chosenPacks: [String], completion: @escaping GameDataHandler) {
         var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String]())
         var gameDataReady = [false, false]
@@ -63,6 +64,7 @@ class FirestoreManager {
         }
     }
     
+    // retrieves the chosen location randomly from the given pack
     static func retrieveChosenLocation(chosenPack: String, completion: @escaping ChosenLocationHandler) {
         var chosenLocation = String()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, err in
@@ -77,6 +79,7 @@ class FirestoreManager {
         }
     }
     
+    // retrieves all the locations within the given packs
     static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
         var locationList = [String]()
         var locationDataReady = 1
@@ -100,6 +103,7 @@ class FirestoreManager {
         }
     }
     
+    // retrieves all the roles for the chosen location
     static func retrieveRoles(chosenPack: String, chosenLocation: String, completion: @escaping RolesHandler) {
         var roles = [String]()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in

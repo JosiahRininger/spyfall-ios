@@ -39,6 +39,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     
     @objc func segueToWaitingScreenController() {
         if !textFieldsAreValid() { return }
+        joinGameView.back.isUserInteractionEnabled = false
         joinGameView.join.isUserInteractionEnabled = false
         
         let nextScreen = WaitingScreenController()

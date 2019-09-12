@@ -26,6 +26,9 @@ class GameSessionView: UIView {
     
     var endGame = UIElementsManager.createButton(with: "End Game")
     
+    lazy var endGamePopUpView = CustomPopUpView(frame: .zero, title: "End Game", twoButtons: true)
+    lazy var endGameLabel = UIElementsManager.createLabel(with: "Are you sure you want to end the game?", fontSize: 24, color: .textGray, textAlignment: .center)
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -46,8 +49,9 @@ class GameSessionView: UIView {
         playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.playersCollectionViewCellId)
         locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.locationsCollectionViewCellId)
         
-        addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame)
+        addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame, endGamePopUpView)
         setupConstraints()
+        setupEndGamePopUpView()
     }
     
     private func setupConstraints() {
@@ -86,4 +90,18 @@ class GameSessionView: UIView {
             ])
     }
     
+    private func setupEndGamePopUpView() {
+        endGamePopUpView.cancelButton.setTitle("No", for: .normal)
+        endGamePopUpView.doneButton.setTitle("Yes", for: .normal)
+        
+        endGamePopUpView.addSubview(endGameLabel)
+        
+        NSLayoutConstraint.activate([
+            endGameLabel.topAnchor.constraint(equalTo: endGamePopUpView.titleLabel.bottomAnchor, constant: 5),
+            endGameLabel.leadingAnchor.constraint(equalTo: endGamePopUpView.popUpView.leadingAnchor, constant: 20),
+            endGameLabel.trailingAnchor.constraint(equalTo: endGamePopUpView.popUpView.trailingAnchor, constant: -20),
+            
+            endGamePopUpView.doneButton.topAnchor.constraint(equalTo: endGameLabel.bottomAnchor, constant: 15)
+            ])
+    }
 }
