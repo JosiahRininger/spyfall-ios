@@ -56,7 +56,7 @@ final class GameSessionController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func callNetworkManager() {
+    private func callNetworkManager() {
         FirestoreManager.retrieveGameData(accessCode: self.accessCode, currentUsername: self.currentUsername, chosenPacks: self.chosenPacks) { result in
             self.gameData = result
         }
@@ -128,7 +128,7 @@ final class GameSessionController: UIViewController {
         navigationController?.popToRootViewController(animated: true)
     }
     
-    func timerIsDone() -> Bool {
+    private func timerIsDone() -> Bool {
         guard currentTimeLeft != 0 else { return true }
         
         gameSessionView.userInfoView.isUserInteractionEnabled = false
@@ -162,16 +162,29 @@ final class GameSessionController: UIViewController {
         guard newTimeLeft != currentTimeLeft else { return }
         currentTimeLeft = newTimeLeft
 
-        if currentTimeLeft == 0 {
+        switch currentTimeLeft {
+        case 0:
             gameSessionView.timerLabel.text = "0:00"
             timer.invalidate()
             self.startDate = nil
-        } else {
+            showGameEndedPopUp()
+        default:
             gameSessionView.timerLabel.text = string(fromTime: currentTimeLeft)
         }
     }
     
-    func updateCollectionViews() {
+    private func showGameEndedPopUp() {
+//        gameSessionView.endGamePopUpView.titleLabel.text = "Game Ended"
+//        gameSessionView.endGameLabel.text = "Would you like to play again?"
+//
+//        gameSessionView.userInfoView.isUserInteractionEnabled = false
+//        gameSessionView.playersCollectionView.isUserInteractionEnabled = false
+//        gameSessionView.locationsCollectionView.isUserInteractionEnabled = false
+//        gameSessionView.endGame.isUserInteractionEnabled = false
+//        gameSessionView.endGamePopUpView.isHidden = false
+    }
+    
+    private func updateCollectionViews() {
         gameSessionView.playersCollectionHeight.constant = CGFloat((usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
         gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
         gameSessionView.playersCollectionView.reloadData()

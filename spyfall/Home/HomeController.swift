@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Crashlytics
 
 final class HomeController: UIViewController {
 

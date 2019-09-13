@@ -9,6 +9,8 @@ target 'spyfall' do
   pod 'Firebase/Core', '6.6.0'
   pod 'Firebase/Database', '6.6.0'
   pod 'Firebase/Firestore', '6.6.0'
+  pod 'Fabric', '1.10.2'
+  pod 'Crashlytics', '3.13.4'
   pod 'lottie-ios', '3.1.1'
   pod 'SwiftLint', '0.33.1', :configurations => ['Debug']
 
