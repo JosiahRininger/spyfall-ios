@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Fabric
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -36,6 +37,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = NavigationController(rootViewController: HomeController())
         
         FirebaseApp.configure()
+        Fabric.sharedSDK().debug = true
         
         return true
     }
