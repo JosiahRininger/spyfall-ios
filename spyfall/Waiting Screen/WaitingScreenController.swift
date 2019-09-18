@@ -15,6 +15,7 @@ final class WaitingScreenController: UIViewController {
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
     var customPopUp = ChangeNamePopUpView()
+    let spinner = Spinner(frame: .zero)
     
     let db = Firestore.firestore()
     var playerObjectList = [Player]()
@@ -73,6 +74,8 @@ final class WaitingScreenController: UIViewController {
     }
     
     private func setupButtons() {
+        waitingScreenView.startGame.addSubview(spinner)
+        
         waitingScreenView.startGame.touchUpInside = { [weak self] in self?.startGameWasTapped() }
         waitingScreenView.leaveGame.touchUpInside = { [weak self] in self?.leaveGameWasTapped() }
         
@@ -183,6 +186,8 @@ final class WaitingScreenController: UIViewController {
                 self.waitingScreenView.tableView.reloadData()
                 self.waitingScreenView.tableView.setNeedsUpdateConstraints()
                 self.waitingScreenView.tableView.layoutIfNeeded()
+                
+                if self.isStarted && self.spinner.alpha != 1.0 { self.spinner.animate(with: self.waitingScreenView.startGame) }
                 
                 // Check for segue
                 if let playerObjects = document.get("playerObjectList") as? [[String: Any]] {

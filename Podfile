@@ -12,6 +12,7 @@ target 'spyfall' do
   pod 'Fabric', '1.10.2'
   pod 'Crashlytics', '3.13.4'
   pod 'lottie-ios', '3.1.1'
+  pod 'PKHUD', '5.3.0'
   pod 'SwiftLint', '0.33.1', :configurations => ['Debug']
 
 end

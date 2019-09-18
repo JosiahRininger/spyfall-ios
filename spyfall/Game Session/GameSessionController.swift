@@ -14,6 +14,7 @@ final class GameSessionController: UIViewController {
 
     var scrollView = UIScrollView()
     var gameSessionView = GameSessionView()
+    var customPopUp = EndGamePopUpView()
     
     var timer = Timer()
     var timeLimit = String()
@@ -66,9 +67,10 @@ final class GameSessionController: UIViewController {
         scrollView.backgroundColor = .primaryWhite
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         gameSessionView.translatesAutoresizingMaskIntoConstraints = false
+        gameSessionView.playAgain.isHidden = true
         
         view.backgroundColor = .primaryWhite
-        view.addSubview(scrollView)
+        view.addSubviews(scrollView, customPopUp)
         scrollView.addSubview(gameSessionView)
         
         NSLayoutConstraint.activate([
@@ -76,32 +78,25 @@ final class GameSessionController: UIViewController {
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
             gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             ])
-//        scrollView.contentSize = gameSessionView.bounds.size
         
         setupButtons()
     }
     
     private func setupButtons() {
         gameSessionView.endGame.touchUpInside = { [weak self] in self?.endGameWasTapped() }
+        gameSessionView.playAgain.touchUpInside = { [weak self] in self?.playAgainWasTapped() }
 
         // Sets up the actions around the end game pop up
-        gameSessionView.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
-        gameSessionView.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
+        customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
             self?.navigationController?.popToRootViewController(animated: true)
         }
-    }
-    
-    private func resetViews() {
-        gameSessionView.userInfoView.isUserInteractionEnabled = true
-        gameSessionView.playersCollectionView.isUserInteractionEnabled = true
-        gameSessionView.locationsCollectionView.isUserInteractionEnabled = true
-        gameSessionView.endGame.isUserInteractionEnabled = true
-        gameSessionView.endGamePopUpView.isHidden = true
     }
     
     @objc func updateGame() {
@@ -128,22 +123,39 @@ final class GameSessionController: UIViewController {
         navigationController?.popToRootViewController(animated: true)
     }
     
+    @objc func playAgainWasTapped() {
+        navigationController?.popViewController(animated: true)
+    }
+    
     private func timerIsDone() -> Bool {
         guard currentTimeLeft != 0 else { return true }
         
+        customPopUp.isUserInteractionEnabled = true
         gameSessionView.userInfoView.isUserInteractionEnabled = false
         gameSessionView.playersCollectionView.isUserInteractionEnabled = false
         gameSessionView.locationsCollectionView.isUserInteractionEnabled = false
         gameSessionView.endGame.isUserInteractionEnabled = false
-        gameSessionView.endGamePopUpView.isHidden = false
+        customPopUp.endGamePopUpView.isHidden = false
+        scrollView.isUserInteractionEnabled = false
+        scrollView.isScrollEnabled = false
         
         return false
     }
 
-    private func string(fromTime interval: TimeInterval) -> String {
-        let interval = Int(interval)
+    var t = 0.0
+    var c = 0
+    private func string(from timeInterval: TimeInterval) -> String {
+        let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
+        if t == timeInterval {
+            c += 1
+        } else {
+            t = timeInterval
+            c = 0
+        }
+        print("T:", String(timeInterval))
+        print("C:", String(c))
         return String(format: "%01d:%02d", minutes, seconds)
     }
 
@@ -167,21 +179,26 @@ final class GameSessionController: UIViewController {
             gameSessionView.timerLabel.text = "0:00"
             timer.invalidate()
             self.startDate = nil
-            showGameEndedPopUp()
+            gameEnded()
         default:
-            gameSessionView.timerLabel.text = string(fromTime: currentTimeLeft)
+            gameSessionView.timerLabel.text = string(from: currentTimeLeft)
         }
     }
     
-    private func showGameEndedPopUp() {
-//        gameSessionView.endGamePopUpView.titleLabel.text = "Game Ended"
-//        gameSessionView.endGameLabel.text = "Would you like to play again?"
-//
-//        gameSessionView.userInfoView.isUserInteractionEnabled = false
-//        gameSessionView.playersCollectionView.isUserInteractionEnabled = false
-//        gameSessionView.locationsCollectionView.isUserInteractionEnabled = false
-//        gameSessionView.endGame.isUserInteractionEnabled = false
-//        gameSessionView.endGamePopUpView.isHidden = false
+    private func resetViews() {
+        customPopUp.isUserInteractionEnabled = false
+        gameSessionView.userInfoView.isUserInteractionEnabled = true
+        gameSessionView.playersCollectionView.isUserInteractionEnabled = true
+        gameSessionView.locationsCollectionView.isUserInteractionEnabled = true
+        gameSessionView.endGame.isUserInteractionEnabled = true
+        customPopUp.endGamePopUpView.isHidden = true
+        scrollView.isUserInteractionEnabled = true
+        scrollView.isScrollEnabled = true
+    }
+    
+    private func gameEnded() {
+        gameSessionView.endGameTopAnchor.constant = UIElementSizes.buttonHeight + 48
+        gameSessionView.playAgain.isHidden = false
     }
     
     private func updateCollectionViews() {

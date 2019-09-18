@@ -25,7 +25,7 @@ class UserInfoView: UIView {
     var subView: UIView = {
         let v = UIView()
         v.backgroundColor = .secondaryColor
-        v.layer.cornerRadius = 14
+        v.layer.cornerRadius = 18
         v.addShadowWith(radius: 2, offset: CGSize(width: 0, height: 2), opacity: 0.16)
         v.translatesAutoresizingMaskIntoConstraints = false
         
@@ -34,7 +34,7 @@ class UserInfoView: UIView {
     
     var roleLabel = UIElementsManager.createLabel(with: "Role: ", fontSize: 24, textAlignment: .center, isHeader: true)
     var locationLabel = UIElementsManager.createLabel(with: "Location: ", fontSize: 17)
-    var subViewLabel = UIElementsManager.createLabel(with: "Hide", fontSize: 16, color: .white, textAlignment: .center, isHeader: true)
+    var subViewLabel = UIElementsManager.createLabel(with: "Hide", fontSize: 18, color: .white, textAlignment: .center, isHeader: true)
     
     //bool propety
     @IBInspectable var isShown: Bool = true {
@@ -82,7 +82,7 @@ class UserInfoView: UIView {
             
             subView.centerYAnchor.constraint(equalTo: mainView.bottomAnchor),
             subView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            subView.heightAnchor.constraint(equalToConstant: 29),
+            subView.heightAnchor.constraint(equalToConstant: 36),
             subView.widthAnchor.constraint(equalToConstant: 120),
             
             subViewLabel.centerYAnchor.constraint(equalTo: subView.centerYAnchor),
@@ -92,7 +92,7 @@ class UserInfoView: UIView {
         hiddenConstraints = [
             subView.topAnchor.constraint(equalTo: topAnchor, constant: 3),
             subView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            subView.heightAnchor.constraint(equalToConstant: 29),
+            subView.heightAnchor.constraint(equalToConstant: 36),
             subView.widthAnchor.constraint(equalToConstant: 120),
             
             subViewLabel.centerYAnchor.constraint(equalTo: subView.centerYAnchor),
@@ -105,23 +105,41 @@ class UserInfoView: UIView {
     
     private func resetConstraints(isShown: Bool) {
         if isShown {
-            mainView.isHidden = false
-            roleLabel.isHidden = false
-            locationLabel.isHidden = false
-            
-            NSLayoutConstraint.deactivate(hiddenConstraints)
-            NSLayoutConstraint.activate(shownConstraints)
-            
+            self.mainView.isHidden = false
+            self.roleLabel.isHidden = false
+            self.locationLabel.isHidden = false
+            UIView.animate(withDuration: 0.15, animations: {
+                self.subView.center.y += 63
+            })
+            UIView.transition(with: mainView, duration: 0.15,
+                              options: [.curveEaseOut, .showHideTransitionViews],
+                              animations: {
+                                self.mainView.alpha = 1
+                                self.roleLabel.alpha = 1
+                                self.locationLabel.alpha = 1
+                                NSLayoutConstraint.deactivate(self.hiddenConstraints)
+                                NSLayoutConstraint.activate(self.shownConstraints)
+            })
             setNeedsUpdateConstraints()
             layoutIfNeeded()
         } else {
-            mainView.isHidden = true
-            roleLabel.isHidden = true
-            locationLabel.isHidden = true
-            
-            NSLayoutConstraint.deactivate(shownConstraints)
-            NSLayoutConstraint.activate(hiddenConstraints)
-            
+            roleLabel.alpha = 0
+            locationLabel.alpha = 0
+            NSLayoutConstraint.activate(self.hiddenConstraints)
+            UIView.animate(withDuration: 0.15, animations: {
+                    self.subView.center.y -= 63
+            })
+            UIView.transition(with: mainView, duration: 0.15,
+                              options: [.curveEaseOut, .showHideTransitionViews],
+                              animations: {
+                                self.mainView.alpha = 0
+            },
+                              completion: { _ in
+                                self.mainView.isHidden = true
+                                self.roleLabel.isHidden = true
+                                self.locationLabel.isHidden = true
+                                NSLayoutConstraint.deactivate(self.shownConstraints)
+            })
             setNeedsUpdateConstraints()
             layoutIfNeeded()
         }

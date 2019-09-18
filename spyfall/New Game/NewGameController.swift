@@ -9,10 +9,12 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
+import PKHUD
 
 final class NewGameController: UIViewController, UITextFieldDelegate {
     
     var newGameView = NewGameView()
+    let spinner = Spinner(frame: .zero)
     
     var chosenLocation = String()
     var accessCode = String()
@@ -34,6 +36,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupView() {
+        newGameView.create.addSubview(spinner)
         
         view = newGameView
     }
@@ -46,6 +49,8 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         if !textFieldsAreValid() { return }
         newGameView.back.isUserInteractionEnabled = false
         newGameView.create.isUserInteractionEnabled = false
+        
+        spinner.animate(with: newGameView.create)
         
         // store selected location packs
         var chosenPacks = [String]()
@@ -67,7 +72,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         chosenPacks.shuffle()
         
         FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
-            
             self.chosenLocation = result
             
             if let timeLimit = Int(self.newGameView.timeLimitTextField.text ?? "0") {
@@ -96,21 +100,22 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldsAreValid() -> Bool {
-        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
+        var flashText = ""
+        HUD.dimsBackground = false
         if newGameView.usernameTextField.text?.isEmpty ?? true {
-            alert.title = "Please enter a username"
+            flashText = "Please enter a username"
         } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
-            alert.title = "Please enter a username less than 25 characters"
+            flashText = "Please enter a username less than 25 characters"
         } else if !newGameView.packOneView.isChecked
             && !newGameView.packTwoView.isChecked
             && !newGameView.specialPackView.isChecked {
-            alert.title = "Please select pack(s)"
+            flashText = "Please select pack(s)"
         } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
-            alert.title = "Please enter a time limit"
+            flashText = "Please enter a time limit"
         } else {
             return true
         }
-        self.present(alert, animated: true)
+        HUD.flash(.label(flashText), delay: 1.0)
         return false
     }
     
@@ -144,5 +149,4 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-    
 }

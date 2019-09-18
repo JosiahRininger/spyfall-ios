@@ -9,8 +9,8 @@
 import UIKit
 
 class ChangeNamePopUpView: UIView {
-    var changeNamePopUpView = CustomPopUpView(frame: .zero, title: "Change Name", twoButtons: true)
-    var textField = UIElementsManager.createTextField(with: "Enter a username")
+    lazy var changeNamePopUpView = CustomPopUpView(frame: .zero, title: "Change Name", twoButtons: true)
+    lazy var textField = UIElementsManager.createTextField(with: "Enter a username")
     
     override init(frame: CGRect) {
         super.init(frame: frame)
