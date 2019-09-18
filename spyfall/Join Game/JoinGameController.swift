@@ -13,6 +13,7 @@ import FirebaseFirestore
 final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
+    let spinner = Spinner(frame: .zero)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +30,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     func setupView() {
+        joinGameView.join.addSubview(spinner)
         
         view = joinGameView
     }
@@ -39,6 +41,9 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     
     @objc func segueToWaitingScreenController() {
         if !textFieldsAreValid() { return }
+        
+        spinner.animate(with: joinGameView.join)
+        
         joinGameView.back.isUserInteractionEnabled = false
         joinGameView.join.isUserInteractionEnabled = false
         

@@ -10,7 +10,7 @@ import UIKit
 
 class GameSessionView: UIView {
     
-    var timerLabel = UIElementsManager.createLabel(with: "8:00", fontSize: 48, textAlignment: .center, isHeader: true)
+    var timerLabel = UIElementsManager.createLabel(with: "", fontSize: 48, textAlignment: .center, isHeader: true)
     
     var userInfoView = UIElementsManager.createUserInfoView()
     
@@ -24,10 +24,10 @@ class GameSessionView: UIView {
     var locationsCollectionHeight = NSLayoutConstraint()
     var locationsCollectionView = UIElementsManager.createCollectionView()
     
-    var endGame = UIElementsManager.createButton(with: "End Game")
+    var endGameTopAnchor = NSLayoutConstraint()
     
-    lazy var endGamePopUpView = CustomPopUpView(frame: .zero, title: "End Game", twoButtons: true)
-    lazy var endGameLabel = UIElementsManager.createLabel(with: "Are you sure you want to end the game?", fontSize: 24, color: .textGray, textAlignment: .center)
+    var endGame = UIElementsManager.createButton(with: "End Game")
+    var playAgain = UIElementsManager.createButton(with: "Play Again", color: .white)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -35,8 +35,7 @@ class GameSessionView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
@@ -45,19 +44,19 @@ class GameSessionView: UIView {
         
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 0)
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)
+        endGameTopAnchor = endGame.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24)
         
         playersCollectionView.register(PlayersCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.playersCollectionViewCellId)
         locationsCollectionView.register(LocationsCollectionViewCell.self, forCellWithReuseIdentifier: Constants.IDs.locationsCollectionViewCellId)
         
-        addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, endGame, endGamePopUpView)
+        addSubviews(timerLabel, userInfoView, playersLabel, playersCollectionView, locationsLabel, locationsCollectionView, playAgain, endGame)
         setupConstraints()
-        setupEndGamePopUpView()
     }
     
     private func setupConstraints() {
-        
         playersCollectionHeight.isActive = true
         locationsCollectionHeight.isActive = true
+        endGameTopAnchor.isActive = true
         
         NSLayoutConstraint.activate([
             timerLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -82,26 +81,13 @@ class GameSessionView: UIView {
             locationsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
             locationsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
             
-            endGame.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24),
             endGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
             endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
+            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
             
-            ])
-    }
-    
-    private func setupEndGamePopUpView() {
-        endGamePopUpView.cancelButton.setTitle("No", for: .normal)
-        endGamePopUpView.doneButton.setTitle("Yes", for: .normal)
-        
-        endGamePopUpView.addSubview(endGameLabel)
-        
-        NSLayoutConstraint.activate([
-            endGameLabel.topAnchor.constraint(equalTo: endGamePopUpView.titleLabel.bottomAnchor, constant: 5),
-            endGameLabel.leadingAnchor.constraint(equalTo: endGamePopUpView.popUpView.leadingAnchor, constant: 20),
-            endGameLabel.trailingAnchor.constraint(equalTo: endGamePopUpView.popUpView.trailingAnchor, constant: -20),
-            
-            endGamePopUpView.doneButton.topAnchor.constraint(equalTo: endGameLabel.bottomAnchor, constant: 15)
+            playAgain.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24),
+            playAgain.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
+            playAgain.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
             ])
     }
 }
