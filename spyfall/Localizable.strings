@@ -1,0 +1,10 @@
+/*
+  Localizable.strings
+  spyfall
+
+  Created by Josiah Rininger on 8/27/19.
+  Copyright © 2019 Josiah Rininger. All rights reserved.
+*/
+
+"GameSessionLocation" = "Location: %@";
+"HomeViewNewGame" = "New Game";
