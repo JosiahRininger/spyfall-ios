@@ -15,6 +15,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
     let spinner = Spinner(frame: .zero)
+    var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,13 +29,16 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         setupView()
         createToolBar()
         setupKeyboard()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     func setupView() {
+        view.addSubview(joinGameView)
         joinGameView.join.addSubview(spinner)
-        
-        view = joinGameView
-    }
+        }
     
     @objc func segueToHomeController() {
         self.navigationController?.popViewController(animated: true)
@@ -98,6 +102,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         joinGameView.accessCodeTextField.inputAccessoryView = toolBar
     }
     
+    // MARK - Keyboard Set Up
     func setupKeyboard() {
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
@@ -108,4 +113,39 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
 
+    // Moves view up if textfield is covered
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == joinGameView.usernameTextField {
+            let yPos = UIElementSizes.windowHeight - joinGameView.usernameTextField.frame.maxY
+            if yPos < keyboardHeight && joinGameView.frame.origin.y == 0 {
+                UIView.animate(withDuration: 0.33, animations: {
+                    self.joinGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)
+                })
+            }
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        if joinGameView.usernameTextField.isFirstResponder {
+            keyboardHeight = keyboardSize.cgRectValue.height
+        }
+    }
+    
+    // Moves view down if not centerd on screen
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.joinGameView.frame.origin.y != 0 {
+            self.joinGameView.frame.origin.y = 0
+        }
+    }
+    
+    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            if joinGameView.usernameTextField.isFirstResponder {
+                keyboardHeight = keyboardFrame.cgRectValue.size.height
+                textFieldDidBeginEditing(joinGameView.usernameTextField)
+            }
+        }
+    }
 }

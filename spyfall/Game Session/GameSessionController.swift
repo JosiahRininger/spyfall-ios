@@ -82,7 +82,7 @@ final class GameSessionController: UIViewController {
             gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         
         setupButtons()

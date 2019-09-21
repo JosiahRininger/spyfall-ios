@@ -19,6 +19,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     var chosenLocation = String()
     var accessCode = String()
     var timeLimit = Int()
+    var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +33,15 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         setupView()
         createToolBar()
         setUpKeyboard()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     private func setupView() {
+        view.addSubview(newGameView)
         newGameView.create.addSubview(spinner)
-        
-        view = newGameView
     }
     
     @objc func segueToHomeController() {
@@ -102,8 +106,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         HUD.dimsBackground = false
         if newGameView.usernameTextField.text?.isEmpty ?? true {
             HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
-            HUD.flash(.label("Please enter a username less than 25 characters"), delay: 1.0)
         } else if !newGameView.packOneView.isChecked
             && !newGameView.packTwoView.isChecked
             && !newGameView.specialPackView.isChecked {
@@ -150,6 +152,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
+    // MARK - Keyboard Set Up
     func setUpKeyboard() {
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
@@ -159,4 +162,40 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    // Moves view up if textfield is covered
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == newGameView.timeLimitTextField {
+            let yPos = UIElementSizes.windowHeight - newGameView.timeLimitTextField.frame.maxY
+            if yPos < keyboardHeight && newGameView.frame.origin.y == 0 {
+                UIView.animate(withDuration: 0.33, animations: {
+                    self.newGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)
+                })
+            }
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        if newGameView.timeLimitTextField.isFirstResponder {
+            keyboardHeight = keyboardSize.cgRectValue.height
+        }
+    }
+    
+    // Moves view down if not centerd on screen
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.newGameView.frame.origin.y != 0 {
+            self.newGameView.frame.origin.y = 0
+        }
+    }
+    
+    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            if newGameView.timeLimitTextField.isFirstResponder {
+                keyboardHeight = keyboardFrame.cgRectValue.size.height
+                textFieldDidBeginEditing(newGameView.timeLimitTextField)
+            }
+        }
+    }    
 }
