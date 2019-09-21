@@ -28,7 +28,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
 
         newGameView.usernameTextField.delegate = self
         newGameView.timeLimitTextField.delegate = self
-        newGameView.timeLimitTextField.addTarget(self, action: #selector(resignedFirstResponder(_:)), for: .editingChanged)
         
         setupView()
         createToolBar()
@@ -100,31 +99,42 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
 
     func textFieldsAreValid() -> Bool {
-        var flashText = ""
         HUD.dimsBackground = false
         if newGameView.usernameTextField.text?.isEmpty ?? true {
-            flashText = "Please enter a username"
+            HUD.flash(.label("Please enter a username"), delay: 1.0)
         } else if newGameView.usernameTextField.text?.count ?? 25 > 24 {
-            flashText = "Please enter a username less than 25 characters"
+            HUD.flash(.label("Please enter a username less than 25 characters"), delay: 1.0)
         } else if !newGameView.packOneView.isChecked
             && !newGameView.packTwoView.isChecked
             && !newGameView.specialPackView.isChecked {
-            flashText = "Please select pack(s)"
+            HUD.flash(.label("Please select pack(s)"), delay: 1.0)
         } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
-            flashText = "Please enter a time limit"
+            HUD.flash(.label("Please enter a time limit"), delay: 1.0)
+        } else if Int(newGameView.timeLimitTextField.text ?? "11") ?? 11 > 10
+            || Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 < 1 {
+            newGameView.timeLimitTextField.text = ""
+            HUD.flash(.label("Please enter a time limit between 0 and 11"), delay: 1.0)
         } else {
             return true
         }
-        HUD.flash(.label(flashText), delay: 1.0)
         return false
     }
     
-    @objc func resignedFirstResponder(_ sender: Any) {
-        if Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 > 10 {
-            newGameView.timeLimitTextField.text = ""
-            let alert = CreateAlertController().with(title: "Please enter a time limit that is equal to or less than 10",
-                                                     actions: UIAlertAction(title: "OK", style: .default))
-            self.present(alert, animated: true)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // get the current text, or use an empty string if that failed
+        let currentText = textField.text ?? ""
+        
+        // attempt to read the range they are trying to change, or exit if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        // add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+
+        // make sure the result is under the respective textfields max characters
+        switch textField {
+        case newGameView.usernameTextField: return updatedText.count <= 24
+        case newGameView.timeLimitTextField: return updatedText.count <= 2
+        default: print("INVALID TEXTFIELD"); return false
         }
     }
     
