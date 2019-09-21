@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
+import PKHUD
 
 final class WaitingScreenController: UIViewController {
     
@@ -209,18 +210,29 @@ final class WaitingScreenController: UIViewController {
     }
     
     func textFieldIsValid() -> Bool {
-        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
+        HUD.dimsBackground = false
         if customPopUp.textField.text?.isEmpty ?? true {
-            alert.title = "Please enter a username"
-        } else if customPopUp.textField.text?.count ?? 25 > 24 {
-            alert.title = "Please enter a username less than 25 characters"
+            HUD.flash(.label("Please enter a username"), delay: 1.0)
         } else if customPopUp.textField.text == currentUsername {
-            alert.title = "Please enter a new username"
+            HUD.flash(.label("Please enter a new username"), delay: 1.0)
         } else {
             return true
         }
-        self.present(alert, animated: true)
         return false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // get the current text, or use an empty string if that failed
+        let currentText = textField.text ?? ""
+        
+        // attempt to read the range they are trying to change, or exit if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        // add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        // make sure the result is under 25 characters
+        return updatedText.count <= 24
     }
     
     private func resetViews() {
