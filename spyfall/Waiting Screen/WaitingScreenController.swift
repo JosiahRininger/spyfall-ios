@@ -18,7 +18,6 @@ final class WaitingScreenController: UIViewController {
     var customPopUp = ChangeNamePopUpView()
     let spinner = Spinner(frame: .zero)
     
-    let db = Firestore.firestore()
     var playerObjectList = [Player]()
     var playerList = [String]()
     var currentUsername = String()
@@ -47,6 +46,10 @@ final class WaitingScreenController: UIViewController {
         super.viewDidDisappear(animated)
         resetViews()
     }
+    
+//    override func viewDidAppear(_ animated: Bool) {
+//        
+//    }
     
     private func setupView() {
         setupButtons()
@@ -93,13 +96,7 @@ final class WaitingScreenController: UIViewController {
         
         // Set isStarted to true
         isStarted = true
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["started": true]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
+        FirestoreManager.updateGameData(accessCode: self.accessCode, data: ["started": true])
         
         FirestoreManager.retrieveRoles(chosenPack: chosenPacks[0], chosenLocation: chosenLocation) { result in
             // Assigns each player a role
@@ -113,17 +110,11 @@ final class WaitingScreenController: UIViewController {
             
             for playerObject in self.playerObjectList {
                 // Add playerObjectList field to document
-                self.db.collection(Constants.DBStrings.games).document(self.accessCode).updateData(["playerObjectList": FieldValue.arrayUnion([[
+                FirestoreManager.updateGameData(accessCode: self.accessCode, data: ["playerObjectList": FieldValue.arrayUnion([[
                     "role": playerObject.role,
                     "username": playerObject.username,
-                    "votes": playerObject.votes
-                    ]])]) { err in
-                        if let err = err {
-                            print("Error writing document: \(err)")
-                        } else {
-                            print("Document successfully written!")
-                        }
-                }
+                    "votes": playerObject.votes]])
+                    ])
             }
         }
     }
@@ -132,8 +123,8 @@ final class WaitingScreenController: UIViewController {
     func leaveGameWasTapped() {
         if isStarted == true { return }
         playerList = playerList.filter { $0 != currentUsername }
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
-        if playerList.isEmpty { db.collection(Constants.DBStrings.games).document(accessCode).delete() }
+        FirestoreManager.updateGameData(accessCode: accessCode, data: ["playerList": playerList])
+        if playerList.isEmpty { FirestoreManager.deleteGame(accessCode: accessCode) }
         navigationController?.popToRootViewController(animated: true)
     }
         
@@ -147,23 +138,15 @@ final class WaitingScreenController: UIViewController {
     
     //     adds players username to firestore
     func addUsernameToPlayerList() {
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": FieldValue.arrayUnion([currentUsername])]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
-            } else {
-                print("Document successfully written!")
-            }
-        }
+        FirestoreManager.updateGameData(accessCode: accessCode, data: ["playerList": FieldValue.arrayUnion([currentUsername])])
     }
     
-    // listenor that updates playerList and tableView when firestore playerList is updated
+    // listener that updates playerList and tableView when firestore playerList is updated
     func updatePlayerList() {
-        db.collection(Constants.DBStrings.games).document(accessCode)
-            .addSnapshotListener { documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
-                }
+        FirestoreManager.addListener(accessCode: accessCode) { result in
+            switch result {
+            // Successfully adds listener
+            case .success(let document):
                 guard let playerListData = document.get("playerList"),
                     let isStartedData = document.get("started"),
                     let chosenPacksData = document.get("chosenPacks"),
@@ -182,7 +165,7 @@ final class WaitingScreenController: UIViewController {
                     self.chosenPacks = chosenPacks
                     self.chosenLocation = chosenLocation
                 }
-
+                
                 self.waitingScreenView.tableHeight.constant = CGFloat(self.playerList.count) * UIElementSizes.tableViewCellHeight
                 self.waitingScreenView.tableView.reloadData()
                 self.waitingScreenView.tableView.setNeedsUpdateConstraints()
@@ -193,9 +176,13 @@ final class WaitingScreenController: UIViewController {
                 // Check for segue
                 if let playerObjects = document.get("playerObjectList") as? [[String: Any]] {
                     if playerObjects.last?["role"] as? String == "The Spy!" && !self.segued {
-                            self.segueToGameSessionController()
+                        self.segueToGameSessionController()
                     }
                 }
+            // Failure to add listener
+            case .failure(let error):
+                print("FirestoreManager.addListener error: ", error)
+            }
         }
     }
     
@@ -280,7 +267,7 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
             if playerList[indexPath.row] == oldUsername {
                 playerList[indexPath.row] = currentUsername
                 self.oldUsername = nil
-                db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerList": playerList])
+                FirestoreManager.updateGameData(accessCode: accessCode, data: ["playerList": playerList])
             }
         }
         

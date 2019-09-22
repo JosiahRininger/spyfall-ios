@@ -61,15 +61,8 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         if newGameView.packTwoView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackTwo) }
         if newGameView.specialPackView.isChecked { chosenPacks.append(Constants.DBStrings.specialPackOne) }
         
-        // create Player object
-        let newPlayer = newGameView.usernameTextField.text!
-        
         // create access code
-        accessCode = NSUUID().uuidString.lowercased()
-        while accessCode.count > 6 { accessCode.removeLast() }
-        
-        // set values on firebase
-        let db = Firestore.firestore()
+        accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
         
         // Grab random location
         chosenPacks.shuffle()
@@ -82,19 +75,15 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
             }
             
             // Add a new document with a generated ID
-            db.collection(Constants.DBStrings.games).document(self.accessCode).setData([
-                "playerList": [newPlayer],
+            FirestoreManager.setGameData(accessCode: self.accessCode, data: [
+                "playerList": [self.newGameView.usernameTextField.text ?? ""],
                 "timeLimit": self.timeLimit,
                 "started": false,
                 "chosenPacks": chosenPacks,
                 "chosenLocation": self.chosenLocation
-            ]) { err in
-                if let err = err {
-                    print("Error writing document: \(err)")
-                } else {
-                    print("Document successfully written!")
-                }
-            }
+                ])
+            
+            // Navigate to the next screen with the new accessCode and username
             let nextScreen = WaitingScreenController()
             nextScreen.currentUsername = self.newGameView.usernameTextField.text!
             nextScreen.accessCode = self.accessCode
@@ -152,7 +141,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
-    // MARK - Keyboard Set Up
+    // MARK: - Keyboard Set Up
     func setUpKeyboard() {
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false

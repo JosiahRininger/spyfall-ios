@@ -102,7 +102,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         joinGameView.accessCodeTextField.inputAccessoryView = toolBar
     }
     
-    // MARK - Keyboard Set Up
+    // MARK: - Keyboard Set Up
     func setupKeyboard() {
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
