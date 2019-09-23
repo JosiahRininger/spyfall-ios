@@ -9,11 +9,13 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
+import PKHUD
 
 final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
     let spinner = Spinner(frame: .zero)
+    var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,13 +29,16 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         setupView()
         createToolBar()
         setupKeyboard()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     func setupView() {
+        view.addSubview(joinGameView)
         joinGameView.join.addSubview(spinner)
-        
-        view = joinGameView
-    }
+        }
     
     @objc func segueToHomeController() {
         self.navigationController?.popViewController(animated: true)
@@ -56,18 +61,33 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldsAreValid() -> Bool {
-        let alert = CreateAlertController().with(actions: UIAlertAction(title: "OK", style: .default))
-        if joinGameView.usernameTextField.text?.isEmpty ?? true {
-            alert.title = "Please enter a username"
-        } else if joinGameView.usernameTextField.text?.count ?? 25 > 24 {
-            alert.title = "Please enter a username less than 25 characters"
-        } else if joinGameView.accessCodeTextField.text?.isEmpty ?? true {
-            alert.title = "Please enter an access code"
+        HUD.dimsBackground = false
+        if joinGameView.accessCodeTextField.text?.isEmpty ?? true {
+            HUD.flash(.label("Please enter an access code"), delay: 1.0)
+        } else if joinGameView.usernameTextField.text?.isEmpty ?? true {
+            HUD.flash(.label("Please enter a username"), delay: 1.0)
         } else {
             return true
         }
-        self.present(alert, animated: true)
         return false
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        // get the current text, or use an empty string if that failed
+        let currentText = textField.text ?? ""
+        
+        // attempt to read the range they are trying to change, or exit if we can't
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        
+        // add their new text to the existing text
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        
+        // make sure the result is under the respective textfields max characters
+        switch textField {
+        case joinGameView.accessCodeTextField: return updatedText.count <= 6
+        case joinGameView.usernameTextField: return updatedText.count <= 24
+        default: print("INVALID TEXTFIELD"); return false
+        }
     }
     
     func createToolBar() {
@@ -82,6 +102,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         joinGameView.accessCodeTextField.inputAccessoryView = toolBar
     }
     
+    // MARK: - Keyboard Set Up
     func setupKeyboard() {
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
@@ -92,4 +113,39 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
 
+    // Moves view up if textfield is covered
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == joinGameView.usernameTextField {
+            let yPos = UIElementSizes.windowHeight - joinGameView.usernameTextField.frame.maxY
+            if yPos < keyboardHeight && joinGameView.frame.origin.y == 0 {
+                UIView.animate(withDuration: 0.33, animations: {
+                    self.joinGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)
+                })
+            }
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        if joinGameView.usernameTextField.isFirstResponder {
+            keyboardHeight = keyboardSize.cgRectValue.height
+        }
+    }
+    
+    // Moves view down if not centerd on screen
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.joinGameView.frame.origin.y != 0 {
+            self.joinGameView.frame.origin.y = 0
+        }
+    }
+    
+    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            if joinGameView.usernameTextField.isFirstResponder {
+                keyboardHeight = keyboardFrame.cgRectValue.size.height
+                textFieldDidBeginEditing(joinGameView.usernameTextField)
+            }
+        }
+    }
 }

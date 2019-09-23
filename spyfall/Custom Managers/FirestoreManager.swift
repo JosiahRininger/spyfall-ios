@@ -15,10 +15,22 @@ class FirestoreManager {
     typealias ChosenLocationHandler = (String) -> Void
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
+    typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
     
     static let db = Firestore.firestore()
     
-    // retrieves all the game data being used on the game session controller
+    // Adds a new document with a generated ID and sets the game data with the user's parameters
+    static func setGameData(accessCode: String, data: [String: Any]) {
+        db.collection(Constants.DBStrings.games).document(accessCode).setData(data) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
+    
+    // Retrieves all the game data being used on the game session controller
     static func retrieveGameData(accessCode: String, currentUsername: String, chosenPacks: [String], completion: @escaping GameDataHandler) {
         var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String]())
         var gameDataReady = [false, false]
@@ -64,7 +76,7 @@ class FirestoreManager {
         }
     }
     
-    // retrieves the chosen location randomly from the given pack
+    // Retrieves the chosen location randomly from the given pack
     static func retrieveChosenLocation(chosenPack: String, completion: @escaping ChosenLocationHandler) {
         var chosenLocation = String()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, err in
@@ -79,7 +91,7 @@ class FirestoreManager {
         }
     }
     
-    // retrieves all the locations within the given packs
+    // Retrieves all the locations within the given packs
     static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
         var locationList = [String]()
         var locationDataReady = 1
@@ -103,7 +115,7 @@ class FirestoreManager {
         }
     }
     
-    // retrieves all the roles for the chosen location
+    // Retrieves all the roles for the chosen location
     static func retrieveRoles(chosenPack: String, chosenLocation: String, completion: @escaping RolesHandler) {
         var roles = [String]()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
@@ -117,6 +129,44 @@ class FirestoreManager {
                 }
             }
             completion(roles)
+        }
+    }
+    
+    // Updates the game data
+    static func updateGameData(accessCode: String, data: [String: Any]) {
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully written!")
+            }
+        }
+    }
+    
+    // Deletes game
+    static func deleteGame(accessCode: String) {
+        db.collection(Constants.DBStrings.games).document(accessCode).delete() { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully deleted!")
+            }
+        }
+    }
+    
+    // Adds a listener to the game data
+    static func addListener(accessCode: String, completion: @escaping ListenerHandler) {
+        db.collection(Constants.DBStrings.games).document(accessCode)
+            .addSnapshotListener { documentSnapshot, error in
+                if let error = error {
+                    print("Error fetching document: \(error)")
+                    completion(.failure(error))
+                }
+                guard let document = documentSnapshot else {
+                    print("Error fetching document")
+                    return
+                }
+                completion(.success(document))
         }
     }
 }

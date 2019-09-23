@@ -82,7 +82,7 @@ final class GameSessionController: UIViewController {
             gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         
         setupButtons()
@@ -142,20 +142,10 @@ final class GameSessionController: UIViewController {
         return false
     }
 
-    var t = 0.0
-    var c = 0
     private func string(from timeInterval: TimeInterval) -> String {
         let interval = Int(timeInterval)
         let seconds = interval % 60
         let minutes = (interval / 60) % 60
-        if t == timeInterval {
-            c += 1
-        } else {
-            t = timeInterval
-            c = 0
-        }
-        print("T:", String(timeInterval))
-        print("C:", String(c))
         return String(format: "%01d:%02d", minutes, seconds)
     }
 
