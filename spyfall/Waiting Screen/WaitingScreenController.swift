@@ -47,9 +47,9 @@ final class WaitingScreenController: UIViewController {
         resetViews()
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
     
     private func setupView() {
         setupButtons()
