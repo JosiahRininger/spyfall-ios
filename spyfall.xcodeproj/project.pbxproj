@@ -36,12 +36,12 @@
 		D769B74D2314611B003F05E3 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */; };
 		D769B7512314764F003F05E3 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7502314764F003F05E3 /* UIImageView.swift */; };
 		D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
-		D769B7552316FBCA003F05E3 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7542316FBCA003F05E3 /* NavigationController.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
 		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
+		D77BA9AA233D079800A12531 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77BA9A8233CF3C600A12531 /* NavigationController.swift */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
 		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
@@ -96,12 +96,12 @@
 		D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		D769B7502314764F003F05E3 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		D769B75223158B63003F05E3 /* CustomPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpView.swift; sourceTree = "<group>"; };
-		D769B7542316FBCA003F05E3 /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = ../../../../Documents/NavigationController.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
+		D77BA9A8233CF3C600A12531 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = spyfall/NavigationController.swift; sourceTree = SOURCE_ROOT; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
 		D7A72D3922BFCE75005D1831 /* GameSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionView.swift; sourceTree = "<group>"; };
 		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
@@ -249,7 +249,7 @@
 		D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */ = {
 			isa = PBXGroup;
 			children = (
-				D769B7542316FBCA003F05E3 /* NavigationController.swift */,
+				D77BA9A8233CF3C600A12531 /* NavigationController.swift */,
 				D7A9F654232068FD00649F6D /* Button.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
 				D7C4E77C2330721B00771C3F /* Spinner.swift */,
@@ -466,6 +466,7 @@
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */,
 				D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */,
+				D77BA9AA233D079800A12531 /* NavigationController.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D7FD6DAA2331768100917F7B /* Toast.swift in Sources */,
 				D769B74923145F80003F05E3 /* Encodable.swift in Sources */,
@@ -492,7 +493,6 @@
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
 				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
 				D7030EE022BA85D8002CB9B2 /* FirestoreManager.swift in Sources */,
-				D769B7552316FBCA003F05E3 /* NavigationController.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
 				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,

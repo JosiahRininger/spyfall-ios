@@ -104,7 +104,7 @@ final class SettingsController: UIViewController {
         case ColorOptions.green.rawValue: selectedColor = .customGreen
         case ColorOptions.orange.rawValue: selectedColor = .customOrange
         case ColorOptions.red.rawValue: selectedColor = .customRed
-        case ColorOptions.random.rawValue: selectedColor = .white; return UIColor.colors.randomElement()?.value ?? UIColor.blue
+        case ColorOptions.random.rawValue: selectedColor = .secondaryBackgroundColor; return UIColor.colors.randomElement()?.value ?? UIColor.blue
         default: return UIColor.colors.randomElement()?.value ?? UIColor.blue
         }
         return selectedColor
@@ -149,7 +149,7 @@ final class SettingsController: UIViewController {
                 if colorString != ColorOptions.red.rawValue {
                     UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
                 }
-            case .white:
+            case .secondaryBackgroundColor:
                 if colorString != ColorOptions.random.rawValue {
                     UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
                 }

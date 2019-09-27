@@ -27,7 +27,7 @@ class GameSessionView: UIView {
     var endGameTopAnchor = NSLayoutConstraint()
     
     var endGame = UIElementsManager.createButton(with: "End Game")
-    var playAgain = UIElementsManager.createButton(with: "Play Again", color: .white)
+    var playAgain = UIElementsManager.createButton(with: "Play Again", color: .secondaryBackgroundColor)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -40,7 +40,7 @@ class GameSessionView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 0)
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)

@@ -47,20 +47,20 @@ final class WaitingScreenController: UIViewController {
         resetViews()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
-    }
+//    override func viewDidAppear(_ animated: Bool) {
+//        
+//    }
     
     private func setupView() {
         setupButtons()
         
-        scrollView.backgroundColor = .primaryWhite
+        scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         waitingScreenView.translatesAutoresizingMaskIntoConstraints = false
         waitingScreenView.codeLabel.text = accessCode
         
-        view.backgroundColor = .primaryWhite
+        view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
         
         NSLayoutConstraint.activate([

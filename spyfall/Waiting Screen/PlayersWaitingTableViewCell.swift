@@ -23,7 +23,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
 
     var rowNumberLabel = UIElementsManager.createLabel(with: "", fontSize: 19, textAlignment: .center, isHeader: true)
 
-    var usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16, color: .textGray)
+    var usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16, color: .subText)
     
     var pencilImageView: UIImageView = {
         let iv = UIImageView()
@@ -44,7 +44,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         selectionStyle = .none
         
         addSubview(cellBackgroundView)

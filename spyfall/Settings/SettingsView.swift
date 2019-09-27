@@ -26,14 +26,14 @@ class SettingsView: UIView {
     var infoLabel = UIElementsManager.createLabel(with: "About", fontSize: 30, textAlignment: .center, isHeader: true)
     var adLabel = UIElementsManager.createLabel(with: "Ad", fontSize: 30, textAlignment: .center, isHeader: true)
     
-    var back = UIElementsManager.createButton(with: "Back", color: .white)
+    var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
     
     lazy var colorPopUpView = CustomPopUpView(frame: .zero, title: "Change Theme", twoButtons: true)
-    lazy var themeLabel = UIElementsManager.createLabel(with: "Choose your new theme", fontSize: 24, color: .textGray, textAlignment: .center)
+    lazy var themeLabel = UIElementsManager.createLabel(with: "Choose your new theme", fontSize: 24, color: .subText, textAlignment: .center)
     lazy var colorsCollectionView = UIElementsManager.createCollectionView()
     
     lazy var infoPopUpView = CustomPopUpView(frame: .zero, title: "About")
-    lazy var summaryLabel = UIElementsManager.createLabel(with: "Spyfall is a board game originally published by Hobby World. This mobile application of the board game is developed and maintained by Josiah Rininger (iOS) and Elijah Dangerfield (Android). Any questions or concerns may be sent here:", fontSize: 24, numberOfLines: 0, color: .textGray, textAlignment: .center)
+    lazy var summaryLabel = UIElementsManager.createLabel(with: "Spyfall is a board game originally published by Hobby World. This mobile application of the board game is developed and maintained by Josiah Rininger (iOS) and Elijah Dangerfield (Android). Any questions or concerns may be sent here:", fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
     lazy var emailLabel = UIElementsManager.createLabel(with: "Spyfallmobile@gmail.com", fontSize: 24, color: .secondaryColor, textAlignment: .center)
     
     lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "Remove Ads?", twoButtons: true)
@@ -50,7 +50,7 @@ class SettingsView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCollectionViewCellId)
         

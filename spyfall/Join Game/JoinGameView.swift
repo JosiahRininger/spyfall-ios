@@ -18,7 +18,7 @@ class JoinGameView: UIView {
     var accessCodeLabel = UIElementsManager.createLabel(with: "Enter an access code:", fontSize: 24, textAlignment: .center, isHeader: true)
     var accessCodeTextField = UIElementsManager.createTextField(with: "Access code")
     
-    var back = UIElementsManager.createButton(with: "Back", color: .white)
+    var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
     var join = UIElementsManager.createButton(with: "Join")
     
     override init(frame: CGRect) {
@@ -33,7 +33,7 @@ class JoinGameView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         addSubviews(joinGameLabel, usernameLabel, usernameTextField, accessCodeLabel, accessCodeTextField, join, back)
         setupConstraints()

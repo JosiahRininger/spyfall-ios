@@ -13,7 +13,7 @@ struct UIElementSizes {
     static var windowWidth: CGFloat = UIScreen.main.bounds.width
     static var windowHeight: CGFloat = UIScreen.main.bounds.height
 
-    static var statusBarHeight: CGFloat = 40
+    static var statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
     
     static var tableViewCellHeight: CGFloat = 70
     static var collectionViewCellHeight: CGFloat = 58

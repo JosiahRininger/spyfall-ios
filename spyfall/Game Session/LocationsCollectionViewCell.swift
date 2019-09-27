@@ -20,7 +20,7 @@ class LocationsCollectionViewCell: UICollectionViewCell {
                 locationLabel.textColor = .secondaryGray
             case false:
                 locationLabel.attributedText = NSAttributedString(string: locationLabel.attributedText?.string ?? "", attributes: .none)
-                locationLabel.textColor = .black
+                locationLabel.textColor = .mainText
             }
         }
     }

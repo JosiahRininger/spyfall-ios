@@ -23,7 +23,7 @@ class WaitingScreenView: UIView {
     var tableHeight = NSLayoutConstraint()
     var tableView = UIElementsManager.createTableView()
 
-    var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .white)
+    var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .secondaryBackgroundColor)
     var startGame = UIElementsManager.createButton(with: "Start Game")
     
     override init(frame: CGRect) {
@@ -38,7 +38,7 @@ class WaitingScreenView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: Constants.IDs.playerListCellId)
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
@@ -48,7 +48,6 @@ class WaitingScreenView: UIView {
     }
     
     private func setupConstraints() {
-        
         tableHeight.isActive = true
         
         NSLayoutConstraint.activate([
