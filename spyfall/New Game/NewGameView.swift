@@ -28,7 +28,7 @@ class NewGameView: UIView {
     
     var timeLimitTextField = UIElementsManager.createNumberTextField()
     
-    var back = UIElementsManager.createButton(with: "Back", color: .white)
+    var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
     var create = UIElementsManager.createButton(with: "Create")
 
     override init(frame: CGRect) {
@@ -42,7 +42,7 @@ class NewGameView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         addSubviews(newGameLabel, usernameLabel, usernameTextField, choosePacksLabel, packOneView, packTwoView, specialPackView, timeLimitTextField, timeLabel, disclaimerLabel, back, create)
 

@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import Lottie
 
-enum UIElementsManager {
+class UIElementsManager {
     
-    static func createLabel(with title: String, fontSize: CGFloat, numberOfLines: Int = 1, color: UIColor = .black, textAlignment: NSTextAlignment = .natural, isHeader: Bool = false) -> UILabel {
+    static func createLabel(with title: String, fontSize: CGFloat, numberOfLines: Int = 1, color: UIColor = .mainText, textAlignment: NSTextAlignment = .natural, isHeader: Bool = false) -> UILabel {
         let l = UILabel()
         l.text = title
         l.textColor = color
@@ -27,8 +27,8 @@ enum UIElementsManager {
     
     static func createTextField(with placeholder: String) -> UITextField {
         let t = UITextField()
-        t.backgroundColor = .white
-        t.textColor = .black
+        t.backgroundColor = .secondaryBackgroundColor
+        t.textColor = .mainText
         t.placeholder = placeholder
         t.tintColor = .secondaryColor
         t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.textFieldHeight))
@@ -44,8 +44,8 @@ enum UIElementsManager {
     
     static func createNumberTextField() -> UITextField {
         let t = UITextField()
-        t.backgroundColor = .white
-        t.textColor = .black
+        t.backgroundColor = .secondaryBackgroundColor
+        t.textColor = .mainText
         t.textAlignment = .center
         t.tintColor = .clear
         t.keyboardType = .numberPad
@@ -62,7 +62,7 @@ enum UIElementsManager {
     static func createButton(with title: String, color: UIColor = .secondaryColor) -> Button {
         let b = Button()
         b.backgroundColor = color
-        b.setTitleColor(color != .white ? .primaryWhite : .black, for: .normal)
+        b.setTitleColor(color != .secondaryBackgroundColor ? .hexToColor(hexString: "#FCFCFC") : .mainText, for: .normal)
         b.setTitle(title, for: .normal)
         b.titleLabel?.font = .boldSystemFont(ofSize: 20)
         b.layer.cornerRadius = 30
@@ -85,6 +85,7 @@ enum UIElementsManager {
     static func createSettingsButton() -> Button {
         let b = Button()
         b.setBackgroundImage(UIImage(named: "Settings_Icon"), for: .normal)
+        b.imageView?.setImageColor(color: .secondaryBackgroundColor)
         b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
@@ -157,7 +158,7 @@ enum UIElementsManager {
         tv.separatorInset = .zero
         tv.isScrollEnabled = false
         tv.rowHeight = UIElementSizes.tableViewCellHeight
-        tv.backgroundColor = .primaryWhite
+        tv.backgroundColor = .primaryBackgroundColor
         tv.translatesAutoresizingMaskIntoConstraints = false
         
         return tv
@@ -175,7 +176,7 @@ enum UIElementsManager {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.isScrollEnabled = false
-        cv.backgroundColor = .primaryWhite
+        cv.backgroundColor = .primaryBackgroundColor
         cv.translatesAutoresizingMaskIntoConstraints = false
         
         return cv

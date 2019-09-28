@@ -14,7 +14,7 @@ class ColorsCell: UICollectionViewCell {
     var cellBackgroundView: UIView = {
         let v = UIView()
         v.layer.cornerRadius = 9
-        v.backgroundColor = .white
+        v.backgroundColor = .secondaryBackgroundColor
         v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
         v.layer.masksToBounds = false
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -31,7 +31,7 @@ class ColorsCell: UICollectionViewCell {
         return v
     }()
     
-    var label = UIElementsManager.createLabel(with: "", fontSize: 12, numberOfLines: 2, color: .textGray, textAlignment: .center)
+    var label = UIElementsManager.createLabel(with: "", fontSize: 12, numberOfLines: 2, color: .subText, textAlignment: .center)
     
     var checkAnimationView: AnimationView = {
         let av = AnimationView(name: "check_animation")
@@ -80,7 +80,7 @@ class ColorsCell: UICollectionViewCell {
     
     private func setupView() {
         isUserInteractionEnabled = true
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         addSubview(cellBackgroundView)
         cellBackgroundView.addSubview(contentsLayer)
@@ -88,7 +88,7 @@ class ColorsCell: UICollectionViewCell {
         setupConstraints()
     }
     
-    func configure(color: UIColor = .white, labelText: String = "") {
+    func configure(color: UIColor = .secondaryBackgroundColor, labelText: String = "") {
         cellBackgroundView.backgroundColor = color
         self.label.text = labelText
     }

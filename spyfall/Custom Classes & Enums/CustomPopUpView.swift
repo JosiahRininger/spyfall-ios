@@ -14,7 +14,7 @@ class CustomPopUpView: UIView {
     
     lazy var popUpView: UIView = {
         let v = UIElementsManager.createView()
-        v.backgroundColor = .primaryWhite
+        v.backgroundColor = .primaryBackgroundColor
         v.layer.cornerRadius = 30
         v.layer.shadowColor = UIColor.gray.cgColor
         v.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
@@ -28,7 +28,7 @@ class CustomPopUpView: UIView {
     
     lazy var contentsView = UIElementsManager.createView(isUserInteractionEnabled: true)
     
-    lazy var cancelButton = UIElementsManager.createButton(with: "", color: .white)
+    lazy var cancelButton = UIElementsManager.createButton(with: "", color: .secondaryBackgroundColor)
     lazy var doneButton = UIElementsManager.createButton(with: "")
     
     init(frame: CGRect, title: String, twoButtons: Bool = false) {

@@ -11,13 +11,13 @@ import UIKit
 class Toast {
     static func show(message: String, controller: UIViewController) {
         let toastContainer = UIView(frame: CGRect())
-        toastContainer.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastContainer.backgroundColor = UIColor.mainText.withAlphaComponent(0.6)
         toastContainer.alpha = 0.0
         toastContainer.layer.cornerRadius = 25
         toastContainer.clipsToBounds  =  true
         
         let toastLabel = UILabel(frame: CGRect())
-        toastLabel.textColor = UIColor.white
+        toastLabel.textColor = .secondaryBackgroundColor
         toastLabel.textAlignment = .center
         toastLabel.font.withSize(12.0)
         toastLabel.text = message

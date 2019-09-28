@@ -14,7 +14,7 @@ class PlayersCollectionViewCell: UICollectionViewCell {
     
     var firstView: UIView = {
         var v = UIElementsManager.createCircleView()
-        var i = UIElementsManager.createLabel(with: "1st", fontSize: 9, color: .primaryWhite, textAlignment: .center, isHeader: true)
+        var i = UIElementsManager.createLabel(with: "1st", fontSize: 9, color: .hexToColor(hexString: "#FCFCFC"), textAlignment: .center, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
@@ -30,7 +30,7 @@ class PlayersCollectionViewCell: UICollectionViewCell {
                 usernameLabel.textColor = .secondaryGray
             case false:
                 usernameLabel.attributedText = NSAttributedString(string: usernameLabel.attributedText?.string ?? "", attributes: .none)
-                usernameLabel.textColor = .black
+                usernameLabel.textColor = .mainText
             }
         }
     }

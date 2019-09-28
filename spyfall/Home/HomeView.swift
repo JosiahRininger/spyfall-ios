@@ -15,7 +15,7 @@ class HomeView: UIView {
     var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, textAlignment: .center, isHeader: true)
     var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, textAlignment: .center, isHeader: true)
     
-    var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .white)
+    var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .secondaryBackgroundColor)
     var joinGame = UIElementsManager.createButton(with: "Join Game")
     
     var rulesView = UIElementsManager.createView(isUserInteractionEnabled: true)
@@ -23,7 +23,7 @@ class HomeView: UIView {
         var v = UIElementsManager.createCircleView()
         v.addShadowWith(radius: 3, offset: CGSize(width: 0, height: 3), opacity: 0.16)
         
-        var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .primaryWhite, textAlignment: .center, isHeader: true)
+        var i = UIElementsManager.createLabel(with: "i", fontSize: 14, color: .hexToColor(hexString: "#FCFCFC"), textAlignment: .center, isHeader: true)
         v.addSubview(i)
         i.centerYAnchor.constraint(equalTo: v.centerYAnchor).isActive = true
         i.centerXAnchor.constraint(equalTo: v.centerXAnchor).isActive = true
@@ -33,7 +33,7 @@ class HomeView: UIView {
     var rulesLabel = UIElementsManager.createLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
     
     var rulesPopUpView = CustomPopUpView(frame: .zero, title: "Rules")
-    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "*These are the rules*", fontSize: 24, color: .textGray, textAlignment: .center)
+    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "*These are the rules*", fontSize: 24, color: .subText, textAlignment: .center)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -47,7 +47,7 @@ class HomeView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = .primaryWhite
+        backgroundColor = .primaryBackgroundColor
         
         addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, rulesView, rulesPopUpView)
         rulesView.addSubviews(infoView, rulesLabel)

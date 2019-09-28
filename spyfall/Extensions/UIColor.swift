@@ -34,9 +34,37 @@ extension UIColor {
     }
     
     // Theme Colors Used
-    static let primaryWhite: UIColor = .hexToColor(hexString: "#FCFCFC")
+    static let primaryBackgroundColor: UIColor = {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "Background") ?? .hexToColor(hexString: "#FCFCFC")
+        } else {
+            return .hexToColor(hexString: "#FCFCFC")
+        }
+    }()
+    
+    static let secondaryBackgroundColor: UIColor = {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "SecondaryBackground") ?? .white
+        } else {
+            return .white
+        }
+    }()
+    static let mainText: UIColor = {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "MainText") ?? .black
+        } else {
+            return .black
+        }
+    }()
+
+    static let subText: UIColor = {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "SubText") ?? .hexToColor(hexString: "#585858")
+        } else {
+            return .hexToColor(hexString: "#585858")
+        }
+    }()
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
-    static let textGray: UIColor = .hexToColor(hexString: "#585858")
     static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")

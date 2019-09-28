@@ -64,12 +64,12 @@ final class GameSessionController: UIViewController {
     }
     
     private func setupView() {
-        scrollView.backgroundColor = .primaryWhite
+        scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         gameSessionView.translatesAutoresizingMaskIntoConstraints = false
         gameSessionView.playAgain.isHidden = true
         
-        view.backgroundColor = .primaryWhite
+        view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
         scrollView.addSubview(gameSessionView)
         

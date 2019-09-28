@@ -31,7 +31,7 @@ class PackView: UIView {
 
     var numberLabel: UILabel = {
         let l = UILabel()
-        l.textColor = .primaryWhite
+        l.textColor = .primaryBackgroundColor
         l.textAlignment = .center
         l.font = .boldSystemFont(ofSize: 49)
         l.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ class PackView: UIView {
     
     var whiteView: UIView = {
         let v = UIView()
-        v.backgroundColor = .white
+        v.backgroundColor = .secondaryBackgroundColor
         v.translatesAutoresizingMaskIntoConstraints = false
         
         return v
@@ -49,7 +49,7 @@ class PackView: UIView {
     
     var packNameLabel: UILabel = {
         let l = UILabel()
-        l.textColor = .black
+        l.textColor = .mainText
         l.numberOfLines = 2
         l.textAlignment = .center
         l.font = .boldSystemFont(ofSize: 12)
