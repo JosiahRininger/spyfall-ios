@@ -47,7 +47,7 @@ class PlayersCollectionViewCell: UICollectionViewCell {
     
     private func setupView() {
         isUserInteractionEnabled = true
-        backgroundColor = .cellGray
+        backgroundColor = .cellBackground
         layer.cornerRadius = 9
         
         addSubviews(usernameLabel, firstView)

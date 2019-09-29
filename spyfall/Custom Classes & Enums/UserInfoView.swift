@@ -15,7 +15,7 @@ class UserInfoView: UIView {
     
     var mainView: UIView = {
         let v = UIView()
-        v.backgroundColor = .cellGray
+        v.backgroundColor = .cellBackground
         v.layer.cornerRadius = 30
         v.translatesAutoresizingMaskIntoConstraints = false
         

@@ -64,11 +64,19 @@ extension UIColor {
             return .hexToColor(hexString: "#585858")
         }
     }()
+    
+    static let cellBackground: UIColor = {
+        if #available(iOS 11.0, *) {
+            return UIColor(named: "CellBackground") ?? .hexToColor(hexString: "#EEEEEE")
+        } else {
+            return .hexToColor(hexString: "#EEEEEE")
+        }
+    }()
+    
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")
-    static let cellGray: UIColor = .hexToColor(hexString: "#F0F0F0")
     
     // Secondary Color Options
     static let customPurple: UIColor = .hexToColor(hexString: "#9533C7")

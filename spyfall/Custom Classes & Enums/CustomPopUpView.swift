@@ -45,7 +45,7 @@ class CustomPopUpView: UIView {
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
-        backgroundColor = UIColor.darkGray.withAlphaComponent(0.3)
+        backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
         
         isHidden = true
         isUserInteractionEnabled = true

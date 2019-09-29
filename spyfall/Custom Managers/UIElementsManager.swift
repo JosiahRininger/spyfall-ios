@@ -47,7 +47,7 @@ class UIElementsManager {
         t.backgroundColor = .secondaryBackgroundColor
         t.textColor = .mainText
         t.textAlignment = .center
-        t.tintColor = .clear
+        t.tintColor = .secondaryColor
         t.keyboardType = .numberPad
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9

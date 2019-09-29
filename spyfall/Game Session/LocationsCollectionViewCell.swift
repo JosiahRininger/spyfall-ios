@@ -37,7 +37,7 @@ class LocationsCollectionViewCell: UICollectionViewCell {
     
     private func setupView() {
         isUserInteractionEnabled = true
-        backgroundColor = .cellGray
+        backgroundColor = .cellBackground
         layer.cornerRadius = 9
         
         addSubview(locationLabel)
@@ -49,7 +49,6 @@ class LocationsCollectionViewCell: UICollectionViewCell {
             locationLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
             ])
-        
     }
     
     func configure(location: String) {

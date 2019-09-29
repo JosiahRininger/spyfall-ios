@@ -12,7 +12,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
     
     var cellBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .cellGray
+        view.backgroundColor = .cellBackground
         view.layer.cornerRadius = 9
         view.layer.masksToBounds = false
         view.isUserInteractionEnabled = true

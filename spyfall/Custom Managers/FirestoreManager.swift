@@ -16,6 +16,7 @@ class FirestoreManager {
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
+    typealias CheckHandler = ((gameExists: Bool, usernameFree: Bool)) -> Void
     
     static let db = Firestore.firestore()
     
@@ -145,7 +146,18 @@ class FirestoreManager {
     
     // Deletes game
     static func deleteGame(accessCode: String) {
-        db.collection(Constants.DBStrings.games).document(accessCode).delete() { err in
+        db.collection(Constants.DBStrings.games).document(accessCode).delete { err in
+            if let err = err {
+                print("Error writing document: \(err)")
+            } else {
+                print("Document successfully deleted!")
+            }
+        }
+    }
+    
+    // Deletes playObjectList
+    static func deletePlayObjectList(accessCode: String) {
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerObjectList": FieldValue.delete]) { err in
             if let err = err {
                 print("Error writing document: \(err)")
             } else {
@@ -167,6 +179,29 @@ class FirestoreManager {
                     return
                 }
                 completion(.success(document))
+        }
+    }
+    
+    // Checks if accessCode given exists and checks if the username given is taken
+    static func checkGamData(accessCode: String, username: String, completion: @escaping CheckHandler) {
+        var dataChecker = (gameExists: false, usernameFree: false)
+        if accessCode.isEmpty || username.isEmpty {
+            completion(dataChecker)
+            return
+        }
+        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+            if let error = error {
+                print("Error fetching document: \(error)")
+            }
+            if let document = document {
+                if document.exists {
+                    dataChecker.gameExists = true
+                    if let usernameList = document.data()?["playerList"] as? [String] {
+                        dataChecker.usernameFree = !usernameList.contains(username)
+                    }
+                }
+            }
+            completion(dataChecker)
         }
     }
 }

@@ -13,6 +13,7 @@ final class SettingsController: UIViewController {
     var settingsView = SettingsView()
     var colors: [UIColor] = []
     var selectedColor = UIColor.clear
+    var homeVC = UIViewController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +34,7 @@ final class SettingsController: UIViewController {
     
     private func setupButtonActions() {
         settingsView.back.touchUpInside = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
+            self?.dismiss(animated: true)
         }
         
         // Sets up the actions around the color pop up
@@ -48,6 +49,7 @@ final class SettingsController: UIViewController {
             self?.settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
             self?.settingsView.emailLabel.textColor = .secondaryColor
             self?.settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
+            self?.homeVC.viewWillAppear(true)
         }
         
         // Sets up the actions around the info pop up

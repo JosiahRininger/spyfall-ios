@@ -47,9 +47,15 @@ final class WaitingScreenController: UIViewController {
         resetViews()
     }
     
-//    override func viewDidAppear(_ animated: Bool) {
-//        
-//    }
+    override func viewDidAppear(_ animated: Bool) {
+        playerObjectList = [Player]()
+        playerList = [String]()
+        chosenLocation = String()
+        isStarted = false
+        segued = false
+        oldUsername = nil
+        updatePlayerList()
+    }
     
     private func setupView() {
         setupButtons()
@@ -235,6 +241,7 @@ final class WaitingScreenController: UIViewController {
         nextScreen.currentUsername = self.currentUsername
         nextScreen.accessCode = self.accessCode
         nextScreen.chosenPacks = self.chosenPacks
+        spinner.alpha = 0.0
         navigationController?.pushViewController(nextScreen, animated: true)
     }
 

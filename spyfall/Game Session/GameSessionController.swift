@@ -17,22 +17,18 @@ final class GameSessionController: UIViewController {
     var customPopUp = EndGamePopUpView()
     
     var timer = Timer()
-    var timeLimit = String()
-    var usernameList = [String]()
-    var locationList = [String]()
-    var playerObject = Player(role: "a role", username: "Name", votes: 0)
     var currentUsername = String()
     var accessCode = String()
     var chosenPacks = [String]()
     var firstPlayer = String()
-    private var currentTimeLeft: TimeInterval = 0
-    private var maxTimeInterval: TimeInterval = TimeInterval()
+    var isStarted = false
+    
+    private var currentTimeLeft: TimeInterval = 0.0
+    private var maxTimeInterval: TimeInterval = 0.0
     private var startDate: Date?
     
     var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String()]) {
-        didSet {
-                NotificationCenter.default.post(name: .gameDataRetrieved, object: nil)
-        }
+        didSet { NotificationCenter.default.post(name: .gameDataRetrieved, object: nil) }
     }
     
     override func viewDidLoad() {
@@ -44,6 +40,7 @@ final class GameSessionController: UIViewController {
         gameSessionView.locationsCollectionView.dataSource = self
         
         callNetworkManager()
+        updateData()
 
         setupView()
     }
@@ -95,21 +92,19 @@ final class GameSessionController: UIViewController {
         // Sets up the actions around the end game pop up
         customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
+            FirestoreManager.updateGameData(accessCode: self?.accessCode ?? "", data: ["started": false])
             self?.navigationController?.popToRootViewController(animated: true)
         }
     }
     
     @objc func updateGame() {
-        usernameList = gameData.usernameList
-        locationList = gameData.locationList
-        
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "GameSessionLocation", gameData.chosenLocation)
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "@GameSessionLocation", gameData.chosenLocation)
 
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
         maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
         
-        firstPlayer = usernameList.randomElement() ?? ""
+        firstPlayer = gameData.usernameList.randomElement() ?? ""
         
         setupTimer()
         updateCollectionViews()
@@ -124,7 +119,33 @@ final class GameSessionController: UIViewController {
     }
     
     @objc func playAgainWasTapped() {
+        FirestoreManager.updateGameData(accessCode: accessCode, data: ["started": false])
+        FirestoreManager.deletePlayObjectList(accessCode: accessCode)
         navigationController?.popViewController(animated: true)
+    }
+    
+    func updateData() {
+        FirestoreManager.addListener(accessCode: accessCode) { result in
+            switch result {
+            // Successfully adds listener
+            case .success(let document):
+                guard let isStartedData = document.get("started") else {
+                        print("Document data was empty.")
+                        return
+                }
+                
+                // update playerList and tableView
+                if let isStarted = isStartedData as? Bool {
+                    if !isStarted {
+                        self.navigationController?.popViewController(animated: true)
+                    }
+                }
+
+            // Failure to add listener
+            case .failure(let error):
+                print("FirestoreManager.addListener error: ", error)
+            }
+        }
     }
     
     private func timerIsDone() -> Bool {
@@ -192,8 +213,8 @@ final class GameSessionController: UIViewController {
     }
     
     private func updateCollectionViews() {
-        gameSessionView.playersCollectionHeight.constant = CGFloat((usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
-        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
+        gameSessionView.playersCollectionHeight.constant = CGFloat((gameData.usernameList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
+        gameSessionView.locationsCollectionHeight.constant = CGFloat((gameData.locationList.count + 1) / 2) * (UIElementSizes.collectionViewCellHeight + 10)
         gameSessionView.playersCollectionView.reloadData()
         gameSessionView.locationsCollectionView.reloadData()
         gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
@@ -201,7 +222,6 @@ final class GameSessionController: UIViewController {
         gameSessionView.playersCollectionView.layoutIfNeeded()
         gameSessionView.locationsCollectionView.layoutIfNeeded()
     }
-    
 }
 
 // MARK: - Collection View Delegate & Data Source
@@ -210,9 +230,9 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
         
         switch collectionView {
         case gameSessionView.playersCollectionView:
-            return usernameList.count
+            return gameData.usernameList.count
         default:
-            return locationList.count
+            return gameData.locationList.count
         }
     }
 
@@ -221,12 +241,12 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
         switch collectionView {
         case gameSessionView.playersCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(username: usernameList[indexPath.row], isFirstPlayer: usernameList[indexPath.row] == firstPlayer)
+            cell.configure(username: gameData.usernameList[indexPath.row], isFirstPlayer: gameData.usernameList[indexPath.row] == firstPlayer)
             return cell
             
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(location: locationList[indexPath.row])
+            cell.configure(location: gameData.locationList[indexPath.row])
             return cell
             
         }

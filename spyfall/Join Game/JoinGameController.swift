@@ -45,31 +45,30 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func segueToWaitingScreenController() {
-        if !textFieldsAreValid() { return }
-        
-        spinner.animate(with: joinGameView.join)
-        
-        joinGameView.back.isUserInteractionEnabled = false
-        joinGameView.join.isUserInteractionEnabled = false
-        
-        let nextScreen = WaitingScreenController()
-        if let currentUsername = self.joinGameView.usernameTextField.text, let accessCode = self.joinGameView.accessCodeTextField.text {
-            nextScreen.currentUsername = currentUsername
-            nextScreen.accessCode = accessCode
-            navigationController?.pushViewController(nextScreen, animated: true)
-        }
-    }
-    
-    func textFieldsAreValid() -> Bool {
         HUD.dimsBackground = false
-        if joinGameView.accessCodeTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter an access code"), delay: 1.0)
-        } else if joinGameView.usernameTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else {
-            return true
+        FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
+            if self.joinGameView.accessCodeTextField.text?.isEmpty ?? true {
+                HUD.flash(.label("Please enter an access code"), delay: 1.0)
+            } else if self.joinGameView.usernameTextField.text?.isEmpty ?? true {
+                HUD.flash(.label("Please enter a username"), delay: 1.0)
+            } else if !result.gameExists {
+                HUD.flash(.label("Access code does not exist"), delay: 1.0)
+            } else if !result.usernameFree {
+                HUD.flash(.label("Username is already taken"), delay: 1.0)
+            } else {
+                self.spinner.animate(with: self.joinGameView.join)
+                
+                self.joinGameView.back.isUserInteractionEnabled = false
+                self.joinGameView.join.isUserInteractionEnabled = false
+                
+                let nextScreen = WaitingScreenController()
+                if let currentUsername = self.joinGameView.usernameTextField.text, let accessCode = self.joinGameView.accessCodeTextField.text {
+                    nextScreen.currentUsername = currentUsername
+                    nextScreen.accessCode = accessCode
+                    self.navigationController?.pushViewController(nextScreen, animated: true)
+                }
+            }
         }
-        return false
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

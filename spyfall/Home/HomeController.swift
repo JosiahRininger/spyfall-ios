@@ -53,7 +53,9 @@ final class HomeController: UIViewController {
             self?.navigationController?.pushViewController(JoinGameController(), animated: true)
         }
         homeView.settings.touchUpInside = {  [weak self] in
-            self?.present(SettingsController(), animated: true)
+            let settingsVC = SettingsController()
+            settingsVC.homeVC = self ?? UIViewController()
+            self?.present(settingsVC, animated: true)
         }
         
         // Sets up the actions around the rules pop up
