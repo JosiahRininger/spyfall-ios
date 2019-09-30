@@ -14,7 +14,7 @@ import PKHUD
 final class NewGameController: UIViewController, UITextFieldDelegate {
     
     var newGameView = NewGameView()
-    let spinner = Spinner(frame: .zero)
+    var spinner = Spinner(frame: .zero)
     
     var chosenLocation = String()
     var accessCode = String()

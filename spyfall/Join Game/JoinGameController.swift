@@ -14,7 +14,7 @@ import PKHUD
 final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
-    let spinner = Spinner(frame: .zero)
+    var spinner = Spinner(frame: .zero)
     var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
@@ -45,6 +45,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     @objc func segueToWaitingScreenController() {
+        spinner.animate(with: self.joinGameView.join)
         HUD.dimsBackground = false
         FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
             if self.joinGameView.accessCodeTextField.text?.isEmpty ?? true {
@@ -52,12 +53,10 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
             } else if self.joinGameView.usernameTextField.text?.isEmpty ?? true {
                 HUD.flash(.label("Please enter a username"), delay: 1.0)
             } else if !result.gameExists {
-                HUD.flash(.label("Access code does not exist"), delay: 1.0)
+                HUD.flash(.label("No game with that access code"), delay: 1.0)
             } else if !result.usernameFree {
                 HUD.flash(.label("Username is already taken"), delay: 1.0)
             } else {
-                self.spinner.animate(with: self.joinGameView.join)
-                
                 self.joinGameView.back.isUserInteractionEnabled = false
                 self.joinGameView.join.isUserInteractionEnabled = false
                 
@@ -69,6 +68,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+        self.spinner = Spinner(frame: .zero)
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

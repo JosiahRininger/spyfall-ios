@@ -16,7 +16,7 @@ final class WaitingScreenController: UIViewController {
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
     var customPopUp = ChangeNamePopUpView()
-    let spinner = Spinner(frame: .zero)
+    var spinner = Spinner(frame: .zero)
     
     var playerObjectList = [Player]()
     var playerList = [String]()
@@ -192,6 +192,16 @@ final class WaitingScreenController: UIViewController {
         }
     }
     
+    private func segueToGameSessionController() {
+        segued.toggle()
+        let nextScreen = GameSessionController()
+        nextScreen.currentUsername = self.currentUsername
+        nextScreen.accessCode = self.accessCode
+        nextScreen.chosenPacks = self.chosenPacks
+        spinner = Spinner(frame: .zero)
+        navigationController?.pushViewController(nextScreen, animated: true)
+    }
+    
     private func finishChangingUsername() {
         if !textFieldIsValid() { return }
         if let text = customPopUp.textField.text {
@@ -202,12 +212,22 @@ final class WaitingScreenController: UIViewController {
         resetViews()
     }
     
+    private func resetViews() {
+        customPopUp.isUserInteractionEnabled = false
+        customPopUp.changeNamePopUpView.isHidden = true
+        waitingScreenView.leaveGame.isUserInteractionEnabled = true
+        waitingScreenView.startGame.isUserInteractionEnabled = true
+    }
+    
+    // MARK: - Keyboard Set Up
     func textFieldIsValid() -> Bool {
         HUD.dimsBackground = false
         if customPopUp.textField.text?.isEmpty ?? true {
             HUD.flash(.label("Please enter a username"), delay: 1.0)
         } else if customPopUp.textField.text == currentUsername {
             HUD.flash(.label("Please enter a new username"), delay: 1.0)
+        } else if playerList.contains(customPopUp.textField.text ?? "") {
+            HUD.flash(.label("Username is already taken"), delay: 1.0)
         } else {
             return true
         }
@@ -226,23 +246,6 @@ final class WaitingScreenController: UIViewController {
         
         // make sure the result is under 25 characters
         return updatedText.count <= 24
-    }
-    
-    private func resetViews() {
-        customPopUp.isUserInteractionEnabled = false
-        customPopUp.changeNamePopUpView.isHidden = true
-        waitingScreenView.leaveGame.isUserInteractionEnabled = true
-        waitingScreenView.startGame.isUserInteractionEnabled = true
-    }
-    
-    private func segueToGameSessionController() {
-        segued.toggle()
-        let nextScreen = GameSessionController()
-        nextScreen.currentUsername = self.currentUsername
-        nextScreen.accessCode = self.accessCode
-        nextScreen.chosenPacks = self.chosenPacks
-        spinner.alpha = 0.0
-        navigationController?.pushViewController(nextScreen, animated: true)
     }
 
     func setUpKeyboard() {
