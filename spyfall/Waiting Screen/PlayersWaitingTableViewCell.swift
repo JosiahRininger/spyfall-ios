@@ -27,7 +27,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
     
     var pencilImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "Pencil")
+        iv.image = UIImage(named: "pencil")
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         

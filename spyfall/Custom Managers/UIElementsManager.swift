@@ -84,8 +84,7 @@ class UIElementsManager {
     
     static func createSettingsButton() -> Button {
         let b = Button()
-        b.setBackgroundImage(UIImage(named: "Settings_Icon"), for: .normal)
-        b.imageView?.setImageColor(color: .secondaryBackgroundColor)
+        b.setBackgroundImage(UIImage(named: "settings_icon"), for: .normal)
         b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
         b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
