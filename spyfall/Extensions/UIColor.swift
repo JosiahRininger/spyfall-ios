@@ -74,9 +74,9 @@ extension UIColor {
     }()
     
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
-    static let packOneColor: UIColor = .hexToColor(hexString: "#88C3BA")
-    static let packTwoColor: UIColor = .hexToColor(hexString: "#CC9369")
-    static let specialPackColor: UIColor = .hexToColor(hexString: "#C388B3")
+    static let packOneColor: UIColor = .hexToColor(hexString: "#9533C7")
+    static let packTwoColor: UIColor = .hexToColor(hexString: "#00A0EF")
+    static let specialPackColor: UIColor = .hexToColor(hexString: "#2FD566")
     
     // Secondary Color Options
     static let customPurple: UIColor = .hexToColor(hexString: "#9533C7")

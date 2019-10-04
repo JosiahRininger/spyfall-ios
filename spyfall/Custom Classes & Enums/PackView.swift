@@ -31,7 +31,7 @@ class PackView: UIView {
 
     var numberLabel: UILabel = {
         let l = UILabel()
-        l.textColor = .primaryBackgroundColor
+        l.textColor = .hexToColor(hexString: "#FCFCFC")
         l.textAlignment = .center
         l.font = .boldSystemFont(ofSize: 49)
         l.translatesAutoresizingMaskIntoConstraints = false

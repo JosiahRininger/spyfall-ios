@@ -36,30 +36,21 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     func setupView() {
+        spinner = Spinner(frame: CGRect(x: 45.0, y: joinGameView.join.frame.minY + 21.0, width: 20.0, height: 20.0))
         view.addSubview(joinGameView)
         joinGameView.join.addSubview(spinner)
-        }
+    }
     
     @objc func segueToHomeController() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func segueToWaitingScreenController() {
+        self.joinGameView.back.isUserInteractionEnabled = false
+        self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
-        HUD.dimsBackground = false
         FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
-            if self.joinGameView.accessCodeTextField.text?.isEmpty ?? true {
-                HUD.flash(.label("Please enter an access code"), delay: 1.0)
-            } else if self.joinGameView.usernameTextField.text?.isEmpty ?? true {
-                HUD.flash(.label("Please enter a username"), delay: 1.0)
-            } else if !result.gameExists {
-                HUD.flash(.label("No game with that access code"), delay: 1.0)
-            } else if !result.usernameFree {
-                HUD.flash(.label("Username is already taken"), delay: 1.0)
-            } else {
-                self.joinGameView.back.isUserInteractionEnabled = false
-                self.joinGameView.join.isUserInteractionEnabled = false
-                
+            if self.fieldsAreValid(result: result) {
                 let nextScreen = WaitingScreenController()
                 if let currentUsername = self.joinGameView.usernameTextField.text, let accessCode = self.joinGameView.accessCodeTextField.text {
                     nextScreen.currentUsername = currentUsername
@@ -68,7 +59,26 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
-        self.spinner = Spinner(frame: .zero)
+    }
+    
+    func fieldsAreValid(result: (gameExists: Bool, usernameFree: Bool)) -> Bool {
+        spinner.reset()
+
+        HUD.dimsBackground = false
+        if self.joinGameView.accessCodeTextField.text?.isEmpty ?? true {
+            HUD.flash(.label("Please enter an access code"), delay: 1.0)
+        } else if self.joinGameView.usernameTextField.text?.isEmpty ?? true {
+            HUD.flash(.label("Please enter a username"), delay: 1.0)
+        } else if !result.gameExists {
+            HUD.flash(.label("No game with that access code"), delay: 1.0)
+        } else if !result.usernameFree {
+            HUD.flash(.label("Username is already taken"), delay: 1.0)
+        } else {
+            return true
+        }
+        self.joinGameView.back.isUserInteractionEnabled = true
+        self.joinGameView.join.isUserInteractionEnabled = true
+        return false
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

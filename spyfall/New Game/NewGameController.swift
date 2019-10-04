@@ -40,6 +40,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupView() {
+        spinner = Spinner(frame: CGRect(x: 45.0, y: newGameView.create.frame.minY + 21.0, width: 20.0, height: 20.0))
         view.addSubview(newGameView)
         newGameView.create.addSubview(spinner)
     }

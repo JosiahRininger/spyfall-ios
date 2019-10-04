@@ -58,6 +58,7 @@ final class WaitingScreenController: UIViewController {
     }
     
     private func setupView() {
+        spinner = Spinner(frame: CGRect(x: 45.0, y: waitingScreenView.startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
         setupButtons()
         
         scrollView.backgroundColor = .primaryBackgroundColor
@@ -80,7 +81,7 @@ final class WaitingScreenController: UIViewController {
             waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
-        //        scrollView.contentSize = waitingScreenView.bounds.size
+        // scrollView.contentSize = waitingScreenView.bounds.size
     }
     
     private func setupButtons() {
@@ -125,7 +126,7 @@ final class WaitingScreenController: UIViewController {
         }
     }
     
-    //     deletes player from game and deletes game if playerList is empty
+    // deletes player from game and deletes game if playerList is empty
     func leaveGameWasTapped() {
         if isStarted == true { return }
         playerList = playerList.filter { $0 != currentUsername }
@@ -142,7 +143,7 @@ final class WaitingScreenController: UIViewController {
         waitingScreenView.startGame.isUserInteractionEnabled = false
     }
     
-    //     adds players username to firestore
+    // adds players username to firestore
     func addUsernameToPlayerList() {
         FirestoreManager.updateGameData(accessCode: accessCode, data: ["playerList": FieldValue.arrayUnion([currentUsername])])
     }
@@ -198,7 +199,7 @@ final class WaitingScreenController: UIViewController {
         nextScreen.currentUsername = self.currentUsername
         nextScreen.accessCode = self.accessCode
         nextScreen.chosenPacks = self.chosenPacks
-        spinner = Spinner(frame: .zero)
+        spinner.reset()
         navigationController?.pushViewController(nextScreen, animated: true)
     }
     

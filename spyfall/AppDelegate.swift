@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        
+    
         if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
             switch colorString {
             case ColorOptions.purple.rawValue: UIColor.secondaryColor = UIColor.customPurple
