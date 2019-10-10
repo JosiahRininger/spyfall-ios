@@ -169,7 +169,7 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.colorsCollectionViewCellId, for: indexPath) as? ColorsCell else { return UICollectionViewCell() }
-        indexPath.row < colors.count ? cell.configure(color: colors[indexPath.row]) : cell.configure(labelText: "Random Color")
+        indexPath.row < colors.count ? cell.configure(color: colors[indexPath.row]) : cell.configure(labelText: "Random Color".localize())
         cell.isChecked = selectedColor == cell.cellBackgroundView.backgroundColor
         return cell
     }

@@ -12,11 +12,11 @@ class HomeView: UIView {
     
     var settings = UIElementsManager.createSettingsButton()
 
-    var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to", fontSize: 45, textAlignment: .center, isHeader: true)
-    var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall", fontSize: 81, textAlignment: .center, isHeader: true)
+    var welcomeToLabel = UIElementsManager.createLabel(with: "Welcome to".localize(), fontSize: 45, textAlignment: .center, isHeader: true)
+    var spyfallLabel = UIElementsManager.createLabel(with: "Spyfall".localize(), fontSize: 81, textAlignment: .center, isHeader: true)
     
-    var newGame = UIElementsManager.createButton(with: "HomeViewNewGame".localize(), color: .secondaryBackgroundColor)
-    var joinGame = UIElementsManager.createButton(with: "Join Game")
+    var newGame = UIElementsManager.createButton(with: "New Game".localize(), color: .secondaryBackgroundColor)
+    var joinGame = UIElementsManager.createButton(with: "Join Game".localize())
     
     var rulesView = UIElementsManager.createView(isUserInteractionEnabled: true)
     var infoView: UIView = {
@@ -30,10 +30,10 @@ class HomeView: UIView {
         
         return v
     }()
-    var rulesLabel = UIElementsManager.createLabel(with: "Rules", fontSize: 14, color: .secondaryColor)
+    var rulesLabel = UIElementsManager.createLabel(with: "Rules".localize(), fontSize: 14, color: .secondaryColor)
     
-    var rulesPopUpView = CustomPopUpView(frame: .zero, title: "Rules")
-    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "*These are the rules*", fontSize: 24, color: .subText, textAlignment: .center)
+    var rulesPopUpView = CustomPopUpView(frame: .zero, title: "Rules".localize())
+    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "Rules Message".localize(), fontSize: 24, color: .subText, textAlignment: .center)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

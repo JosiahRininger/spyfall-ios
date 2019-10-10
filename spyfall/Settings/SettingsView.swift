@@ -10,7 +10,7 @@ import UIKit
 
 class SettingsView: UIView {
     
-    var settingsLabel = UIElementsManager.createLabel(with: "Settings", fontSize: 40, textAlignment: .center, isHeader: true)
+    var settingsLabel = UIElementsManager.createLabel(with: "Settings".localize(), fontSize: 40, textAlignment: .center, isHeader: true)
     
     var settingsStackView = UIElementsManager.createStackView()
     
@@ -22,22 +22,22 @@ class SettingsView: UIView {
     var infoImageView = UIElementsManager.createImageView(with: "info_icon")
     var adImageView = UIElementsManager.createImageView(with: "ad_icon")
     
-    var colorLabel = UIElementsManager.createLabel(with: "Theme", fontSize: 30, textAlignment: .center, isHeader: true)
-    var infoLabel = UIElementsManager.createLabel(with: "About", fontSize: 30, textAlignment: .center, isHeader: true)
-    var adLabel = UIElementsManager.createLabel(with: "Ad", fontSize: 30, textAlignment: .center, isHeader: true)
+    var colorLabel = UIElementsManager.createLabel(with: "Theme".localize(), fontSize: 30, textAlignment: .center, isHeader: true)
+    var infoLabel = UIElementsManager.createLabel(with: "About".localize(), fontSize: 30, textAlignment: .center, isHeader: true)
+    var adLabel = UIElementsManager.createLabel(with: "Ads".localize(), fontSize: 30, textAlignment: .center, isHeader: true)
     
-    var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
+    var back = UIElementsManager.createButton(with: "Back".localize(), color: .secondaryBackgroundColor)
     
-    lazy var colorPopUpView = CustomPopUpView(frame: .zero, title: "Change Theme", twoButtons: true)
-    lazy var themeLabel = UIElementsManager.createLabel(with: "Choose your new theme", fontSize: 24, color: .subText, textAlignment: .center)
+    lazy var colorPopUpView = CustomPopUpView(frame: .zero, title: "Change Theme".localize(), twoButtons: true)
+    lazy var themeLabel = UIElementsManager.createLabel(with: "Choose your new theme".localize(), fontSize: 24, color: .subText, textAlignment: .center)
     lazy var colorsCollectionView = UIElementsManager.createCollectionView()
     
-    lazy var infoPopUpView = CustomPopUpView(frame: .zero, title: "About")
-    lazy var summaryLabel = UIElementsManager.createLabel(with: "Spyfall is a board game originally published by Hobby World. This mobile application of the board game is developed and maintained by Josiah Rininger (iOS) and Elijah Dangerfield (Android). Any questions or concerns may be sent here:", fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
+    lazy var infoPopUpView = CustomPopUpView(frame: .zero, title: "About".localize())
+    lazy var summaryLabel = UIElementsManager.createLabel(with: "About Spyfall".localize(), fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
     lazy var emailLabel = UIElementsManager.createLabel(with: "Spyfallmobile@gmail.com", fontSize: 24, color: .secondaryColor, textAlignment: .center)
     
-    lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "Remove Ads?", twoButtons: true)
-    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Would you like to upgrade Spyfall to remove all ads?", fontSize: 14)
+    lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "Remove Ads?".localize(), twoButtons: true)
+    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Would you like to upgrade?".localize(), fontSize: 14)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -112,8 +112,8 @@ class SettingsView: UIView {
     
     func setupColorPopUpView() {
         colorPopUpView.addSubviews(themeLabel, colorsCollectionView)
-        colorPopUpView.cancelButton.setTitle("Cancel", for: .normal)
-        colorPopUpView.doneButton.setTitle("Change", for: .normal)
+        colorPopUpView.cancelButton.setTitle("Cancel".localize(), for: .normal)
+        colorPopUpView.doneButton.setTitle("Change".localize(), for: .normal)
         
         NSLayoutConstraint.activate([
             themeLabel.topAnchor.constraint(equalTo: colorPopUpView.titleLabel.bottomAnchor, constant: 5),
@@ -147,7 +147,7 @@ class SettingsView: UIView {
     }
     
     func setupAdPopUpView() {
-        adPopUpView.cancelButton.setTitle("Cancel", for: .normal)
-        adPopUpView.doneButton.setTitle("Remove", for: .normal)
+        adPopUpView.cancelButton.setTitle("Cancel".localize(), for: .normal)
+        adPopUpView.doneButton.setTitle("Upgrade".localize(), for: .normal)
     }
 }

@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF713A0223160B920045F8DC /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BF713A0123160B920045F8DC /* Localizable.strings */; };
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
 		D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
 		D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
@@ -18,7 +17,6 @@
 		D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */; };
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
-		D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D706256A22586D3900A80B76 /* LaunchScreen.storyboard */; };
 		D706257822586DBC00A80B76 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
 		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
 		D70CF92322D3CC840093AB94 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70CF92222D3CC840093AB94 /* GameData.swift */; };
@@ -28,6 +26,8 @@
 		D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
 		D72DCD29231DA2C70075020D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD28231DA2C60075020D /* UIView.swift */; };
 		D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD2A231DBAC40075020D /* ColorsCell.swift */; };
+		D738F574234EA5DD003CA462 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F573234EA5DD003CA462 /* UIImage.swift */; };
+		D738F592234FAF1D003CA462 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F591234FAF1D003CA462 /* NavigationController.swift */; };
 		D769B743231459BB003F05E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B742231459BB003F05E3 /* Constants.swift */; };
 		D769B74523145A59003F05E3 /* DBStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74423145A59003F05E3 /* DBStrings.swift */; };
 		D769B74723145BE3003F05E3 /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74623145BE3003F05E3 /* IDs.swift */; };
@@ -41,7 +41,6 @@
 		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
-		D77BA9AA233D079800A12531 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77BA9A8233CF3C600A12531 /* NavigationController.swift */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
 		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
@@ -63,7 +62,6 @@
 
 /* Begin PBXFileReference section */
 		B64B4DBF925B845ACE4FF926 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
-		BF713A0123160B920045F8DC /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		BF713A0323160C110045F8DC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		D2B6A06B33B5C9EE0DAC1D41 /* Pods_spyfall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spyfall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4B8D24EC86004414B8B6B2E /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
@@ -77,7 +75,6 @@
 		D706255E22586D3800A80B76 /* spyfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spyfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706256122586D3800A80B76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D706256B22586D3900A80B76 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
@@ -88,6 +85,8 @@
 		D726325E228CD60900E385E8 /* JoinGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameController.swift; sourceTree = "<group>"; };
 		D72DCD28231DA2C60075020D /* UIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIView.swift; sourceTree = "<group>"; };
 		D72DCD2A231DBAC40075020D /* ColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCell.swift; sourceTree = "<group>"; };
+		D738F573234EA5DD003CA462 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
+		D738F591234FAF1D003CA462 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		D769B742231459BB003F05E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D769B74423145A59003F05E3 /* DBStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStrings.swift; sourceTree = "<group>"; };
 		D769B74623145BE3003F05E3 /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
@@ -101,7 +100,6 @@
 		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
-		D77BA9A8233CF3C600A12531 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NavigationController.swift; path = spyfall/NavigationController.swift; sourceTree = SOURCE_ROOT; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
 		D7A72D3922BFCE75005D1831 /* GameSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionView.swift; sourceTree = "<group>"; };
 		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
@@ -174,7 +172,6 @@
 			children = (
 				D7A72D3F22C19013005D1831 /* check_animation.json */,
 				D706256122586D3800A80B76 /* AppDelegate.swift */,
-				BF713A0123160B920045F8DC /* Localizable.strings */,
 				D7798B1022B86831006D7615 /* Extensions */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
 				D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */,
@@ -185,7 +182,6 @@
 				D726325D228CD5B900E385E8 /* Join Game */,
 				D7FD37D5226660C60043A8D4 /* Waiting Screen */,
 				D7FF08E4228FB86A00C1ED43 /* Game Session */,
-				D706256A22586D3900A80B76 /* LaunchScreen.storyboard */,
 				D706256822586D3900A80B76 /* Assets.xcassets */,
 				D706256D22586D3900A80B76 /* Info.plist */,
 				D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */,
@@ -242,6 +238,7 @@
 				D769B7502314764F003F05E3 /* UIImageView.swift */,
 				BF713A0323160C110045F8DC /* String.swift */,
 				D70D43DB233009DE005F10FA /* UIScrollView.swift */,
+				D738F573234EA5DD003CA462 /* UIImage.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -249,8 +246,8 @@
 		D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */ = {
 			isa = PBXGroup;
 			children = (
-				D77BA9A8233CF3C600A12531 /* NavigationController.swift */,
 				D7A9F654232068FD00649F6D /* Button.swift */,
+				D738F591234FAF1D003CA462 /* NavigationController.swift */,
 				D7798B0E22B86766006D7615 /* CreateAlertController.swift */,
 				D7C4E77C2330721B00771C3F /* Spinner.swift */,
 				D7FD6DA92331768100917F7B /* Toast.swift */,
@@ -368,8 +365,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF713A0223160B920045F8DC /* Localizable.strings in Resources */,
-				D706256C22586D3900A80B76 /* LaunchScreen.storyboard in Resources */,
 				D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
 				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
@@ -465,12 +460,13 @@
 				D70D43DA23300287005F10FA /* EndGamePopUpView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */,
+				D738F574234EA5DD003CA462 /* UIImage.swift in Sources */,
 				D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */,
-				D77BA9AA233D079800A12531 /* NavigationController.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,
 				D7FD6DAA2331768100917F7B /* Toast.swift in Sources */,
 				D769B74923145F80003F05E3 /* Encodable.swift in Sources */,
 				D769B74D2314611B003F05E3 /* UserDefaultKeys.swift in Sources */,
+				D738F592234FAF1D003CA462 /* NavigationController.swift in Sources */,
 				D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */,
 				D70D43DC233009DE005F10FA /* UIScrollView.swift in Sources */,
 				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */,
@@ -512,22 +508,12 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXVariantGroup section */
-		D706256A22586D3900A80B76 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D706256B22586D3900A80B76 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
-
 /* Begin XCBuildConfiguration section */
 		D706256E22586D3900A80B76 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -575,6 +561,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "spyfall/Base.lproj/spyfall-info.plist ";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -589,6 +576,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -630,6 +618,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "spyfall/Base.lproj/spyfall-info.plist ";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
