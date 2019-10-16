@@ -1,0 +1,48 @@
+/* 
+  Localizable.strings
+  spyfall
+
+  Created by Josiah Rininger on 10/10/19.
+  Copyright © 2019 Josiah Rininger. All rights reserved.
+*/
+
+// MARK: - Global
+"AppName" = "Spyfall";
+"Back" = "Back";
+"Cancel" = "Cancel";
+"Okay" = "Okay";
+
+// MARK: - Home
+"Welcome to" = "Welcome to";
+"Spyfall" = "Spyfall";
+"Rules" = "Rules";
+"Rules Message" = "*These are the rules*";
+
+// MARK: - Settings
+"Settings" = "Settings";
+"Theme" = "Theme";
+"Change Theme" = "Change Theme";
+"Choose your new theme" = "Choose your new theme";
+"Random Color" = "Random Color";
+"Change" = "Change";
+"About" = "About";
+"About Spyfall" = "Spyfall is a board game originally published by Hobby World. This mobile adaptation of the board game is developed and maintained by Josiah Rininger (iOS) and Elijah Dangerfield (Android). Any questions or concerns may be sent here:";
+"Ads" = "Ads";
+"Remove Ads?" = "Remove Ads?";
+// TODO - Check string with Eli
+"Would you like to upgrade?" = "Would you like to upgrade Spyfall to remove all ads?";
+"Upgrade" = "Upgrade";
+
+// MARK: - New Game
+"New Game" = "New Game";
+
+
+// MARK: - Join Game
+"Join Game" = "Join Game";
+
+
+// MARK: - Waiting Screen
+
+
+// MARK: - Game Session
+"Location: %@" = "Location: %@";

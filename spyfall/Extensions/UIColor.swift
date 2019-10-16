@@ -35,7 +35,7 @@ extension UIColor {
     
     // Theme Colors Used
     static let primaryBackgroundColor: UIColor = {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 13.0, *) {
             return UIColor(named: "Background") ?? .hexToColor(hexString: "#FCFCFC")
         } else {
             return .hexToColor(hexString: "#FCFCFC")
@@ -43,14 +43,14 @@ extension UIColor {
     }()
     
     static let secondaryBackgroundColor: UIColor = {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 13.0, *) {
             return UIColor(named: "SecondaryBackground") ?? .white
         } else {
             return .white
         }
     }()
     static let mainText: UIColor = {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 13.0, *) {
             return UIColor(named: "MainText") ?? .black
         } else {
             return .black
@@ -58,7 +58,7 @@ extension UIColor {
     }()
 
     static let subText: UIColor = {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 13.0, *) {
             return UIColor(named: "SubText") ?? .hexToColor(hexString: "#585858")
         } else {
             return .hexToColor(hexString: "#585858")
@@ -66,7 +66,7 @@ extension UIColor {
     }()
     
     static let cellBackground: UIColor = {
-        if #available(iOS 11.0, *) {
+        if #available(iOS 13.0, *) {
             return UIColor(named: "CellBackground") ?? .hexToColor(hexString: "#EEEEEE")
         } else {
             return .hexToColor(hexString: "#EEEEEE")

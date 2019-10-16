@@ -28,6 +28,7 @@
 		D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD2A231DBAC40075020D /* ColorsCell.swift */; };
 		D738F574234EA5DD003CA462 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F573234EA5DD003CA462 /* UIImage.swift */; };
 		D738F592234FAF1D003CA462 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F591234FAF1D003CA462 /* NavigationController.swift */; };
+		D738F59523501208003CA462 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D738F59723501208003CA462 /* Localizable.strings */; };
 		D769B743231459BB003F05E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B742231459BB003F05E3 /* Constants.swift */; };
 		D769B74523145A59003F05E3 /* DBStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74423145A59003F05E3 /* DBStrings.swift */; };
 		D769B74723145BE3003F05E3 /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74623145BE3003F05E3 /* IDs.swift */; };
@@ -87,6 +88,8 @@
 		D72DCD2A231DBAC40075020D /* ColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCell.swift; sourceTree = "<group>"; };
 		D738F573234EA5DD003CA462 /* UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImage.swift; sourceTree = "<group>"; };
 		D738F591234FAF1D003CA462 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
+		D738F59623501208003CA462 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D738F5982350121D003CA462 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D769B742231459BB003F05E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D769B74423145A59003F05E3 /* DBStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStrings.swift; sourceTree = "<group>"; };
 		D769B74623145BE3003F05E3 /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
@@ -183,6 +186,7 @@
 				D7FD37D5226660C60043A8D4 /* Waiting Screen */,
 				D7FF08E4228FB86A00C1ED43 /* Game Session */,
 				D706256822586D3900A80B76 /* Assets.xcassets */,
+				D738F59723501208003CA462 /* Localizable.strings */,
 				D706256D22586D3900A80B76 /* Info.plist */,
 				D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */,
 			);
@@ -349,6 +353,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ja,
 			);
 			mainGroup = D706255522586D3800A80B76;
 			productRefGroup = D706255F22586D3800A80B76 /* Products */;
@@ -366,6 +371,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */,
+				D738F59523501208003CA462 /* Localizable.strings in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
 				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
 			);
@@ -507,6 +513,18 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D738F59723501208003CA462 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D738F59623501208003CA462 /* en */,
+				D738F5982350121D003CA462 /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D706256E22586D3900A80B76 /* Debug */ = {
