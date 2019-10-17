@@ -27,7 +27,7 @@ class PlayersWaitingTableViewCell: UITableViewCell {
     
     var pencilImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "pencil")
+        iv.image = UIImage.pencil
         iv.isUserInteractionEnabled = true
         iv.translatesAutoresizingMaskIntoConstraints = false
         
@@ -78,8 +78,8 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             
             pencilImageView.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
             pencilImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18),
-            pencilImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth),
-            pencilImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.pencilHeightAndWidth)
+            pencilImageView.heightAnchor.constraint(equalToConstant: UIElementsManager.pencilHeightAndWidth),
+            pencilImageView.widthAnchor.constraint(equalToConstant: UIElementsManager.pencilHeightAndWidth)
             ])
 
     }

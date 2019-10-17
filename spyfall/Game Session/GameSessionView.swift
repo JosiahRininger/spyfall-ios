@@ -39,8 +39,11 @@ class GameSessionView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
+        translatesAutoresizingMaskIntoConstraints = false
+        
+        playAgain.isHidden = true
         
         playersCollectionHeight = playersCollectionView.heightAnchor.constraint(equalToConstant: 0)
         locationsCollectionHeight = locationsCollectionView.heightAnchor.constraint(equalToConstant: 0)
@@ -63,31 +66,31 @@ class GameSessionView: UIView {
             timerLabel.topAnchor.constraint(equalTo: topAnchor, constant: 65),
             
             userInfoView.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 22),
-            userInfoView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            userInfoView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            userInfoView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
+            userInfoView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             userInfoView.heightAnchor.constraint(equalToConstant: 100),
             
-            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            playersLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             playersLabel.topAnchor.constraint(equalTo: userInfoView.subView.bottomAnchor, constant: 24),
             playersLabel.bottomAnchor.constraint(equalTo: playersCollectionView.topAnchor, constant: -4),
 
-            playersCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            playersCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            playersCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
+            playersCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             
-            locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             locationsLabel.topAnchor.constraint(equalTo: playersCollectionView.bottomAnchor, constant: 30),
             locationsLabel.bottomAnchor.constraint(equalTo: locationsCollectionView.topAnchor, constant: -4),
             
-            locationsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            locationsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            locationsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
+            locationsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             
             endGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
-            endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
+            endGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            endGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
             
             playAgain.topAnchor.constraint(equalTo: locationsCollectionView.bottomAnchor, constant: 24),
-            playAgain.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            playAgain.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
+            playAgain.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            playAgain.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding)
             ])
     }
 }

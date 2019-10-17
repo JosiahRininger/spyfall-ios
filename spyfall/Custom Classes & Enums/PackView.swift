@@ -125,7 +125,7 @@ class PackView: UIView {
             whiteView.leadingAnchor.constraint(equalTo: leadingAnchor),
             whiteView.trailingAnchor.constraint(equalTo: trailingAnchor),
             whiteView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            whiteView.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight * 0.36),
+            whiteView.heightAnchor.constraint(equalToConstant: UIElementsManager.packViewHeight * 0.36),
             
             numberLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             numberLabel.bottomAnchor.constraint(equalTo: whiteView.topAnchor, constant: -10),

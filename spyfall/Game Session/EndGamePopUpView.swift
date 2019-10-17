@@ -22,7 +22,7 @@ class EndGamePopUpView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .clear
         isUserInteractionEnabled = false
         

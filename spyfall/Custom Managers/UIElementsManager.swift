@@ -12,6 +12,36 @@ import Lottie
 
 class UIElementsManager {
     
+    static var windowWidth: CGFloat = UIScreen.main.bounds.width
+    static var windowHeight: CGFloat = UIScreen.main.bounds.height
+
+    static var statusBarHeight: CGFloat = UIApplication.shared.statusBarFrame.height
+    
+    static var tableViewCellHeight: CGFloat = 70
+    static var collectionViewCellHeight: CGFloat = 58
+    
+    static var buttonWidth: CGFloat = 144
+    static var buttonHeight: CGFloat = 61
+    
+    static var textFieldHeight: CGFloat = 50
+
+    static var packViewHeight: CGFloat = 116
+    static var packViewWidth: CGFloat = 88
+    
+    static var numberTextFieldWidth: CGFloat = 52
+    
+    static var circleViewHeightAndWidth: CGFloat = 22
+    static var pencilHeightAndWidth: CGFloat = 20
+    static var settingsButtonHeightAndWidth: CGFloat = 30
+    
+    static var colorWidth: CGFloat = windowWidth / 6
+    static var colorHeight: CGFloat = colorWidth * 0.88
+    
+    static var iconHeightAndWidth: CGFloat = 40
+    
+    static var padding: CGFloat = 30
+    static var buttonPadding: CGFloat = 60
+    
     static func createLabel(with title: String, fontSize: CGFloat, numberOfLines: Int = 1, color: UIColor = .mainText, textAlignment: NSTextAlignment = .natural, isHeader: Bool = false) -> UILabel {
         let l = UILabel()
         l.text = title
@@ -31,13 +61,13 @@ class UIElementsManager {
         t.textColor = .mainText
         t.placeholder = placeholder
         t.tintColor = .secondaryColor
-        t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: UIElementSizes.textFieldHeight))
+        t.leftView =  UIView(frame: CGRect(x: 0, y: 0, width: 12, height: textFieldHeight))
         t.leftViewMode = .always
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.secondaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
-        t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
+        t.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
         
         return t
     }
@@ -53,8 +83,8 @@ class UIElementsManager {
         t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.secondaryGray.cgColor
         t.translatesAutoresizingMaskIntoConstraints = false
-        t.heightAnchor.constraint(equalToConstant: UIElementSizes.textFieldHeight).isActive = true
-        t.widthAnchor.constraint(equalToConstant: UIElementSizes.numberTextFieldWidth).isActive = true
+        t.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
+        t.widthAnchor.constraint(equalToConstant: numberTextFieldWidth).isActive = true
         
         return t
     }
@@ -68,7 +98,7 @@ class UIElementsManager {
         b.layer.cornerRadius = 30
         b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.buttonHeight).isActive = true
+        b.heightAnchor.constraint(equalToConstant: buttonHeight).isActive = true
         
         return b
     }
@@ -84,11 +114,11 @@ class UIElementsManager {
     
     static func createSettingsButton() -> Button {
         let b = Button()
-        b.setBackgroundImage(UIImage(named: "settings_icon"), for: .normal)
+        b.setBackgroundImage(UIImage.settings, for: .normal)
         b.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         b.translatesAutoresizingMaskIntoConstraints = false
-        b.heightAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
-        b.widthAnchor.constraint(equalToConstant: UIElementSizes.settingsButtonHeightAndWidth).isActive = true
+        b.heightAnchor.constraint(equalToConstant: settingsButtonHeightAndWidth).isActive = true
+        b.widthAnchor.constraint(equalToConstant: settingsButtonHeightAndWidth).isActive = true
         
         return b
     }
@@ -110,8 +140,8 @@ class UIElementsManager {
         pv.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         pv.isUserInteractionEnabled = true
         pv.translatesAutoresizingMaskIntoConstraints = false
-        pv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
-        pv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        pv.heightAnchor.constraint(equalToConstant: packViewHeight).isActive = true
+        pv.widthAnchor.constraint(equalToConstant: packViewWidth).isActive = true
         
         return pv
     }
@@ -121,7 +151,7 @@ class UIElementsManager {
         stackView.axis = .vertical
         stackView.alignment = .leading
         stackView.distribution = .fillEqually
-        stackView.layoutMargins = UIEdgeInsets(top: 10, left: UIElementSizes.padding, bottom: 10, right: UIElementSizes.padding)
+        stackView.layoutMargins = UIEdgeInsets(top: 10, left: padding, bottom: 10, right: padding)
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -134,8 +164,8 @@ class UIElementsManager {
         uv.addShadowWith(radius: 4, offset: CGSize(width: 0, height: 4), opacity: 0.16)
         uv.isUserInteractionEnabled = true
         uv.translatesAutoresizingMaskIntoConstraints = false
-        uv.heightAnchor.constraint(equalToConstant: UIElementSizes.packViewHeight).isActive = true
-        uv.widthAnchor.constraint(equalToConstant: UIElementSizes.packViewWidth).isActive = true
+        uv.heightAnchor.constraint(equalToConstant: packViewHeight).isActive = true
+        uv.widthAnchor.constraint(equalToConstant: packViewWidth).isActive = true
         
         return uv
     }
@@ -143,10 +173,10 @@ class UIElementsManager {
     static func createCircleView() -> UIView {
         let v = UIView()
         v.backgroundColor = .secondaryColor
-        v.layer.cornerRadius = UIElementSizes.circleViewHeightAndWidth / 2
+        v.layer.cornerRadius = circleViewHeightAndWidth / 2
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.heightAnchor.constraint(equalToConstant: UIElementSizes.circleViewHeightAndWidth).isActive = true
-        v.widthAnchor.constraint(equalToConstant: UIElementSizes.circleViewHeightAndWidth).isActive = true
+        v.heightAnchor.constraint(equalToConstant: circleViewHeightAndWidth).isActive = true
+        v.widthAnchor.constraint(equalToConstant: circleViewHeightAndWidth).isActive = true
         
         return v
     }
@@ -156,7 +186,7 @@ class UIElementsManager {
         tv.separatorStyle = .none
         tv.separatorInset = .zero
         tv.isScrollEnabled = false
-        tv.rowHeight = UIElementSizes.tableViewCellHeight
+        tv.rowHeight = tableViewCellHeight
         tv.backgroundColor = .primaryBackgroundColor
         tv.translatesAutoresizingMaskIntoConstraints = false
         
@@ -167,9 +197,9 @@ class UIElementsManager {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
 
-//        let width = UIElementSizes.navigationTabBarItemWidth
+//        let width = navigationTabBarItemWidth
 //        let height = UIScreen.main.bounds.height / 10
-//        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4, height: UIElementSizes.navigationTabBarItemHeight)
+//        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4, height: navigationTabBarItemHeight)
 //        layout.minimumInteritemSpacing =
 //        layout.minimumLineSpacing = 14
         

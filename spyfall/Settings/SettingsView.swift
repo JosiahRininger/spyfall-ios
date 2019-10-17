@@ -49,7 +49,7 @@ class SettingsView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
         
         colorsCollectionView.register(ColorsCell.self, forCellWithReuseIdentifier: Constants.IDs.colorsCollectionViewCellId)
@@ -72,31 +72,31 @@ class SettingsView: UIView {
     func setupConstraints() {
         NSLayoutConstraint.activate([
             settingsLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
-            settingsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            settingsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             
             settingsStackView.topAnchor.constraint(equalTo: settingsLabel.bottomAnchor, constant: 30),
             settingsStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             settingsStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            settingsStackView.heightAnchor.constraint(equalToConstant: UIElementSizes.windowHeight / 3),
+            settingsStackView.heightAnchor.constraint(equalToConstant: UIElementsManager.windowHeight / 3),
             
-            colorImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
-            colorImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
+            colorImageView.heightAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
+            colorImageView.widthAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
             colorImageView.centerYAnchor.constraint(equalTo: colorView.centerYAnchor),
             colorImageView.leadingAnchor.constraint(equalTo: colorView.leadingAnchor),
             colorLabel.centerYAnchor.constraint(equalTo: colorImageView.centerYAnchor),
             colorLabel.leadingAnchor.constraint(equalTo: colorImageView.trailingAnchor, constant: 16),
             colorLabel.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -8),
             
-            infoImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
-            infoImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
+            infoImageView.heightAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
+            infoImageView.widthAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
             infoImageView.centerYAnchor.constraint(equalTo: infoView.centerYAnchor),
             infoImageView.leadingAnchor.constraint(equalTo: infoView.leadingAnchor),
             infoLabel.centerYAnchor.constraint(equalTo: infoImageView.centerYAnchor),
             infoLabel.leadingAnchor.constraint(equalTo: infoImageView.trailingAnchor, constant: 16),
             infoLabel.trailingAnchor.constraint(equalTo: infoView.trailingAnchor, constant: -8),
             
-            adImageView.heightAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
-            adImageView.widthAnchor.constraint(equalToConstant: UIElementSizes.iconHeightAndWidth),
+            adImageView.heightAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
+            adImageView.widthAnchor.constraint(equalToConstant: UIElementsManager.iconHeightAndWidth),
             adImageView.centerYAnchor.constraint(equalTo: adView.centerYAnchor),
             adImageView.leadingAnchor.constraint(equalTo: adView.leadingAnchor),
             adLabel.centerYAnchor.constraint(equalTo: adImageView.centerYAnchor),
@@ -105,8 +105,8 @@ class SettingsView: UIView {
             
             back.topAnchor.constraint(equalTo: settingsStackView.bottomAnchor, constant: 18),
             back.centerXAnchor.constraint(equalTo: centerXAnchor),
-            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
+            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding)
             ])
     }
     
@@ -123,7 +123,7 @@ class SettingsView: UIView {
             colorsCollectionView.topAnchor.constraint(equalTo: themeLabel.bottomAnchor, constant: 5),
             colorsCollectionView.leadingAnchor.constraint(equalTo: colorPopUpView.popUpView.leadingAnchor, constant: 20),
             colorsCollectionView.trailingAnchor.constraint(equalTo: colorPopUpView.popUpView.trailingAnchor, constant: -20),
-            colorsCollectionView.heightAnchor.constraint(equalToConstant: (CGFloat(4) / CGFloat(UIColor.colors.count + 1) + 1) * (UIElementSizes.colorHeight + CGFloat(30))),
+            colorsCollectionView.heightAnchor.constraint(equalToConstant: (CGFloat(4) / CGFloat(UIColor.colors.count + 1) + 1) * (UIElementsManager.colorHeight + CGFloat(30))),
             
             colorPopUpView.doneButton.topAnchor.constraint(equalTo: colorsCollectionView.bottomAnchor, constant: 15)
             ])

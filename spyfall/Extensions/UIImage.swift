@@ -9,10 +9,7 @@
 import UIKit
 
 extension UIImage {
-    
-    enum Icons {
-        enum Button {
-            static let Add = UIImage(named: "icon_button_add")!
-        }
-    }
+    static let add = UIImage(named: "icon_button_add")
+    static let pencil = UIImage(named: "pencil")
+    static let settings = UIImage(named: "settings_icon")
 }

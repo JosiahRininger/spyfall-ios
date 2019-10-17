@@ -32,15 +32,17 @@ class FirestoreManager {
     }
     
     // Retrieves all the game data being used on the game session controller
-    static func retrieveGameData(accessCode: String, currentUsername: String, chosenPacks: [String], completion: @escaping GameDataHandler) {
-        var gameData = GameData(playerObject: Player(role: String(), username: String(), votes: Int()), usernameList: [String](), timeLimit: Int(), chosenLocation: String(), locationList: [String]())
+    static func retrieveGameData(oldGameData: GameData, completion: @escaping GameDataHandler) {
+        var gameData = GameData()
+        gameData += oldGameData
+        
         var gameDataReady = [false, false]
         
-        retrieveLocationList(chosenPacks: chosenPacks) { result in
+        retrieveLocationList(chosenPacks: gameData.chosenPacks) { result in
             gameData.locationList = result
             gameDataReady[1] ? completion(gameData) : gameDataReady[0].toggle()
         }
-        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+        db.collection(Constants.DBStrings.games).document(gameData.accessCode).getDocument { document, error in
             var gameObject = [String: Any]()
             if let document = document, document.exists {
                 gameObject = (document.data())!
@@ -49,7 +51,7 @@ class FirestoreManager {
                 print("Document does not exist")
             }
             
-            guard let usernameList = gameObject["playerList"],
+            guard let playerList = gameObject["playerList"],
                 let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
                 let timeLimit = gameObject["timeLimit"] as? Int,
                 let chosenLocation = gameObject["chosenLocation"] as? String else {
@@ -60,18 +62,12 @@ class FirestoreManager {
             gameData.chosenLocation = chosenLocation
             
             // Store desired gameObject variables
-            if let usernameList = usernameList as? [String] {
-                gameData.usernameList = usernameList
+            if let playerList = playerList as? [String] {
+                gameData.playerList = playerList
             }
             
-            for playerObject in playerObjectList where playerObject["username"] as? String == currentUsername {
-                if let role = playerObject["role"] as? String,
-                    let username = playerObject["username"] as? String,
-                    let votes = playerObject["votes"] as? Int {
-                    gameData.playerObject = Player(role: role,
-                                                   username: username,
-                                                   votes: votes)
-                }
+            for playerObject in playerObjectList where playerObject["username"] as? String == gameData.playerObject.username {
+                gameData.playerObject = Player.dictToPlayer(with: playerObject)
             }
             gameDataReady[0] ? completion(gameData) : gameDataReady[1].toggle()
         }
@@ -196,8 +192,8 @@ class FirestoreManager {
             if let document = document {
                 if document.exists {
                     dataChecker.gameExists = true
-                    if let usernameList = document.data()?["playerList"] as? [String] {
-                        dataChecker.usernameFree = !usernameList.contains(username)
+                    if let playerList = document.data()?["playerList"] as? [String] {
+                        dataChecker.usernameFree = !playerList.contains(username)
                     }
                 }
             }

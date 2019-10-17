@@ -41,7 +41,7 @@ class NewGameView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
         
         addSubviews(newGameLabel, usernameLabel, usernameTextField, choosePacksLabel, packOneView, packTwoView, specialPackView, timeLimitTextField, timeLabel, disclaimerLabel, back, create)
@@ -52,17 +52,17 @@ class NewGameView: UIView {
     private func setupConstraints() {
         
         NSLayoutConstraint.activate([
-            newGameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            newGameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             newGameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
             
-            usernameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            usernameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             usernameLabel.topAnchor.constraint(equalTo: newGameLabel.bottomAnchor, constant: 30),
             usernameLabel.bottomAnchor.constraint(equalTo: usernameTextField.topAnchor, constant: -14),
             
-            usernameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
-            usernameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            usernameTextField.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
+            usernameTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             
-            choosePacksLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            choosePacksLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             choosePacksLabel.topAnchor.constraint(lessThanOrEqualTo: usernameTextField.bottomAnchor, constant: 70),
             choosePacksLabel.bottomAnchor.constraint(equalTo: packTwoView.topAnchor, constant: -14),
             
@@ -71,28 +71,28 @@ class NewGameView: UIView {
             packTwoView.trailingAnchor.constraint(greaterThanOrEqualTo: specialPackView.leadingAnchor, constant: -50),
             packTwoView.bottomAnchor.constraint(greaterThanOrEqualTo: timeLimitTextField.topAnchor, constant: -70),
             
-            packOneView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            packOneView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             packOneView.centerYAnchor.constraint(equalTo: packTwoView.centerYAnchor),
             
-            specialPackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            specialPackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             specialPackView.centerYAnchor.constraint(equalTo: packTwoView.centerYAnchor),
             
-            timeLimitTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding),
+            timeLimitTextField.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
             timeLimitTextField.bottomAnchor.constraint(greaterThanOrEqualTo: back.topAnchor, constant: -70),
             
             timeLabel.topAnchor.constraint(equalTo: timeLimitTextField.topAnchor),
-            timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            timeLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             
             disclaimerLabel.bottomAnchor.constraint(equalTo: timeLimitTextField.bottomAnchor),
-            disclaimerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding),
+            disclaimerLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             
             create.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -87),
-            create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
+            create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
             
             back.bottomAnchor.constraint(equalTo: create.topAnchor, constant: -24),
-            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding)
+            back.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            back.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding)
             ])
     }
 

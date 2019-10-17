@@ -20,48 +20,51 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        joinGameView.join.addTarget(self, action: #selector(segueToWaitingScreenController), for: .touchUpInside)
-        joinGameView.back.addTarget(self, action: #selector(segueToHomeController), for: .touchUpInside)
-        
         joinGameView.usernameTextField.delegate = self
         joinGameView.accessCodeTextField.delegate = self
         
         setupView()
-        createToolBar()
-        setupKeyboard()
         
+        // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
-    func setupView() {
+    private func setupView() {
+        setupButtons()
+        setupKeyboard()
         spinner = Spinner(frame: CGRect(x: 45.0, y: joinGameView.join.frame.minY + 21.0, width: 20.0, height: 20.0))
         view.addSubview(joinGameView)
         joinGameView.join.addSubview(spinner)
     }
     
-    @objc func segueToHomeController() {
-        self.navigationController?.popViewController(animated: true)
+    private func setupButtons() {
+        joinGameView.join.touchUpInside = { [weak self] in
+            self?.segueToWaitingScreenController()
+        }
+
+        joinGameView.back.touchUpInside = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
-    @objc func segueToWaitingScreenController() {
+    @objc private func segueToWaitingScreenController() {
         self.joinGameView.back.isUserInteractionEnabled = false
         self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
         FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
             if self.fieldsAreValid(result: result) {
-                let nextScreen = WaitingScreenController()
-                if let currentUsername = self.joinGameView.usernameTextField.text, let accessCode = self.joinGameView.accessCodeTextField.text {
-                    nextScreen.currentUsername = currentUsername
-                    nextScreen.accessCode = accessCode
-                    self.navigationController?.pushViewController(nextScreen, animated: true)
-                }
+                let gameData = GameData()
+                gameData.accessCode = self.joinGameView.accessCodeTextField.text ?? ""
+                gameData.playerObject.username = self.joinGameView.usernameTextField.text ?? ""
+                gameData.playerList = [gameData.playerObject.username]
+                self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
             }
         }
     }
     
-    func fieldsAreValid(result: (gameExists: Bool, usernameFree: Bool)) -> Bool {
+    private func fieldsAreValid(result: (gameExists: Bool, usernameFree: Bool)) -> Bool {
         spinner.reset()
 
         HUD.dimsBackground = false
@@ -99,7 +102,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func createToolBar() {
+    private func createToolBar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(JoinGameController.dismissKeyboard))
@@ -112,20 +115,21 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Keyboard Set Up
-    func setupKeyboard() {
+    private func setupKeyboard() {
+        createToolBar()
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
     }
     
-    @objc func dismissKeyboard() {
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
 
     // Moves view up if textfield is covered
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == joinGameView.usernameTextField {
-            let yPos = UIElementSizes.windowHeight - joinGameView.usernameTextField.frame.maxY
+            let yPos = UIElementsManager.windowHeight - joinGameView.usernameTextField.frame.maxY
             if yPos < keyboardHeight && joinGameView.frame.origin.y == 0 {
                 UIView.animate(withDuration: 0.33, animations: {
                     self.joinGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)
@@ -134,7 +138,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         if joinGameView.usernameTextField.isFirstResponder {
@@ -143,13 +147,13 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     // Moves view down if not centerd on screen
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc private func keyboardWillHide(notification: NSNotification) {
         if self.joinGameView.frame.origin.y != 0 {
             self.joinGameView.frame.origin.y = 0
         }
     }
     
-    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             if joinGameView.usernameTextField.isFirstResponder {
                 keyboardHeight = keyboardFrame.cgRectValue.size.height

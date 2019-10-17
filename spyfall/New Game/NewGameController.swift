@@ -15,24 +15,15 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     
     var newGameView = NewGameView()
     var spinner = Spinner(frame: .zero)
-    
-    var chosenLocation = String()
-    var accessCode = String()
-    var timeLimit = Int()
     var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        newGameView.create.addTarget(self, action: #selector(createGameAction), for: .touchUpInside)
-        newGameView.back.addTarget(self, action: #selector(segueToHomeController), for: .touchUpInside)
 
         newGameView.usernameTextField.delegate = self
         newGameView.timeLimitTextField.delegate = self
         
         setupView()
-        createToolBar()
-        setUpKeyboard()
         
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -40,59 +31,58 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupView() {
+        setupButtons()
+        setUpKeyboard()
         spinner = Spinner(frame: CGRect(x: 45.0, y: newGameView.create.frame.minY + 21.0, width: 20.0, height: 20.0))
         view.addSubview(newGameView)
         newGameView.create.addSubview(spinner)
     }
     
-    @objc func segueToHomeController() {
-        self.navigationController?.popViewController(animated: true)
+    private func setupButtons() {
+        newGameView.create.touchUpInside = { [weak self] in self?.createGameAction() }
+        newGameView.back.touchUpInside = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
     
-    @objc func createGameAction() {
+    private func createGameAction() {
         if !textFieldsAreValid() { return }
         newGameView.back.isUserInteractionEnabled = false
         newGameView.create.isUserInteractionEnabled = false
         
         spinner.animate(with: newGameView.create)
         
+        let chosenPacks = getChosenPacks()
+        FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
+            let gameData = GameData(accessCode: String(NSUUID().uuidString.lowercased().prefix(6)),
+                                    initialPlayer: self.newGameView.usernameTextField.text ?? "",
+                                    chosenPacks: chosenPacks,
+                                    timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
+                                    chosenLocation: result)
+            
+            // Add a new document with a generated ID
+            FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
+            
+            // Navigate to the next screen with new gameData
+            self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
+                                                          animated: true)
+        }
+    }
+    
+    private func getChosenPacks() -> [String] {
         // store selected location packs
         var chosenPacks = [String]()
         if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }
         if newGameView.packTwoView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackTwo) }
         if newGameView.specialPackView.isChecked { chosenPacks.append(Constants.DBStrings.specialPackOne) }
         
-        // create access code
-        accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
-        
         // Grab random location
         chosenPacks.shuffle()
         
-        FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
-            self.chosenLocation = result
-            
-            if let timeLimit = Int(self.newGameView.timeLimitTextField.text ?? "0") {
-                self.timeLimit = timeLimit
-            }
-            
-            // Add a new document with a generated ID
-            FirestoreManager.setGameData(accessCode: self.accessCode, data: [
-                "playerList": [self.newGameView.usernameTextField.text ?? ""],
-                "timeLimit": self.timeLimit,
-                "started": false,
-                "chosenPacks": chosenPacks,
-                "chosenLocation": self.chosenLocation
-                ])
-            
-            // Navigate to the next screen with the new accessCode and username
-            let nextScreen = WaitingScreenController()
-            nextScreen.currentUsername = self.newGameView.usernameTextField.text!
-            nextScreen.accessCode = self.accessCode
-            self.navigationController?.pushViewController(nextScreen, animated: true)
-        }
+        return chosenPacks
     }
 
-    func textFieldsAreValid() -> Bool {
+    private func textFieldsAreValid() -> Bool {
         HUD.dimsBackground = false
         if newGameView.usernameTextField.text?.isEmpty ?? true {
             HUD.flash(.label("Please enter a username"), delay: 1.0)
@@ -130,7 +120,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func createToolBar() {
+    private func createToolBar() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
@@ -143,20 +133,22 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Keyboard Set Up
-    func setUpKeyboard() {
+    private func setUpKeyboard() {
+        createToolBar()
+
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
     }
     
-    @objc func dismissKeyboard() {
+    @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
     
     // Moves view up if textfield is covered
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == newGameView.timeLimitTextField {
-            let yPos = UIElementSizes.windowHeight - newGameView.timeLimitTextField.frame.maxY
+            let yPos = UIElementsManager.windowHeight - newGameView.timeLimitTextField.frame.maxY
             if yPos < keyboardHeight && newGameView.frame.origin.y == 0 {
                 UIView.animate(withDuration: 0.33, animations: {
                     self.newGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)

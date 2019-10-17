@@ -46,7 +46,7 @@ class HomeView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
         
         addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, rulesView, rulesPopUpView)
@@ -71,23 +71,23 @@ class HomeView: UIView {
             rulesView.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
             
             joinGame.bottomAnchor.constraint(equalTo: infoView.topAnchor, constant: -37),
-            joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
+            joinGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            joinGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
             
             newGame.bottomAnchor.constraint(equalTo: joinGame.topAnchor, constant: -24),
-            newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.buttonPadding),
-            newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.buttonPadding),
+            newGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
+            newGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
             
-            settings.topAnchor.constraint(equalTo: topAnchor, constant: UIElementSizes.statusBarHeight + 24),
+            settings.topAnchor.constraint(equalTo: topAnchor, constant: UIElementsManager.statusBarHeight + 24),
             settings.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             
             welcomeToLabel.topAnchor.constraint(equalTo: topAnchor, constant: 153),
-            welcomeToLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),
-            welcomeToLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding * 3),
+            welcomeToLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding * 3),
+            welcomeToLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding * 3),
             
             spyfallLabel.topAnchor.constraint(equalTo: welcomeToLabel.bottomAnchor),
-            spyfallLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementSizes.padding * 3),
-            spyfallLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementSizes.padding * 3)
+            spyfallLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding * 3),
+            spyfallLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding * 3)
             ])
     }
     

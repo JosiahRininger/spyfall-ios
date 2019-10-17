@@ -44,7 +44,7 @@ class CustomPopUpView: UIView {
     }
     
     func setupView() {
-        frame = CGRect(x: 0, y: 0, width: UIElementSizes.windowWidth, height: UIElementSizes.windowHeight)
+        frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = UIColor.darkGray.withAlphaComponent(0.4)
         
         isHidden = true
@@ -73,7 +73,7 @@ class CustomPopUpView: UIView {
             
             doneButton.topAnchor.constraint(equalTo: contentsView.bottomAnchor, constant: 15),
             doneButton.bottomAnchor.constraint(equalTo: popUpView.bottomAnchor, constant: -25),
-            doneButton.widthAnchor.constraint(equalToConstant: UIElementSizes.windowWidth / 3)
+            doneButton.widthAnchor.constraint(equalToConstant: UIElementsManager.windowWidth / 3)
             ])
         
         if twoButtons {
@@ -81,7 +81,7 @@ class CustomPopUpView: UIView {
                 cancelButton.topAnchor.constraint(equalTo: contentsView.bottomAnchor, constant: 15),
                 cancelButton.trailingAnchor.constraint(equalTo: contentsView.centerXAnchor, constant: -12),
                 cancelButton.bottomAnchor.constraint(equalTo: popUpView.bottomAnchor, constant: -25),
-                cancelButton.widthAnchor.constraint(equalToConstant: UIElementSizes.windowWidth / 3),
+                cancelButton.widthAnchor.constraint(equalToConstant: UIElementsManager.windowWidth / 3),
                 
                 doneButton.leadingAnchor.constraint(equalTo: contentsView.centerXAnchor, constant: 12)
                 ])

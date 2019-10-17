@@ -18,17 +18,17 @@ final class SettingsController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        getColors()
-        retrieveSavedColor()
-        
         settingsView.colorsCollectionView.delegate = self
         settingsView.colorsCollectionView.dataSource = self
+        
+        getColors()
+        retrieveSavedColor()
         
         setupButtonActions()
         setupView()
     }
     
-    func setupView() {
+    private func setupView() {
         view = settingsView
     }
     
@@ -69,20 +69,20 @@ final class SettingsController: UIViewController {
         }
     }
     
-    @objc func colorTapped() {
+    @objc private func colorTapped() {
         settingsView.settingsStackView.isUserInteractionEnabled = false
         settingsView.back.isUserInteractionEnabled = false
         selectedColor = retrieveSavedColor()
         settingsView.colorPopUpView.isHidden = false
     }
     
-    @objc func infoTapped() {
+    @objc private func infoTapped() {
         settingsView.settingsStackView.isUserInteractionEnabled = false
         settingsView.back.isUserInteractionEnabled = false
         settingsView.infoPopUpView.isHidden = false
     }
     
-    @objc func emailTapped() {
+    @objc private func emailTapped() {
         if let text = settingsView.emailLabel.text, let url = URL(string: "mailto:\(text)") {
             if #available(iOS 10.0, *) {
                 UIApplication.shared.open(url)
@@ -92,7 +92,7 @@ final class SettingsController: UIViewController {
         }
     }
     
-    @objc func adTapped() {
+    @objc private func adTapped() {
         settingsView.settingsStackView.isUserInteractionEnabled = false
         settingsView.back.isUserInteractionEnabled = false
         settingsView.adPopUpView.isHidden = false
@@ -129,6 +129,7 @@ final class SettingsController: UIViewController {
     }
     
     private func checkUserDefaults() {
+        // TODO: possibly set default without checking
         if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
             switch selectedColor {
             case .customPurple:
@@ -176,7 +177,7 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let cell = settingsView.colorsCollectionView.cellForItem(at: indexPath) as? ColorsCell else { return }
-        if cell.isChecked != true {
+        if !cell.isChecked {
             cell.isChecked = true
             selectedColor = cell.cellBackgroundView.backgroundColor ?? UIColor.clear
             collectionView.reloadData()
@@ -186,6 +187,6 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
 
 extension SettingsController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: UIElementSizes.colorWidth, height: UIElementSizes.colorHeight)
+        return CGSize(width: UIElementsManager.colorWidth, height: UIElementsManager.colorHeight)
     }
 }
