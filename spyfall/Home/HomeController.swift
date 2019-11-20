@@ -17,16 +17,7 @@ final class HomeController: UIViewController {
         super.viewDidLoad()
         
         setupView()
-        homeView.welcomeToLabel.center.y += 30
-        homeView.welcomeToLabel.alpha = 0.0
-        homeView.spyfallLabel.center.y += 30
-        homeView.spyfallLabel.alpha = 0.0
-        UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
-            self.homeView.welcomeToLabel.center.y -= 30.0
-            self.homeView.welcomeToLabel.alpha = 1.0
-            self.homeView.spyfallLabel.center.y -= 30.0
-            self.homeView.spyfallLabel.alpha = 1.0
-        })
+        animateView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +32,19 @@ final class HomeController: UIViewController {
         view = homeView
         
         setupButtons()
+    }
+    
+    private func animateView() {
+        homeView.welcomeToLabel.center.y += 30
+        homeView.welcomeToLabel.alpha = 0.0
+        homeView.spyfallLabel.center.y += 30
+        homeView.spyfallLabel.alpha = 0.0
+        UIView.animate(withDuration: 0.5, delay: 0.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.0, options: [], animations: {
+            self.homeView.welcomeToLabel.center.y -= 30.0
+            self.homeView.welcomeToLabel.alpha = 1.0
+            self.homeView.spyfallLabel.center.y -= 30.0
+            self.homeView.spyfallLabel.alpha = 1.0
+        })
     }
     
     fileprivate func setupButtons() {
