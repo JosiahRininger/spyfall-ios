@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseDatabase
 import FirebaseFirestore
+import os.log
 
 class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
@@ -22,11 +23,11 @@ class FirestoreManager {
     
     // Adds a new document with a generated ID and sets the game data with the user's parameters
     static func setGameData(accessCode: String, data: [String: Any]) {
-        db.collection(Constants.DBStrings.games).document(accessCode).setData(data) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
+        db.collection(Constants.DBStrings.games).document(accessCode).setData(data) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
-                print("Document successfully written!")
+                os_log("Document successfully written!")
             }
         }
     }
@@ -48,14 +49,14 @@ class FirestoreManager {
                 gameObject = (document.data())!
                 print("Document data: \(gameObject))")
             } else {
-                print("Document does not exist")
+                os_log("Document does not exist")
             }
             
             guard let playerList = gameObject["playerList"],
                 let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
                 let timeLimit = gameObject["timeLimit"] as? Int,
                 let chosenLocation = gameObject["chosenLocation"] as? String else {
-                    print("Error writing document")
+                    os_log("Error writing document")
                     return
             }
             gameData.timeLimit = timeLimit
@@ -76,9 +77,9 @@ class FirestoreManager {
     // Retrieves the chosen location randomly from the given pack
     static func retrieveChosenLocation(chosenPack: String, completion: @escaping ChosenLocationHandler) {
         var chosenLocation = String()
-        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, err in
-            if let err = err {
-                print("Error getting documents: \(err)")
+        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
+            if let error = error {
+                os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
                 if let docs = querySnapshot!.data(), let location = docs.randomElement()?.key {
                     chosenLocation = location
@@ -94,9 +95,9 @@ class FirestoreManager {
         var locationDataReady = 1
         
         for pack in chosenPacks {
-            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, err in
-                if let err = err {
-                    print("Error getting documents: \(err)")
+            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, error in
+                if let error = error {
+                    os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
                 } else {
                     if let docs = querySnapshot!.data() {
                         for doc in docs {
@@ -117,7 +118,7 @@ class FirestoreManager {
         var roles = [String]()
         db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
             if let error = error {
-                print("Error getting documents: \(error)")
+                os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
                 if let docs = querySnapshot!.data() as? [String: [String]] {
                     for doc in docs where doc.key == chosenLocation {
@@ -131,33 +132,33 @@ class FirestoreManager {
     
     // Updates the game data
     static func updateGameData(accessCode: String, data: [String: Any]) {
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
-                print("Document successfully written!")
+                os_log("Document successfully written!")
             }
         }
     }
     
     // Deletes game
     static func deleteGame(accessCode: String) {
-        db.collection(Constants.DBStrings.games).document(accessCode).delete { err in
-            if let err = err {
-                print("Error writing document: \(err)")
+        db.collection(Constants.DBStrings.games).document(accessCode).delete { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
-                print("Document successfully deleted!")
+                os_log("Document successfully deleted!")
             }
         }
     }
     
     // Deletes playObjectList
     static func deletePlayObjectList(accessCode: String) {
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerObjectList": FieldValue.delete]) { err in
-            if let err = err {
-                print("Error writing document: \(err)")
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerObjectList": FieldValue.delete]) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
-                print("Document successfully deleted!")
+                os_log("Document successfully deleted!")
             }
         }
     }
@@ -167,11 +168,11 @@ class FirestoreManager {
         db.collection(Constants.DBStrings.games).document(accessCode)
             .addSnapshotListener { documentSnapshot, error in
                 if let error = error {
-                    print("Error fetching document: \(error)")
+                    os_log("Error fetching document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
                     completion(.failure(error))
                 }
                 guard let document = documentSnapshot else {
-                    print("Error fetching document")
+                    os_log("Error fetching document")
                     return
                 }
                 completion(.success(document))
@@ -187,7 +188,7 @@ class FirestoreManager {
         }
         db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
             if let error = error {
-                print("Error fetching document: \(error)")
+                os_log("Error fetching document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             }
             if let document = document {
                 if document.exists {

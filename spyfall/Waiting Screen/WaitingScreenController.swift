@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
+import os.log
 
 final class WaitingScreenController: UIViewController {
     var scrollView = UIScrollView()
@@ -151,7 +152,7 @@ final class WaitingScreenController: UIViewController {
                     let startedData = document.get("started"),
                     let chosenPacksData = document.get("chosenPacks"),
                     let chosenLocationData = document.get("chosenLocation") else {
-                        print("Document data was empty.")
+                        os_log("Document data was empty.")
                         return
                 }
                 
@@ -184,7 +185,7 @@ final class WaitingScreenController: UIViewController {
                 }
             // Failure to add listener
             case .failure(let error):
-                print("FirestoreManager.addListener error: ", error)
+                os_log("FirestoreManager.addListener error: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             }
         }
     }

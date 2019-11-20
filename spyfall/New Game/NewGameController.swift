@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
+import os.log
 
 final class NewGameController: UIViewController, UITextFieldDelegate {
     
@@ -116,7 +117,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         switch textField {
         case newGameView.usernameTextField: return updatedText.count <= 24
         case newGameView.timeLimitTextField: return updatedText.count <= 2
-        default: print("INVALID TEXTFIELD"); return false
+        default: os_log("INVALID TEXTFIELD"); return false
         }
     }
     

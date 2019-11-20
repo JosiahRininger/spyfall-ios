@@ -10,6 +10,7 @@ import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
+import os.log
 
 final class JoinGameController: UIViewController, UITextFieldDelegate {
 
@@ -98,7 +99,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         switch textField {
         case joinGameView.accessCodeTextField: return updatedText.count <= 6
         case joinGameView.usernameTextField: return updatedText.count <= 24
-        default: print("INVALID TEXTFIELD"); return false
+        default: os_log("INVALID TEXTFIELD"); return false
         }
     }
     

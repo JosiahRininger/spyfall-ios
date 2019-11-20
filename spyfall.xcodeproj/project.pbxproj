@@ -19,6 +19,7 @@
 		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706257822586DBC00A80B76 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
 		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
+		D70AA4E0235A085800B372D7 /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4DF235A085800B372D7 /* SystemLogger.swift */; };
 		D70CF92322D3CC840093AB94 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70CF92222D3CC840093AB94 /* GameData.swift */; };
 		D70D43D1232ABDEB005F10FA /* PacksPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D43D0232ABDEB005F10FA /* PacksPopUpView.swift */; };
 		D70D43DA23300287005F10FA /* EndGamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D43D923300287005F10FA /* EndGamePopUpView.swift */; };
@@ -79,6 +80,7 @@
 		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
+		D70AA4DF235A085800B372D7 /* SystemLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLogger.swift; sourceTree = "<group>"; };
 		D70CF92222D3CC840093AB94 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		D70D43D0232ABDEB005F10FA /* PacksPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacksPopUpView.swift; sourceTree = "<group>"; };
 		D70D43D923300287005F10FA /* EndGamePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndGamePopUpView.swift; sourceTree = "<group>"; };
@@ -263,6 +265,7 @@
 				D769B74623145BE3003F05E3 /* IDs.swift */,
 				D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */,
 				D7A9F652232053B300649F6D /* ColorOptions.swift */,
+				D70AA4DF235A085800B372D7 /* SystemLogger.swift */,
 			);
 			path = "Custom Classes & Enums";
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
 				D7030EE022BA85D8002CB9B2 /* FirestoreManager.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
+				D70AA4E0235A085800B372D7 /* SystemLogger.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
 				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,
 				D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */,
