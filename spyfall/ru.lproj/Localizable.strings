@@ -7,16 +7,16 @@
 */
 
 // MARK: - Global
-"AppName" = "スパイフォール";
+"AppName" = "Spyfall";
 "Back" = "Back";
-"Cancel" = "キャンセル";
-"Okay" = "はい";
+"Cancel" = "отменить";
+"Okay" = "Хорошо";
 
 // MARK: - Home
-"Welcome to" = "へようこそ";
+"Welcome to" = "Добро пожаловать в";
 "Spyfall" = "Spyfall";
-"Rules" = "ルール";
-"Rules Message" = "*これらはルールです*";
+"Rules" = "правила";
+"Rules Message" = "* Это правила *";
 
 // MARK: - Settings
 "Settings" = "Settings";
@@ -34,11 +34,11 @@
 "Upgrade" = "Upgrade";
 
 // MARK: - New Game
-"New Game" = "新しいゲーム";
+"New Game" = "New Game";
 
 
 // MARK: - Join Game
-"Join Game" = "ゲームに参加します";
+"Join Game" = "Join Game";
 
 
 // MARK: - Waiting Screen

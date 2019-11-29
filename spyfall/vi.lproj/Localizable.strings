@@ -7,16 +7,16 @@
 */
 
 // MARK: - Global
-"AppName" = "スパイフォール";
+"AppName" = "Gián điệp";
 "Back" = "Back";
-"Cancel" = "キャンセル";
-"Okay" = "はい";
+"Cancel" = "Hủy bỏ";
+"Okay" = "đuợc";
 
 // MARK: - Home
-"Welcome to" = "へようこそ";
+"Welcome to" = "Chào mừng bạn đến";
 "Spyfall" = "Spyfall";
-"Rules" = "ルール";
-"Rules Message" = "*これらはルールです*";
+"Rules" = "Quy tắc";
+"Rules Message" = "* Đây là những quy tắc *";
 
 // MARK: - Settings
 "Settings" = "Settings";
@@ -34,11 +34,11 @@
 "Upgrade" = "Upgrade";
 
 // MARK: - New Game
-"New Game" = "新しいゲーム";
+"New Game" = "New Game";
 
 
 // MARK: - Join Game
-"Join Game" = "ゲームに参加します";
+"Join Game" = "Join Game";
 
 
 // MARK: - Waiting Screen
