@@ -12,7 +12,7 @@ class SettingsView: UIView {
     
     var settingsLabel = UIElementsManager.createLabel(with: "Settings".localize(), fontSize: 40, textAlignment: .center, isHeader: true)
     
-    var settingsStackView = UIElementsManager.createStackView()
+    var settingsStackView = UIElementsManager.createStackView(layoutMargins: UIEdgeInsets(top: 10, left: UIElementsManager.padding, bottom: 10, right: UIElementsManager.padding))
     
     var colorView = UIElementsManager.createView(isUserInteractionEnabled: true)
     var infoView = UIElementsManager.createView(isUserInteractionEnabled: true)
@@ -131,7 +131,7 @@ class SettingsView: UIView {
     
     func setupInfoPopUpView() {
         infoPopUpView.addSubviews(summaryLabel, emailLabel)
-        infoPopUpView.doneButton.setTitle("OK", for: .normal)
+        infoPopUpView.doneButton.setTitle("Okay".localize(), for: .normal)
         
         NSLayoutConstraint.activate([
             summaryLabel.topAnchor.constraint(equalTo: infoPopUpView.titleLabel.bottomAnchor, constant: 5),

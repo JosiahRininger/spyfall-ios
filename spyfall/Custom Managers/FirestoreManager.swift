@@ -152,9 +152,20 @@ class FirestoreManager {
         }
     }
     
-    // Deletes playObjectList
-    static func deletePlayObjectList(accessCode: String) {
+    // Deletes playerObjectList
+    static func deletePlayerObjectList(accessCode: String) {
         db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerObjectList": FieldValue.delete]) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            } else {
+                os_log("Document successfully deleted!")
+            }
+        }
+    }
+    
+    // Deletes  all playerObjects
+    static func deleteAllPlayerObjects(accessCode: String) {
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(["playerObjectList": []]) { error in
             if let error = error {
                 os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {

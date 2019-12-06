@@ -74,8 +74,8 @@ class GameSessionView: UIView {
             playersLabel.topAnchor.constraint(equalTo: userInfoView.subView.bottomAnchor, constant: 24),
             playersLabel.bottomAnchor.constraint(equalTo: playersCollectionView.topAnchor, constant: -4),
 
-            playersCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
-            playersCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding),
+            playersCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding - 2),
+            playersCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.padding + 2),
             
             locationsLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
             locationsLabel.topAnchor.constraint(equalTo: playersCollectionView.bottomAnchor, constant: 30),

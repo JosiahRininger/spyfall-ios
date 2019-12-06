@@ -26,6 +26,8 @@ final class GameSessionController: UIViewController {
     
     init(gameData: GameData) {
         self.gameData = gameData
+        self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
+        self.gameData.playerObjectList.shuffle()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -38,7 +40,7 @@ final class GameSessionController: UIViewController {
         
         FirestoreManager.retrieveGameData(oldGameData: self.gameData) { [weak self] result in
             self?.gameData += result
-            self?.updateGame()
+            self?.updateGameData()
         }
         
         gameSessionView.playersCollectionView.delegate = self
@@ -46,7 +48,7 @@ final class GameSessionController: UIViewController {
         gameSessionView.locationsCollectionView.delegate = self
         gameSessionView.locationsCollectionView.dataSource = self
         
-        updateData()
+        listenForGameUpdates()
         setupView()
     }
     
@@ -78,30 +80,30 @@ final class GameSessionController: UIViewController {
             self?.navigationController?.popToRootViewController(animated: true)
         }
         gameSessionView.playAgain.touchUpInside = { [weak self] in
-            self?.gameData.started = false
-            FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["started": false])
-            FirestoreManager.deletePlayObjectList(accessCode: self?.gameData.accessCode ?? "")
-            self?.navigationController?.popViewController(animated: true)
+            DispatchQueue.main.async {
+                self?.gameData.chosenPacks.shuffle()
+                FirestoreManager.retrieveChosenLocation(chosenPack: self?.gameData.chosenPacks[0] ?? "") { result in
+                    FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["chosenLocation": result])
+                }
+                FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["started": false])
+                FirestoreManager.deleteAllPlayerObjects(accessCode: self?.gameData.accessCode ?? "")
+            }
         }
 
         // Sets up the actions around the end game pop up
         customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.gameData.started = false
-            FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["started": false])
-            self?.navigationController?.popToRootViewController(animated: true)
+            FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
         }
     }
     
-    private func updateGame() {
+    private func updateGameData() {
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "@GameSessionLocation", gameData.chosenLocation)
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
 
         gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
         maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
-        
-        firstPlayer = gameData.playerList.randomElement() ?? ""
-        
+                
         setupTimer()
         updateCollectionViews()
         
@@ -109,21 +111,26 @@ final class GameSessionController: UIViewController {
         gameSessionView.layoutIfNeeded()
     }
     
-    private func updateData() {
+    private func listenForGameUpdates() {
         FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
             switch result {
             // Successfully adds listener
             case .success(let document):
-                guard let startedData = document.get("started") else {
+                
+                // Check if game has been deleted
+                if !document.exists {
+                    self?.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    guard let startedData = document.get("started") else {
                         print("Document data was empty.")
                         return
-                }
-                
-                // update playerList and tableView
-                if let started = startedData as? Bool {
-                    if !started {
-                        self?.gameData.started = false
-                        self?.navigationController?.popViewController(animated: true)
+                    }
+                    
+                    // Update playerList and tableView
+                    if let started = startedData as? Bool {
+                        if !started {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
                     }
                 }
 

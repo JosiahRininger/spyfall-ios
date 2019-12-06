@@ -65,22 +65,20 @@ class GameData {
     // Converts desired GameData properties to a dictionary for Firebase
     func toDictionary() -> [String: Any] {
         let dictionary: [String: Any] = [
-            "playerList": self.playerList,
-            "timeLimit": self.timeLimit,
-            "started": self.started,
+            "chosenLocation": self.chosenLocation,
             "chosenPacks": self.chosenPacks,
-            "chosenLocation": self.chosenLocation
+            "playerList": self.playerList,
+            "playerObjectList": self.playerObjectList,
+            "started": self.started,
+            "timeLimit": self.timeLimit
         ]
         return dictionary
     }
     
     // Resets Data for a users to play again
     func resetToPlayAgain() {
-        self.playerList = [String]()
-        self.playerObjectList = [Player]()
+        self.playerObjectList = []
         self.started = false
         self.seguedToGameSession = false
-        self.chosenLocation = String()
-        self.locationList = [String]()
     }
 }

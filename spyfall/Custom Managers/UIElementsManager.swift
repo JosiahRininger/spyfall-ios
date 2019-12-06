@@ -146,12 +146,13 @@ class UIElementsManager {
         return pv
     }
     
-    static func createStackView() -> UIStackView {
+    static func createStackView(layoutMargins: UIEdgeInsets = UIEdgeInsets(), axis: NSLayoutConstraint.Axis = .vertical, spacing: CGFloat = 0) -> UIStackView {
         let stackView = UIStackView()
-        stackView.axis = .vertical
+        stackView.axis = axis
         stackView.alignment = .leading
+        stackView.spacing = spacing
         stackView.distribution = .fillEqually
-        stackView.layoutMargins = UIEdgeInsets(top: 10, left: padding, bottom: 10, right: padding)
+        stackView.layoutMargins = layoutMargins
         stackView.isLayoutMarginsRelativeArrangement = true
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -195,8 +196,8 @@ class UIElementsManager {
     
     static func createCollectionView() -> UICollectionView {
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0)
-
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 2, bottom: 0, right: 2)
+        
 //        let width = navigationTabBarItemWidth
 //        let height = UIScreen.main.bounds.height / 10
 //        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 4, height: navigationTabBarItemHeight)

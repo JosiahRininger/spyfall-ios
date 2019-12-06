@@ -54,7 +54,6 @@ final class WaitingScreenController: UIViewController {
         if gameData.seguedToGameSession {
             gameData.resetToPlayAgain()
             oldUsername = nil
-            updatePlayerList()
         }
     }
     
@@ -117,11 +116,10 @@ final class WaitingScreenController: UIViewController {
             }
             self.gameData.playerObjectList.append(Player(role: "The Spy!", username: self.gameData.playerList.last!, votes: 0))
             
-            for playerObject in self.gameData.playerObjectList {
-                // Add playerObjectList field to document
-                FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
-                                                data: ["playerObjectList": FieldValue.arrayUnion([playerObject.toDictionary()])])
-            }
+            // Add playerObjectList field to document
+            let playerObjectListDict = self.gameData.playerObjectList.map { $0.toDictionary() }
+            FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
+                                            data: ["playerObjectList": playerObjectListDict])
         }
     }
     
@@ -138,6 +136,7 @@ final class WaitingScreenController: UIViewController {
         customPopUp.textField.text = gameData.playerObject.username
         customPopUp.isUserInteractionEnabled = true
         customPopUp.changeNamePopUpView.isHidden = false
+        customPopUp.textField.becomeFirstResponder()
         waitingScreenView.leaveGame.isUserInteractionEnabled = false
         waitingScreenView.startGame.isUserInteractionEnabled = false
     }
@@ -178,7 +177,8 @@ final class WaitingScreenController: UIViewController {
                 
                 // Check for segue
                 if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-                    if playerObjectList.last?["role"] as? String == "The Spy!" && !self.gameData.seguedToGameSession {
+                    if playerObjectList.count == self.gameData.playerList.count
+                        && !self.gameData.seguedToGameSession {
                         self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
                         self.segueToGameSessionController()
                     }
