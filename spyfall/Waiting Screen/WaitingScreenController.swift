@@ -121,6 +121,7 @@ final class WaitingScreenController: UIViewController {
             FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
                                             data: ["playerObjectList": playerObjectListDict])
         }
+        updateStats()
     }
     
     // deletes player from game and deletes game if playerList is empty
@@ -211,6 +212,11 @@ final class WaitingScreenController: UIViewController {
         customPopUp.changeNamePopUpView.isHidden = true
         waitingScreenView.leaveGame.isUserInteractionEnabled = true
         waitingScreenView.startGame.isUserInteractionEnabled = true
+    }
+    
+    private func updateStats() {
+        StatsManager.incrementTotalNumberOfGamesPlayed()
+        StatsManager.incrementTotalNumberOfPlayers(by: gameData.playerList.count)
     }
     
     // MARK: - Keyboard Set Up

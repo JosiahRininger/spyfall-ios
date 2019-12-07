@@ -52,6 +52,7 @@ final class GameSessionController: UIViewController {
         setupView()
     }
     
+    // MARK: - Setup UI & Listeners
     private func setupView() {
         setupButtons()
         scrollView.backgroundColor = .primaryBackgroundColor
@@ -83,10 +84,13 @@ final class GameSessionController: UIViewController {
             DispatchQueue.main.async {
                 self?.gameData.chosenPacks.shuffle()
                 FirestoreManager.retrieveChosenLocation(chosenPack: self?.gameData.chosenPacks[0] ?? "") { result in
-                    FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["chosenLocation": result])
+                    self?.gameData.chosenLocation = result
+                    self?.gameData.playerObjectList = []
+                    self?.gameData.started = false
+                    if let newGame = self?.gameData.toDictionary() {
+                        FirestoreManager.setGameData(accessCode: self?.gameData.accessCode ?? "", data: newGame)
+                    }
                 }
-                FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["started": false])
-                FirestoreManager.deleteAllPlayerObjects(accessCode: self?.gameData.accessCode ?? "")
             }
         }
 
@@ -95,20 +99,6 @@ final class GameSessionController: UIViewController {
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
             FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
         }
-    }
-    
-    private func updateGameData() {
-        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
-
-        gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
-        maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
-                
-        setupTimer()
-        updateCollectionViews()
-        
-        gameSessionView.setNeedsUpdateConstraints()
-        gameSessionView.layoutIfNeeded()
     }
     
     private func listenForGameUpdates() {
@@ -139,6 +129,21 @@ final class GameSessionController: UIViewController {
                 print("FirestoreManager.addListener error: ", error)
             }
         }
+    }
+    
+    // MARK: - Helper Methods
+    private func updateGameData() {
+        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
+
+        gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
+        maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
+                
+        setupTimer()
+        updateCollectionViews()
+        
+        gameSessionView.setNeedsUpdateConstraints()
+        gameSessionView.layoutIfNeeded()
     }
     
     private func resetViews() {
@@ -217,7 +222,6 @@ final class GameSessionController: UIViewController {
 // MARK: - Collection View Delegate & Data Source
 extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             return gameData.playerList.count
@@ -227,7 +231,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
@@ -243,7 +246,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? PlayersCollectionViewCell
@@ -255,7 +257,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
             
         }
     }
-
 }
 
 extension GameSessionController: UICollectionViewDelegateFlowLayout {

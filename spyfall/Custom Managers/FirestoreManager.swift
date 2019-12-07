@@ -212,4 +212,15 @@ class FirestoreManager {
             completion(dataChecker)
         }
     }
+    
+    // Updates stats
+    static func updateStatData(for document: String, data: [String: Any]) {
+        db.collection(Constants.DBStrings.stats).document(document).updateData(data) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            } else {
+                os_log("Document successfully written!")
+            }
+        }
+    }
 }

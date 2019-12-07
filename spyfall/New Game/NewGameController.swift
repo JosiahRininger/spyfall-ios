@@ -13,7 +13,6 @@ import PKHUD
 import os.log
 
 final class NewGameController: UIViewController, UITextFieldDelegate {
-    
     var newGameView = NewGameView()
     var spinner = Spinner(frame: .zero)
     var keyboardHeight: CGFloat = 0.0
@@ -26,6 +25,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         
         setupView()
         
+        // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -149,7 +149,17 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     // Moves view up if textfield is covered
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == newGameView.timeLimitTextField {
-            let yPos = UIElementsManager.windowHeight - newGameView.timeLimitTextField.frame.maxY
+            let yPos = UIElementsManager.windowHeight
+                - (newGameView.newGameStackView.frame.maxY
+                    - (newGameView.timeView.frame.height
+                        - newGameView.timeLimitTextField.frame.maxY))
+            print("HEIGHTS: ",
+                  keyboardHeight,
+                  yPos,
+                  newGameView.timeLimitTextField.frame.maxY,
+                  newGameView.packView.frame.maxY,
+                  newGameView.timeView.frame.maxY,
+                  newGameView.newGameStackView.frame.maxY)
             if yPos < keyboardHeight && newGameView.frame.origin.y == 0 {
                 UIView.animate(withDuration: 0.33, animations: {
                     self.newGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)

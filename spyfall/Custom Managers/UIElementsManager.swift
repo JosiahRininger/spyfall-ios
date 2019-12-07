@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Lottie
+import GoogleMobileAds
 
 class UIElementsManager {
     
@@ -212,4 +213,10 @@ class UIElementsManager {
         return cv
     }
 
+    static func createBannerView() -> GADBannerView {
+        let bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+        bannerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return bannerView
+    }
 }

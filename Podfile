@@ -11,6 +11,7 @@ target 'spyfall' do
   pod 'Firebase/Firestore', '6.9.0'
   pod 'Fabric', '1.10.2'
   pod 'Crashlytics', '3.14.0'
+  pod 'Google-Mobile-Ads-SDK'
   pod 'lottie-ios', '3.1.3'
   pod 'PKHUD', '5.3.0'
   pod 'SwiftLint', '0.35.0', :configurations => ['Debug']
