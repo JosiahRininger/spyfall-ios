@@ -26,6 +26,8 @@ class WaitingScreenView: UIView {
     var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .secondaryBackgroundColor)
     var startGame = UIElementsManager.createButton(with: "Start Game")
     
+    var bannerView = UIElementsManager.createBannerView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -43,7 +45,7 @@ class WaitingScreenView: UIView {
         tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: Constants.IDs.playerListCellId)
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
-        addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)
+        addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame, bannerView)
         setupConstraints()
     }
     
@@ -73,7 +75,10 @@ class WaitingScreenView: UIView {
             startGame.topAnchor.constraint(equalTo: leaveGame.bottomAnchor, constant: -24),
             startGame.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: -87),
             startGame.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
-            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding)
+            startGame.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
+            
+            bannerView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor),
+            bannerView.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
     }
 }

@@ -3,6 +3,7 @@ disabled_rules: # rule identifiers to exclude from running
 - identifier_name
 - line_length
 - cyclomatic_complexity
+- large_tuple
 
 excluded: # paths to ignore during linting. Takes precedence over `included`.
 - Carthage

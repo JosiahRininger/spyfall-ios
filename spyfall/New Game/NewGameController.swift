@@ -31,6 +31,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
+    // MARK: - Setup UI
     private func setupView() {
         setupButtons()
         setUpKeyboard()
@@ -40,13 +41,14 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupButtons() {
-        newGameView.create.touchUpInside = { [weak self] in self?.createGameAction() }
+        newGameView.create.touchUpInside = { [weak self] in self?.createWasTapped() }
         newGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
     }
     
-    private func createGameAction() {
+    // MARK: - Helper Methods
+    private func createWasTapped() {
         if !textFieldsAreValid() { return }
         newGameView.back.isUserInteractionEnabled = false
         newGameView.create.isUserInteractionEnabled = false
@@ -121,18 +123,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func createToolBar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
-        doneButton.tintColor = .secondaryColor
-        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        newGameView.usernameTextField.inputAccessoryView = toolBar
-        newGameView.timeLimitTextField.inputAccessoryView = toolBar
-    }
-    
     // MARK: - Keyboard Set Up
     private func setUpKeyboard() {
         createToolBar()
@@ -146,6 +136,18 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
+    private func createToolBar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
+        doneButton.tintColor = .secondaryColor
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        newGameView.usernameTextField.inputAccessoryView = toolBar
+        newGameView.timeLimitTextField.inputAccessoryView = toolBar
+    }
+    
     // Moves view up if textfield is covered
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == newGameView.timeLimitTextField {
@@ -153,13 +155,6 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
                 - (newGameView.newGameStackView.frame.maxY
                     - (newGameView.timeView.frame.height
                         - newGameView.timeLimitTextField.frame.maxY))
-            print("HEIGHTS: ",
-                  keyboardHeight,
-                  yPos,
-                  newGameView.timeLimitTextField.frame.maxY,
-                  newGameView.packView.frame.maxY,
-                  newGameView.timeView.frame.maxY,
-                  newGameView.newGameStackView.frame.maxY)
             if yPos < keyboardHeight && newGameView.frame.origin.y == 0 {
                 UIView.animate(withDuration: 0.33, animations: {
                     self.newGameView.frame.origin.y -= (10 + self.keyboardHeight - yPos)

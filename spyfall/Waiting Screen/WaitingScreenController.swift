@@ -9,17 +9,19 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
+import GoogleMobileAds
 import PKHUD
 import os.log
 
-final class WaitingScreenController: UIViewController {
+final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
     var customPopUp = ChangeNamePopUpView()
     var spinner = Spinner(frame: .zero)
     
-    var gameData = GameData()
-    var oldUsername: String?
+    private var gameData = GameData()
+    private var oldUsername: String?
+    private var listener: ListenerRegistration?
     
     init(gameData: GameData) {
         self.gameData = gameData
@@ -40,8 +42,11 @@ final class WaitingScreenController: UIViewController {
         FirestoreManager.updateGameData(accessCode: gameData.accessCode,
                                         data: ["playerList": FieldValue.arrayUnion([gameData.playerObject.username])])
         
-        updatePlayerList()
+        listenToPlayerList()
+        initializeBanner()
+        if gameData.chosenLocation.isEmpty { retrieveChosenPacksAndLocation() }
         setupView()
+
         NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
     }
     
@@ -57,6 +62,12 @@ final class WaitingScreenController: UIViewController {
         }
     }
     
+    deinit {
+        guard let listener = listener else { return }
+        listener.remove()
+    }
+    
+    // MARK: - Setup UI & Listeners
     private func setupView() {
         setupButtons()
         setUpKeyboard()
@@ -95,6 +106,61 @@ final class WaitingScreenController: UIViewController {
         customPopUp.changeNamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
         customPopUp.changeNamePopUpView.doneButton.touchUpInside = { [weak self] in
             self?.finishChangingUsername()
+        }
+    }
+    
+    private func initializeBanner() {
+        waitingScreenView.bannerView.delegate = self
+        waitingScreenView.bannerView.adUnitID = Constants.IDs.waitingScreenAdUnitID
+        waitingScreenView.bannerView.rootViewController = self
+        waitingScreenView.bannerView.load(GADRequest())
+        os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
+    }
+    
+    // listener that updates playerList and tableView when firestore playerList is updated
+    private func listenToPlayerList() {
+        listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { result in
+            switch result {
+            // Successfully adds listener
+            case .success(let document):
+                guard let playerList = document.get("playerList") as? [String],
+                    let started = document.get("started") as? Bool else {
+                        os_log("Document data was empty.")
+                        return
+                }
+                
+                self.gameData.playerList = playerList
+                self.gameData.started = started
+                self.waitingScreenView.tableHeight.constant = CGFloat(self.gameData.playerList.count) * UIElementsManager.tableViewCellHeight
+                self.waitingScreenView.tableView.reloadData()
+                self.waitingScreenView.tableView.setNeedsUpdateConstraints()
+                self.waitingScreenView.tableView.layoutIfNeeded()
+                
+                if self.gameData.started && self.spinner.alpha != 1.0 {
+                    self.spinner.animate(with: self.waitingScreenView.startGame)
+                }
+                
+                // Check for segue
+                if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
+                    if playerObjectList.count == self.gameData.playerList.count
+                        && !self.gameData.seguedToGameSession {
+                        self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
+                        self.segueToGameSessionController()
+                    }
+                }
+            // Failure to add listener
+            case .failure(let error):
+                os_log("FirestoreManager.addListener error: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    // Is called if user did not create game
+    private func retrieveChosenPacksAndLocation() {
+        FirestoreManager.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { [weak self] result in
+            self?.gameData.chosenPacks = result.chosenPacks
+            self?.gameData.chosenLocation = result.chosenLocation
         }
     }
     
@@ -140,55 +206,6 @@ final class WaitingScreenController: UIViewController {
         customPopUp.textField.becomeFirstResponder()
         waitingScreenView.leaveGame.isUserInteractionEnabled = false
         waitingScreenView.startGame.isUserInteractionEnabled = false
-    }
-    
-    // listener that updates playerList and tableView when firestore playerList is updated
-    private func updatePlayerList() {
-        FirestoreManager.addListener(accessCode: gameData.accessCode) { result in
-            switch result {
-            // Successfully adds listener
-            case .success(let document):
-                guard let playerListData = document.get("playerList"),
-                    let startedData = document.get("started"),
-                    let chosenPacksData = document.get("chosenPacks"),
-                    let chosenLocationData = document.get("chosenLocation") else {
-                        os_log("Document data was empty.")
-                        return
-                }
-                
-                // update playerList and tableView
-                if let playerList = playerListData as? [String],
-                    let started = startedData as? Bool,
-                    let chosenPacks = chosenPacksData as? [String],
-                    let chosenLocation = chosenLocationData as? String {
-                    self.gameData.playerList = playerList
-                    self.gameData.started = started
-                    self.gameData.chosenPacks = chosenPacks
-                    self.gameData.chosenLocation = chosenLocation
-                }
-                
-                self.waitingScreenView.tableHeight.constant = CGFloat(self.gameData.playerList.count) * UIElementsManager.tableViewCellHeight
-                self.waitingScreenView.tableView.reloadData()
-                self.waitingScreenView.tableView.setNeedsUpdateConstraints()
-                self.waitingScreenView.tableView.layoutIfNeeded()
-                
-                if self.gameData.started && self.spinner.alpha != 1.0 {
-                    self.spinner.animate(with: self.waitingScreenView.startGame)
-                }
-                
-                // Check for segue
-                if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-                    if playerObjectList.count == self.gameData.playerList.count
-                        && !self.gameData.seguedToGameSession {
-                        self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
-                        self.segueToGameSessionController()
-                    }
-                }
-            // Failure to add listener
-            case .failure(let error):
-                os_log("FirestoreManager.addListener error: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            }
-        }
     }
     
     private func segueToGameSessionController() {

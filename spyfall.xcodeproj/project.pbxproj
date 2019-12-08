@@ -40,7 +40,6 @@
 		D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
-		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
@@ -111,7 +110,6 @@
 		D769B75223158B63003F05E3 /* CustomPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpView.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
@@ -237,7 +235,6 @@
 		D7798B0D22B866E5006D7615 /* Custom Managers */ = {
 			isa = PBXGroup;
 			children = (
-				D7798B1722B869AC006D7615 /* UIElementSizes.swift */,
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
 				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
 				D7D65A79239AD40C007CEB08 /* StatsManager.swift */,
@@ -537,7 +534,6 @@
 				D72DCD29231DA2C70075020D /* UIView.swift in Sources */,
 				D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
-				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,
 				D769B74723145BE3003F05E3 /* IDs.swift in Sources */,
 				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,
