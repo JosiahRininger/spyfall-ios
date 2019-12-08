@@ -18,6 +18,8 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
+    <key>GADApplicationIdentifier</key>
+    <string>ca-app-pub-6687613409331343~7630030040</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

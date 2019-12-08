@@ -40,7 +40,6 @@
 		D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
-		D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1722B869AC006D7615 /* UIElementSizes.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
@@ -51,6 +50,7 @@
 		D7A9F653232053B300649F6D /* ColorOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F652232053B300649F6D /* ColorOptions.swift */; };
 		D7A9F655232068FD00649F6D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F654232068FD00649F6D /* Button.swift */; };
 		D7C4E77D2330721B00771C3F /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C4E77C2330721B00771C3F /* Spinner.swift */; };
+		D7D65A7A239AD40C007CEB08 /* StatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D65A79239AD40C007CEB08 /* StatsManager.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
 		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
@@ -110,7 +110,6 @@
 		D769B75223158B63003F05E3 /* CustomPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpView.swift; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
-		D7798B1722B869AC006D7615 /* UIElementSizes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementSizes.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
@@ -121,6 +120,7 @@
 		D7A9F652232053B300649F6D /* ColorOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorOptions.swift; sourceTree = "<group>"; };
 		D7A9F654232068FD00649F6D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D7C4E77C2330721B00771C3F /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
+		D7D65A79239AD40C007CEB08 /* StatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsManager.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableViewCell.swift; sourceTree = "<group>"; };
@@ -188,6 +188,7 @@
 				D7798B1022B86831006D7615 /* Extensions */,
 				D7798B0D22B866E5006D7615 /* Custom Managers */,
 				D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */,
+				D7D65A78239AD3F0007CEB08 /* ViewModels */,
 				D7FDF39D22ADAA9D00A65BCD /* Models */,
 				D706257622586D9500A80B76 /* Home */,
 				D704EB0722EC7CF70083DA2A /* Settings */,
@@ -234,9 +235,9 @@
 		D7798B0D22B866E5006D7615 /* Custom Managers */ = {
 			isa = PBXGroup;
 			children = (
-				D7798B1722B869AC006D7615 /* UIElementSizes.swift */,
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
 				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
+				D7D65A79239AD40C007CEB08 /* StatsManager.swift */,
 			);
 			path = "Custom Managers";
 			sourceTree = "<group>";
@@ -255,6 +256,13 @@
 				D738F573234EA5DD003CA462 /* UIImage.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D7D65A78239AD3F0007CEB08 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		D7E3D7B8230B8314007F7936 /* Custom Classes & Enums */ = {
@@ -481,6 +489,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D7D65A7A239AD40C007CEB08 /* StatsManager.swift in Sources */,
 				D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */,
 				D70D43DA23300287005F10FA /* EndGamePopUpView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
@@ -525,7 +534,6 @@
 				D72DCD29231DA2C70075020D /* UIView.swift in Sources */,
 				D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
-				D7798B1822B869AC006D7615 /* UIElementSizes.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,
 				D769B74723145BE3003F05E3 /* IDs.swift in Sources */,
 				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,

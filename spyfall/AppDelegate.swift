@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import Fabric
+import GoogleMobileAds
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -38,6 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         Fabric.sharedSDK().debug = true
+        
+        GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         return true
     }

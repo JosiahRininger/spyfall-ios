@@ -27,11 +27,12 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         setupView()
         
         // Notifications for KeyBoard Behavior
-        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(JoinGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(JoinGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
+    // MARK: - Setup UI
     private func setupView() {
         setupButtons()
         setupKeyboard()
@@ -41,16 +42,15 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupButtons() {
-        joinGameView.join.touchUpInside = { [weak self] in
-            self?.segueToWaitingScreenController()
-        }
+        joinGameView.join.touchUpInside = { [weak self] in self?.joinGameWasTapped() }
 
         joinGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
     }
     
-    @objc private func segueToWaitingScreenController() {
+    // MARK: - Helper Methods
+    @objc private func joinGameWasTapped() {
         self.joinGameView.back.isUserInteractionEnabled = false
         self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
@@ -65,7 +65,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func fieldsAreValid(result: (gameExists: Bool, usernameFree: Bool)) -> Bool {
+    private func fieldsAreValid(result: (gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool)) -> Bool {
         spinner.reset()
 
         HUD.dimsBackground = false
@@ -77,6 +77,10 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
             HUD.flash(.label("No game with that access code"), delay: 1.0)
         } else if !result.usernameFree {
             HUD.flash(.label("Username is already taken"), delay: 1.0)
+        } else if result.started {
+            HUD.flash(.label("Game has already started"), delay: 1.0)
+        } else if result.playersFull {
+            HUD.flash(.label("Game is full"), delay: 1.0)
         } else {
             return true
         }
@@ -103,18 +107,6 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func createToolBar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(JoinGameController.dismissKeyboard))
-        doneButton.tintColor = .secondaryColor
-        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        joinGameView.usernameTextField.inputAccessoryView = toolBar
-        joinGameView.accessCodeTextField.inputAccessoryView = toolBar
-    }
-    
     // MARK: - Keyboard Set Up
     private func setupKeyboard() {
         createToolBar()
@@ -125,6 +117,18 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    private func createToolBar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(JoinGameController.dismissKeyboard))
+        doneButton.tintColor = .secondaryColor
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        joinGameView.usernameTextField.inputAccessoryView = toolBar
+        joinGameView.accessCodeTextField.inputAccessoryView = toolBar
     }
 
     // Moves view up if textfield is covered

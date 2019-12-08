@@ -14,10 +14,11 @@ import os.log
 class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
     typealias ChosenLocationHandler = (String) -> Void
+    typealias ChosenPacksAndLocationHandler = ((chosenPacks: [String], chosenLocation: String)) -> Void
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
-    typealias CheckHandler = ((gameExists: Bool, usernameFree: Bool)) -> Void
+    typealias CheckHandler = ((gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool)) -> Void
     
     static let db = Firestore.firestore()
     
@@ -52,7 +53,7 @@ class FirestoreManager {
                 os_log("Document does not exist")
             }
             
-            guard let playerList = gameObject["playerList"],
+            guard let playerList = gameObject["playerList"] as? [String],
                 let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
                 let timeLimit = gameObject["timeLimit"] as? Int,
                 let chosenLocation = gameObject["chosenLocation"] as? String else {
@@ -61,11 +62,7 @@ class FirestoreManager {
             }
             gameData.timeLimit = timeLimit
             gameData.chosenLocation = chosenLocation
-            
-            // Store desired gameObject variables
-            if let playerList = playerList as? [String] {
-                gameData.playerList = playerList
-            }
+            gameData.playerList = playerList
             
             for playerObject in playerObjectList where playerObject["username"] as? String == gameData.playerObject.username {
                 gameData.playerObject = Player.dictToPlayer(with: playerObject)
@@ -86,6 +83,24 @@ class FirestoreManager {
                 }
             }
             completion(chosenLocation)
+        }
+    }
+    
+    // Retrieves all the chosen packs and the chosen location
+    static func retrieveChosenPacksAndLocation(accessCode: String, completion: @escaping ChosenPacksAndLocationHandler) {
+        var data = (chosenPacks: [""], chosenLocation: "")
+        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+            if let document = document, document.exists {
+                guard let chosenPacks = document.data()?["chosenPacks"] as? [String],
+                    let chosenLocation = document.data()?["chosenLocation"] as? String else {
+                        os_log("Error writing document")
+                        return
+                }
+                data = (chosenPacks: chosenPacks, chosenLocation: chosenLocation)
+            } else {
+                os_log("Document does not exist")
+            }
+            completion(data)
         }
     }
     
@@ -175,8 +190,8 @@ class FirestoreManager {
     }
     
     // Adds a listener to the game data
-    static func addListener(accessCode: String, completion: @escaping ListenerHandler) {
-        db.collection(Constants.DBStrings.games).document(accessCode)
+    static func addListener(accessCode: String, completion: @escaping ListenerHandler) -> ListenerRegistration {
+        return db.collection(Constants.DBStrings.games).document(accessCode)
             .addSnapshotListener { documentSnapshot, error in
                 if let error = error {
                     os_log("Error fetching document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
@@ -192,7 +207,7 @@ class FirestoreManager {
     
     // Checks if accessCode given exists and checks if the username given is taken
     static func checkGamData(accessCode: String, username: String, completion: @escaping CheckHandler) {
-        var dataChecker = (gameExists: false, usernameFree: false)
+        var dataChecker = (gameExists: false, usernameFree: false, started: false, playersFull: true)
         if accessCode.isEmpty || username.isEmpty {
             completion(dataChecker)
             return
@@ -206,10 +221,25 @@ class FirestoreManager {
                     dataChecker.gameExists = true
                     if let playerList = document.data()?["playerList"] as? [String] {
                         dataChecker.usernameFree = !playerList.contains(username)
+                        dataChecker.playersFull = playerList.count > 5
+                    }
+                    if let started = document.data()?["started"] as? Bool {
+                        dataChecker.started = started
                     }
                 }
             }
             completion(dataChecker)
+        }
+    }
+    
+    // Updates stats
+    static func updateStatData(for document: String, data: [String: Any]) {
+        db.collection(Constants.DBStrings.stats).document(document).updateData(data) { error in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            } else {
+                os_log("Document successfully written!")
+            }
         }
     }
 }

@@ -16,9 +16,10 @@ final class GameSessionController: UIViewController {
     var gameSessionView = GameSessionView()
     var customPopUp = EndGamePopUpView()
     
-    var gameData = GameData()
+    private var gameData = GameData()
     private var firstPlayer = String()
-    
+    private var listener: ListenerRegistration?
+
     private var timer = Timer()
     private var currentTimeLeft: TimeInterval = 0.0
     private var maxTimeInterval: TimeInterval = 0.0
@@ -28,6 +29,7 @@ final class GameSessionController: UIViewController {
         self.gameData = gameData
         self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
         self.gameData.playerObjectList.shuffle()
+        self.gameData.locationList.shuffle()
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -52,6 +54,12 @@ final class GameSessionController: UIViewController {
         setupView()
     }
     
+    deinit {
+        guard let listener = listener else { return }
+        listener.remove()
+    }
+    
+    // MARK: - Setup UI & Listeners
     private func setupView() {
         setupButtons()
         scrollView.backgroundColor = .primaryBackgroundColor
@@ -77,16 +85,19 @@ final class GameSessionController: UIViewController {
     private func setupButtons() {
         gameSessionView.endGame.touchUpInside = { [weak self] in
             guard self?.timerIsAtZero() ?? true else { return }
-            self?.navigationController?.popToRootViewController(animated: true)
+            FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
         }
         gameSessionView.playAgain.touchUpInside = { [weak self] in
             DispatchQueue.main.async {
                 self?.gameData.chosenPacks.shuffle()
                 FirestoreManager.retrieveChosenLocation(chosenPack: self?.gameData.chosenPacks[0] ?? "") { result in
-                    FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["chosenLocation": result])
+                    self?.gameData.chosenLocation = result
+                    self?.gameData.playerObjectList = []
+                    self?.gameData.started = false
+                    if let newGame = self?.gameData.toDictionary() {
+                        FirestoreManager.setGameData(accessCode: self?.gameData.accessCode ?? "", data: newGame)
+                    }
                 }
-                FirestoreManager.updateGameData(accessCode: self?.gameData.accessCode ?? "", data: ["started": false])
-                FirestoreManager.deleteAllPlayerObjects(accessCode: self?.gameData.accessCode ?? "")
             }
         }
 
@@ -97,6 +108,31 @@ final class GameSessionController: UIViewController {
         }
     }
     
+    private func listenForGameUpdates() {
+        listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
+            switch result {
+            // Successfully adds listener
+            case .success(let document):
+                
+                // Check if game has been deleted
+                if !document.exists {
+                    self?.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    if let started = document.get("started") as? Bool {
+                        if !started {
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                    }
+                }
+
+            // Failure to add listener
+            case .failure(let error):
+                print("FirestoreManager.addListener error: ", error)
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
     private func updateGameData() {
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
         gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
@@ -109,36 +145,6 @@ final class GameSessionController: UIViewController {
         
         gameSessionView.setNeedsUpdateConstraints()
         gameSessionView.layoutIfNeeded()
-    }
-    
-    private func listenForGameUpdates() {
-        FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
-            switch result {
-            // Successfully adds listener
-            case .success(let document):
-                
-                // Check if game has been deleted
-                if !document.exists {
-                    self?.navigationController?.popToRootViewController(animated: true)
-                } else {
-                    guard let startedData = document.get("started") else {
-                        print("Document data was empty.")
-                        return
-                    }
-                    
-                    // Update playerList and tableView
-                    if let started = startedData as? Bool {
-                        if !started {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    }
-                }
-
-            // Failure to add listener
-            case .failure(let error):
-                print("FirestoreManager.addListener error: ", error)
-            }
-        }
     }
     
     private func resetViews() {
@@ -217,7 +223,6 @@ final class GameSessionController: UIViewController {
 // MARK: - Collection View Delegate & Data Source
 extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             return gameData.playerList.count
@@ -227,7 +232,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
@@ -243,7 +247,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         switch collectionView {
         case gameSessionView.playersCollectionView:
             let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? PlayersCollectionViewCell
@@ -255,7 +258,6 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
             
         }
     }
-
 }
 
 extension GameSessionController: UICollectionViewDelegateFlowLayout {
