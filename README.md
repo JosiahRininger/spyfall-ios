@@ -7,4 +7,4 @@ away that he or she is the spy. Meanwhile, everyone else's objective is to figur
 This project will not run properly as I have not included the back end connection publicly. 
 
 ## Tech Stack
-Swift, Firebase
+Xcode, Swift, Firebase, Lottie
