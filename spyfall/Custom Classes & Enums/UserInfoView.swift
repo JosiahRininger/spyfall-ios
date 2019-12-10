@@ -33,7 +33,7 @@ class UserInfoView: UIView {
     }()
     
     var roleLabel = UIElementsManager.createLabel(with: "Role: ", fontSize: 24, textAlignment: .center, isHeader: true)
-    var locationLabel = UIElementsManager.createLabel(with: "Location: ", fontSize: 17)
+    var locationLabel = UIElementsManager.createLabel(with: "Location: ", fontSize: 17, textAlignment: .center)
     var subViewLabel = UIElementsManager.createLabel(with: "Hide", fontSize: 18, color: .hexToColor(hexString: "#FCFCFC"), textAlignment: .center, isHeader: true)
     
     //bool propety
@@ -74,10 +74,12 @@ class UserInfoView: UIView {
             mainView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainView.heightAnchor.constraint(equalToConstant: 81),
             
-            roleLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            roleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            roleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             roleLabel.bottomAnchor.constraint(equalTo: mainView.centerYAnchor),
             
-            locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            locationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
+            locationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             locationLabel.topAnchor.constraint(equalTo: mainView.centerYAnchor),
             
             subView.centerYAnchor.constraint(equalTo: mainView.bottomAnchor),

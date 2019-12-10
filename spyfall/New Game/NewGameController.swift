@@ -56,19 +56,23 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         spinner.animate(with: newGameView.create)
         
         let chosenPacks = getChosenPacks()
-        FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
-            let gameData = GameData(accessCode: String(NSUUID().uuidString.lowercased().prefix(6)),
-                                    initialPlayer: self.newGameView.usernameTextField.text ?? "",
-                                    chosenPacks: chosenPacks,
-                                    timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
-                                    chosenLocation: result)
-            
-            // Add a new document with a generated ID
-            FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
-            
-            // Navigate to the next screen with new gameData
-            self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
-                                                          animated: true)
+        var accessCode = NSUUID().uuidString.lowercased().prefix(6)
+        FirestoreManager.gameExist(with: String(accessCode)) { gameExist in
+            if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
+            FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
+                let gameData = GameData(accessCode: String(accessCode),
+                                        initialPlayer: self.newGameView.usernameTextField.text ?? "",
+                                        chosenPacks: chosenPacks,
+                                        timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
+                                        chosenLocation: result)
+                
+                // Add a new document with a generated ID
+                FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
+                
+                // Navigate to the next screen with new gameData
+                self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
+                                                              animated: true)
+            }
         }
     }
     
@@ -98,7 +102,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         } else if Int(newGameView.timeLimitTextField.text ?? "11") ?? 11 > 10
             || Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 < 1 {
             newGameView.timeLimitTextField.text = ""
-            HUD.flash(.label("Please enter a time limit between 0 and 11"), delay: 1.0)
+            HUD.flash(.label("Please enter a time limit between 1 and 10"), delay: 1.0)
         } else {
             return true
         }

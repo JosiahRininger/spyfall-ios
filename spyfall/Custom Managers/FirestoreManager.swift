@@ -19,6 +19,7 @@ class FirestoreManager {
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
     typealias CheckHandler = ((gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool)) -> Void
+    typealias GameExistHandler = (Bool) -> Void
     
     static let db = Firestore.firestore()
     
@@ -221,7 +222,7 @@ class FirestoreManager {
                     dataChecker.gameExists = true
                     if let playerList = document.data()?["playerList"] as? [String] {
                         dataChecker.usernameFree = !playerList.contains(username)
-                        dataChecker.playersFull = playerList.count > 5
+                        dataChecker.playersFull = playerList.count > 7
                     }
                     if let started = document.data()?["started"] as? Bool {
                         dataChecker.started = started
@@ -240,6 +241,19 @@ class FirestoreManager {
             } else {
                 os_log("Document successfully written!")
             }
+        }
+    }
+    
+    // Checks if the game already exist
+    static func gameExist(with accessCode: String, completion: @escaping GameExistHandler) {
+        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error  in
+            if let error = error {
+                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            } else {
+                os_log("Document successfully written!")
+            }
+            if let doc = document { completion(doc.exists) }
+            completion(false)
         }
     }
 }

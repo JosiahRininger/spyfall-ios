@@ -54,12 +54,14 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         self.joinGameView.back.isUserInteractionEnabled = false
         self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
-        FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
+        FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { result in
             if self.fieldsAreValid(result: result) {
                 let gameData = GameData()
-                gameData.accessCode = self.joinGameView.accessCodeTextField.text ?? ""
+                gameData.accessCode = self.joinGameView.accessCodeTextField.text?.lowercased() ?? ""
                 gameData.playerObject.username = self.joinGameView.usernameTextField.text ?? ""
                 gameData.playerList = [gameData.playerObject.username]
+                FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                                data: ["playerList": FieldValue.arrayUnion([gameData.playerObject.username])])
                 self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
             }
         }

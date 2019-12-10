@@ -93,7 +93,7 @@ class HomeView: UIView {
     
     private func setupRulesPopUpView() {
         rulesPopUpView.addSubview(gameRulesLabel)
-        rulesPopUpView.doneButton.setTitle("OK", for: .normal)
+        rulesPopUpView.doneButton.setTitle("Okay", for: .normal)
         
         NSLayoutConstraint.activate([
             gameRulesLabel.topAnchor.constraint(equalTo: rulesPopUpView.titleLabel.bottomAnchor, constant: 5),

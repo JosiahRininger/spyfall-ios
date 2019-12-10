@@ -16,6 +16,7 @@ import os.log
 final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
+    var bannerView = UIElementsManager.createBannerView()
     var customPopUp = ChangeNamePopUpView()
     var spinner = Spinner(frame: .zero)
     
@@ -38,10 +39,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         waitingScreenView.tableView.delegate = self
         waitingScreenView.tableView.dataSource = self
         
-        // adds players username to firestore
-        FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                        data: ["playerList": FieldValue.arrayUnion([gameData.playerObject.username])])
-        
         listenToPlayerList()
         initializeBanner()
         if gameData.chosenLocation.isEmpty { retrieveChosenPacksAndLocation() }
@@ -59,6 +56,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         if gameData.seguedToGameSession {
             gameData.resetToPlayAgain()
             oldUsername = nil
+            retrieveChosenPacksAndLocation()
         }
     }
     
@@ -80,7 +78,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         waitingScreenView.codeLabel.text = gameData.accessCode
         
         view.backgroundColor = .primaryBackgroundColor
-        view.addSubviews(scrollView, customPopUp)
+        view.addSubviews(scrollView, customPopUp, bannerView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -91,7 +89,10 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
         // scrollView.contentSize = waitingScreenView.bounds.size
     }
@@ -110,10 +111,10 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     private func initializeBanner() {
-        waitingScreenView.bannerView.delegate = self
-        waitingScreenView.bannerView.adUnitID = Constants.IDs.waitingScreenAdUnitID
-        waitingScreenView.bannerView.rootViewController = self
-        waitingScreenView.bannerView.load(GADRequest())
+        bannerView.delegate = self
+        bannerView.adUnitID = Constants.IDs.waitingScreenAdUnitID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
         os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
     }
     
@@ -142,7 +143,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
                 
                 // Check for segue
                 if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-                    if playerObjectList.count == self.gameData.playerList.count
+                    if !playerObjectList.isEmpty
                         && !self.gameData.seguedToGameSession {
                         self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
                         self.segueToGameSessionController()
@@ -183,19 +184,23 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             self.gameData.playerObjectList.append(Player(role: "The Spy!", username: self.gameData.playerList.last!, votes: 0))
             
             // Add playerObjectList field to document
+            self.gameData.playerObjectList.shuffle()
             let playerObjectListDict = self.gameData.playerObjectList.map { $0.toDictionary() }
             FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
                                             data: ["playerObjectList": playerObjectListDict])
         }
-        updateStats()
+        StatsManager.incrementTotalNumberOfGamesPlayed()
     }
     
     // deletes player from game and deletes game if playerList is empty
     private func leaveGameWasTapped() {
         if gameData.started { return }
-        gameData.playerList = gameData.playerList.filter { $0 != gameData.playerObject.username }
-        FirestoreManager.updateGameData(accessCode: gameData.accessCode, data: ["playerList": gameData.playerList])
-        if gameData.playerList.isEmpty { FirestoreManager.deleteGame(accessCode: gameData.accessCode) }
+        gameData.playerList.removeAll(where: { $0 == gameData.playerObject.username })
+        switch gameData.playerList.isEmpty {
+        case true: FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        case false: FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: ["playerList": FieldValue.arrayRemove([gameData.playerObject.username])])
+        }
         navigationController?.popToRootViewController(animated: true)
     }
         
@@ -211,6 +216,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     private func segueToGameSessionController() {
         spinner.reset()
         gameData.seguedToGameSession = true
+        StatsManager.incrementTotalNumberOfPlayers()
         navigationController?.pushViewController(GameSessionController(gameData: gameData), animated: true)
     }
     
@@ -231,26 +237,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         waitingScreenView.startGame.isUserInteractionEnabled = true
     }
     
-    private func updateStats() {
-        StatsManager.incrementTotalNumberOfGamesPlayed()
-        StatsManager.incrementTotalNumberOfPlayers(by: gameData.playerList.count)
-    }
-    
-    // MARK: - Keyboard Set Up
-    private func textFieldIsValid() -> Bool {
-        HUD.dimsBackground = false
-        if customPopUp.textField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if customPopUp.textField.text == gameData.playerObject.username {
-            HUD.flash(.label("Please enter a new username"), delay: 1.0)
-        } else if gameData.playerList.contains(customPopUp.textField.text ?? "") {
-            HUD.flash(.label("Username is already taken"), delay: 1.0)
-        } else {
-            return true
-        }
-        return false
-    }
-    
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // get the current text, or use an empty string if that failed
         let currentText = textField.text ?? ""
@@ -264,8 +250,10 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         // make sure the result is under 25 characters
         return updatedText.count <= 24
     }
-
+    
+    // MARK: - Keyboard Set Up
     private func setUpKeyboard() {
+        createToolBar()
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
@@ -273,6 +261,31 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
 
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+    
+    private func createToolBar() {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(WaitingScreenController.dismissKeyboard))
+        doneButton.tintColor = .secondaryColor
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        customPopUp.textField.inputAccessoryView = toolBar
+    }
+    
+    private func textFieldIsValid() -> Bool {
+        HUD.dimsBackground = false
+        if customPopUp.textField.text?.isEmpty ?? true {
+            HUD.flash(.label("Please enter a username"), delay: 1.0)
+        } else if customPopUp.textField.text == gameData.playerObject.username {
+            HUD.flash(.label("Please enter a new username"), delay: 1.0)
+        } else if gameData.playerList.contains(customPopUp.textField.text ?? "") {
+            HUD.flash(.label("Username is already taken"), delay: 1.0)
+        } else {
+            return true
+        }
+        return false
     }
 }
 
