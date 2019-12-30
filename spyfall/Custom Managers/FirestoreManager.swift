@@ -252,8 +252,11 @@ class FirestoreManager {
             } else {
                 os_log("Document successfully written!")
             }
-            if let doc = document { completion(doc.exists) }
-            completion(false)
+            if let doc = document {
+                completion(doc.exists)
+            } else {
+                completion(false)
+            }
         }
     }
 }

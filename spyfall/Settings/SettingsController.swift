@@ -84,11 +84,7 @@ final class SettingsController: UIViewController {
     
     @objc private func emailTapped() {
         if let text = settingsView.emailLabel.text, let url = URL(string: "mailto:\(text)") {
-            if #available(iOS 10.0, *) {
-                UIApplication.shared.open(url)
-            } else {
-                UIApplication.shared.openURL(url)
-            }
+            UIApplication.shared.open(url)
         }
     }
     

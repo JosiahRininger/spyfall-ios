@@ -54,6 +54,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         if gameData.seguedToGameSession {
+            spinner.reset()
             gameData.resetToPlayAgain()
             oldUsername = nil
             retrieveChosenPacksAndLocation()
@@ -70,7 +71,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         setupButtons()
         setUpKeyboard()
         spinner = Spinner(frame: CGRect(x: 45.0, y: waitingScreenView.startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
-        
+
         scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,6 +80,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp, bannerView)
+        waitingScreenView.startGame.addSubview(spinner)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -120,38 +122,43 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     
     // listener that updates playerList and tableView when firestore playerList is updated
     private func listenToPlayerList() {
-        listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { result in
+        listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
             switch result {
             // Successfully adds listener
             case .success(let document):
-                guard let playerList = document.get("playerList") as? [String],
-                    let started = document.get("started") as? Bool else {
-                        os_log("Document data was empty.")
-                        return
-                }
-                
-                self.gameData.playerList = playerList
-                self.gameData.started = started
-                self.waitingScreenView.tableHeight.constant = CGFloat(self.gameData.playerList.count) * UIElementsManager.tableViewCellHeight
-                self.waitingScreenView.tableView.reloadData()
-                self.waitingScreenView.tableView.setNeedsUpdateConstraints()
-                self.waitingScreenView.tableView.layoutIfNeeded()
-                
-                if self.gameData.started && self.spinner.alpha != 1.0 {
-                    self.spinner.animate(with: self.waitingScreenView.startGame)
-                }
-                
-                // Check for segue
-                if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-                    if !playerObjectList.isEmpty
-                        && !self.gameData.seguedToGameSession {
-                        self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
-                        self.segueToGameSessionController()
-                    }
-                }
+                self?.listenToPlayerListSuccess(with: document)
             // Failure to add listener
             case .failure(let error):
                 os_log("FirestoreManager.addListener error: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+            }
+        }
+    }
+    
+    private func listenToPlayerListSuccess(with document: DocumentSnapshot) {
+        guard let playerList = document.get("playerList") as? [String],
+            let started = document.get("started") as? Bool else {
+                os_log("Document data was empty.")
+                return
+        }
+        
+        self.gameData.playerList = playerList
+        self.gameData.started = started
+        self.waitingScreenView.tableHeight.constant = CGFloat(self.gameData.playerList.count) * UIElementsManager.tableViewCellHeight
+        self.waitingScreenView.tableView.reloadData()
+        self.waitingScreenView.tableView.setNeedsUpdateConstraints()
+        self.waitingScreenView.tableView.layoutIfNeeded()
+        self.spinner = Spinner(frame: CGRect(x: 45.0, y: self.waitingScreenView.startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
+        
+        if self.gameData.started {
+            self.spinner.animate(with: self.waitingScreenView.startGame)
+        }
+        
+        // Check for segue
+        if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
+            if !playerObjectList.isEmpty
+                && !self.gameData.seguedToGameSession {
+                self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
+                self.segueToGameSessionController()
             }
         }
     }
@@ -173,23 +180,27 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         gameData.started = true
         FirestoreManager.updateGameData(accessCode: self.gameData.accessCode, data: ["started": true])
         
-        FirestoreManager.retrieveRoles(chosenPack: gameData.chosenPacks[0], chosenLocation: gameData.chosenLocation) { result in
-            // Assigns each player a role
-            var roles = result
-            self.gameData.playerList.shuffle()
-            roles.shuffle()
-            for i in 0..<(self.gameData.playerList.count - 1) {
-                self.gameData.playerObjectList.append(Player(role: roles[i], username: self.gameData.playerList[i], votes: 0))
-            }
-            self.gameData.playerObjectList.append(Player(role: "The Spy!", username: self.gameData.playerList.last!, votes: 0))
-            
-            // Add playerObjectList field to document
-            self.gameData.playerObjectList.shuffle()
-            let playerObjectListDict = self.gameData.playerObjectList.map { $0.toDictionary() }
-            FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
-                                            data: ["playerObjectList": playerObjectListDict])
+        FirestoreManager.retrieveRoles(chosenPack: gameData.chosenPacks[0], chosenLocation: gameData.chosenLocation) { [weak self] result in
+            self?.handleRolesFromFirebase(with: result)
         }
         StatsManager.incrementTotalNumberOfGamesPlayed()
+    }
+    
+    // Assigns each player a role
+    private func handleRolesFromFirebase(with result: [String]) {
+        var roles = result
+        self.gameData.playerList.shuffle()
+        roles.shuffle()
+        for i in 0..<(self.gameData.playerList.count - 1) {
+            self.gameData.playerObjectList.append(Player(role: roles[i], username: self.gameData.playerList[i], votes: 0))
+        }
+        self.gameData.playerObjectList.append(Player(role: "The Spy!", username: self.gameData.playerList.last!, votes: 0))
+        
+        // Add playerObjectList field to document
+        self.gameData.playerObjectList.shuffle()
+        let playerObjectListDict = self.gameData.playerObjectList.map { $0.toDictionary() }
+        FirestoreManager.updateGameData(accessCode: self.gameData.accessCode,
+                                        data: ["playerObjectList": playerObjectListDict])
     }
     
     // deletes player from game and deletes game if playerList is empty
@@ -214,7 +225,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     private func segueToGameSessionController() {
-        spinner.reset()
         gameData.seguedToGameSession = true
         StatsManager.incrementTotalNumberOfPlayers()
         navigationController?.pushViewController(GameSessionController(gameData: gameData), animated: true)

@@ -49,34 +49,38 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Helper Methods
     private func createWasTapped() {
-        if !textFieldsAreValid() { return }
+        guard textFieldsAreValid else { return }
         newGameView.back.isUserInteractionEnabled = false
         newGameView.create.isUserInteractionEnabled = false
         
         spinner.animate(with: newGameView.create)
         
-        let chosenPacks = getChosenPacks()
+        let firstPack = chosenPacks[0]
         var accessCode = NSUUID().uuidString.lowercased().prefix(6)
         FirestoreManager.gameExist(with: String(accessCode)) { gameExist in
             if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
-            FirestoreManager.retrieveChosenLocation(chosenPack: chosenPacks[0]) { result in
-                let gameData = GameData(accessCode: String(accessCode),
-                                        initialPlayer: self.newGameView.usernameTextField.text ?? "",
-                                        chosenPacks: chosenPacks,
-                                        timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
-                                        chosenLocation: result)
-                
-                // Add a new document with a generated ID
-                FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
-                
-                // Navigate to the next screen with new gameData
-                self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
-                                                              animated: true)
+            FirestoreManager.retrieveChosenLocation(chosenPack: firstPack) { [weak self] result in
+                self?.handleChosenLocation(from: result, with: String(accessCode))
             }
         }
     }
     
-    private func getChosenPacks() -> [String] {
+    private func handleChosenLocation(from location: String, with accessCode: String) {
+        let gameData = GameData(accessCode: accessCode,
+                                initialPlayer: self.newGameView.usernameTextField.text ?? "",
+                                chosenPacks: chosenPacks,
+                                timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
+                                chosenLocation: location)
+        
+        // Add a new document with a generated ID
+        FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
+        
+        // Navigate to the next screen with new gameData
+        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
+                                                      animated: true)
+    }
+    
+    private var chosenPacks: [String] {
         // store selected location packs
         var chosenPacks = [String]()
         if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }
@@ -89,13 +93,11 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         return chosenPacks
     }
 
-    private func textFieldsAreValid() -> Bool {
+    private var textFieldsAreValid: Bool {
         HUD.dimsBackground = false
         if newGameView.usernameTextField.text?.isEmpty ?? true {
             HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if !newGameView.packOneView.isChecked
-            && !newGameView.packTwoView.isChecked
-            && !newGameView.specialPackView.isChecked {
+        } else if chosenPacks.isEmpty {
             HUD.flash(.label("Please select pack(s)"), delay: 1.0)
         } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
             HUD.flash(.label("Please enter a time limit"), delay: 1.0)
