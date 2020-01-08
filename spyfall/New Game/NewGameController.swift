@@ -11,11 +11,14 @@ import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
 import os.log
+import Reachability
 
 final class NewGameController: UIViewController, UITextFieldDelegate {
     var newGameView = NewGameView()
+    var networkErrorPopUp = NetworkErrorPopUpView()
     var spinner = Spinner(frame: .zero)
     var keyboardHeight: CGFloat = 0.0
+    let reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +27,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         newGameView.timeLimitTextField.delegate = self
         
         setupView()
-        
+
         // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -36,7 +39,7 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         setupButtons()
         setUpKeyboard()
         spinner = Spinner(frame: CGRect(x: 45.0, y: newGameView.create.frame.minY + 21.0, width: 20.0, height: 20.0))
-        view.addSubview(newGameView)
+        view.addSubviews(newGameView, networkErrorPopUp)
         newGameView.create.addSubview(spinner)
     }
     
@@ -45,23 +48,35 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         newGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
+        
+        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.networkErrorPopUp.isUserInteractionEnabled = false
+            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
+        }
     }
     
     // MARK: - Helper Methods
     private func createWasTapped() {
         guard textFieldsAreValid else { return }
-        newGameView.back.isUserInteractionEnabled = false
-        newGameView.create.isUserInteractionEnabled = false
         
-        spinner.animate(with: newGameView.create)
-        
-        let firstPack = chosenPacks[0]
-        var accessCode = NSUUID().uuidString.lowercased().prefix(6)
-        FirestoreManager.gameExist(with: String(accessCode)) { gameExist in
-            if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
-            FirestoreManager.retrieveChosenLocation(chosenPack: firstPack) { [weak self] result in
-                self?.handleChosenLocation(from: result, with: String(accessCode))
+        switch reachability.connection {
+        case .wifi, .cellular:
+            newGameView.back.isUserInteractionEnabled = false
+            newGameView.create.isUserInteractionEnabled = false
+            
+            spinner.animate(with: newGameView.create)
+            
+            let firstPack = chosenPacks[0]
+            var accessCode = NSUUID().uuidString.lowercased().prefix(6)
+            FirestoreManager.gameExist(with: String(accessCode)) { gameExist in
+                if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
+                FirestoreManager.retrieveChosenLocation(chosenPack: firstPack) { [weak self] result in
+                    self?.handleChosenLocation(from: result, with: String(accessCode))
+                }
             }
+        case .unavailable, .none:
+            networkErrorPopUp.isUserInteractionEnabled = true
+            networkErrorPopUp.networkErrorPopUpView.isHidden = false
         }
     }
     

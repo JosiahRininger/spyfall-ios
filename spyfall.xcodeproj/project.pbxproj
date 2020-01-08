@@ -52,6 +52,7 @@
 		D7A9F655232068FD00649F6D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F654232068FD00649F6D /* Button.swift */; };
 		D7C4E77D2330721B00771C3F /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C4E77C2330721B00771C3F /* Spinner.swift */; };
 		D7D65A7A239AD40C007CEB08 /* StatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D65A79239AD40C007CEB08 /* StatsManager.swift */; };
+		D7E2296823C56276007D9F99 /* NetworkErrorPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
 		D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
@@ -123,6 +124,7 @@
 		D7A9F654232068FD00649F6D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D7C4E77C2330721B00771C3F /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		D7D65A79239AD40C007CEB08 /* StatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsManager.swift; sourceTree = "<group>"; };
+		D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorPopUpView.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersWaitingTableViewCell.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				D7C4E77C2330721B00771C3F /* Spinner.swift */,
 				D7FD6DA92331768100917F7B /* Toast.swift */,
 				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
+				D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */,
 				D769B75223158B63003F05E3 /* CustomPopUpView.swift */,
 				D7A72D3722BED262005D1831 /* PackView.swift */,
 				D769B742231459BB003F05E3 /* Constants.swift */,
@@ -497,6 +500,7 @@
 				D70D43DA23300287005F10FA /* EndGamePopUpView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
 				D72DCD2B231DBAC40075020D /* ColorsCell.swift in Sources */,
+				D7E2296823C56276007D9F99 /* NetworkErrorPopUpView.swift in Sources */,
 				D738F574234EA5DD003CA462 /* UIImage.swift in Sources */,
 				D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */,
 				D706256222586D3800A80B76 /* AppDelegate.swift in Sources */,

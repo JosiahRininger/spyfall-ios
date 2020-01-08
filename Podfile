@@ -14,6 +14,7 @@ target 'spyfall' do
   pod 'Google-Mobile-Ads-SDK'
   pod 'lottie-ios', '3.1.3'
   pod 'PKHUD', '5.3.0'
+  pod 'ReachabilitySwift'
   pod 'SwiftLint', '0.35.0', :configurations => ['Debug']
 
 end

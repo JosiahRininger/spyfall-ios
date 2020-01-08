@@ -11,6 +11,8 @@
 "Back" = "Back";
 "Cancel" = "Cancel";
 "Okay" = "Okay";
+"Error title" = "Something went wrong";
+"Error message" = "Please check your internet connection and try again";
 
 // MARK: - Home
 "Welcome to" = "Welcome to";
