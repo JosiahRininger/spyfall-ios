@@ -18,7 +18,7 @@ class FirestoreManager {
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
-    typealias CheckHandler = ((gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool)) -> Void
+    typealias CheckHandler = (GameDataValidity) -> Void
     typealias GameExistHandler = (Bool) -> Void
     
     static let db = Firestore.firestore()
@@ -208,9 +208,12 @@ class FirestoreManager {
     
     // Checks if accessCode given exists and checks if the username given is taken
     static func checkGamData(accessCode: String, username: String, completion: @escaping CheckHandler) {
-        var dataChecker = (gameExists: false, usernameFree: false, started: false, playersFull: true)
+        var validity: GameDataValidity = .AllFieldsAreValid
         if accessCode.isEmpty || username.isEmpty {
-            completion(dataChecker)
+            validity = accessCode.isEmpty
+                ? .accessCodeIsEmpty
+                : .usernameIsEmpty
+            completion(validity)
             return
         }
         db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
@@ -219,17 +222,18 @@ class FirestoreManager {
             }
             if let document = document {
                 if document.exists {
-                    dataChecker.gameExists = true
                     if let playerList = document.data()?["playerList"] as? [String] {
-                        dataChecker.usernameFree = !playerList.contains(username)
-                        dataChecker.playersFull = playerList.count > 7
+                        if playerList.contains(username) { validity = .usernameIsTaken }
+                        if playerList.count > 7 { validity = .playersAreFull }
                     }
                     if let started = document.data()?["started"] as? Bool {
-                        dataChecker.started = started
+                        if started { validity = .gameHasAlreadyStarted }
                     }
+                } else {
+                    validity = .gameDoesNotExist
                 }
             }
-            completion(dataChecker)
+            completion(validity)
         }
     }
     

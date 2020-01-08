@@ -30,6 +30,7 @@
 		D738F574234EA5DD003CA462 /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F573234EA5DD003CA462 /* UIImage.swift */; };
 		D738F592234FAF1D003CA462 /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F591234FAF1D003CA462 /* NavigationController.swift */; };
 		D738F59523501208003CA462 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D738F59723501208003CA462 /* Localizable.strings */; };
+		D74ECC3A23BA54EB00970369 /* GameDataValidity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74ECC3923BA54EB00970369 /* GameDataValidity.swift */; };
 		D769B743231459BB003F05E3 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B742231459BB003F05E3 /* Constants.swift */; };
 		D769B74523145A59003F05E3 /* DBStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74423145A59003F05E3 /* DBStrings.swift */; };
 		D769B74723145BE3003F05E3 /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74623145BE3003F05E3 /* IDs.swift */; };
@@ -100,6 +101,7 @@
 		D738F591234FAF1D003CA462 /* NavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		D738F59623501208003CA462 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D738F5982350121D003CA462 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		D74ECC3923BA54EB00970369 /* GameDataValidity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDataValidity.swift; sourceTree = "<group>"; };
 		D769B742231459BB003F05E3 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D769B74423145A59003F05E3 /* DBStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBStrings.swift; sourceTree = "<group>"; };
 		D769B74623145BE3003F05E3 /* IDs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IDs.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 				D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */,
 				D7A9F652232053B300649F6D /* ColorOptions.swift */,
 				D70AA4DF235A085800B372D7 /* SystemLogger.swift */,
+				D74ECC3923BA54EB00970369 /* GameDataValidity.swift */,
 			);
 			path = "Custom Classes & Enums";
 			sourceTree = "<group>";
@@ -528,6 +531,7 @@
 				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
 				D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */,
 				D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */,
+				D74ECC3A23BA54EB00970369 /* GameDataValidity.swift in Sources */,
 				D7FD37E02267C9A30043A8D4 /* WaitingScreenController.swift in Sources */,
 				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
 				BF713A0423160C110045F8DC /* String.swift in Sources */,

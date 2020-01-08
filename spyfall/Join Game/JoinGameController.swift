@@ -55,24 +55,12 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
         FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { [weak self] result in
-            // TODO: make result contents enum
-            self?.handleGamData(
-                gameExists: result.gameExists,
-                usernameFree: result.usernameFree,
-                started: result.started,
-                playersFull: result.playersFull
-            )
+            self?.handleGamData(validity: result)
         }
     }
     
-    private func handleGamData(gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool) {
-        let fieldsAreValid = self.fieldsAreValid(
-            gameExists: gameExists,
-            usernameFree: usernameFree,
-            started: started,
-            playersFull: playersFull
-        )
-        guard fieldsAreValid else { return }
+    private func handleGamData(validity: GameDataValidity) {
+        guard self.fieldsAreValid(validity) else { return }
         let gameData = GameData()
         gameData.accessCode = self.joinGameView.accessCodeTextField.text?.lowercased() ?? ""
         gameData.playerObject.username = self.joinGameView.usernameTextField.text ?? ""
@@ -82,24 +70,17 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
     }
     
-    private func fieldsAreValid(gameExists: Bool, usernameFree: Bool, started: Bool, playersFull: Bool) -> Bool {
+    private func fieldsAreValid(_ validity: GameDataValidity) -> Bool {
         spinner.reset()
-
         HUD.dimsBackground = false
-        if self.joinGameView.accessCodeTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter an access code"), delay: 1.0)
-        } else if self.joinGameView.usernameTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if !gameExists {
-            HUD.flash(.label("No game with that access code"), delay: 1.0)
-        } else if !usernameFree {
-            HUD.flash(.label("Username is already taken"), delay: 1.0)
-        } else if started {
-            HUD.flash(.label("Game has already started"), delay: 1.0)
-        } else if playersFull {
-            HUD.flash(.label("Game is full"), delay: 1.0)
-        } else {
-            return true
+        switch validity {
+        case .accessCodeIsEmpty: HUD.flash(.label("Please enter an access code"), delay: 1.0)
+        case .usernameIsEmpty: HUD.flash(.label("Please enter a username"), delay: 1.0)
+        case .gameDoesNotExist: HUD.flash(.label("No game with that access code"), delay: 1.0)
+        case .usernameIsTaken: HUD.flash(.label("Username is already taken"), delay: 1.0)
+        case .playersAreFull: HUD.flash(.label("Game is full"), delay: 1.0)
+        case .gameHasAlreadyStarted: HUD.flash(.label("Game has already started"), delay: 1.0)
+        case .AllFieldsAreValid: return true
         }
         self.joinGameView.back.isUserInteractionEnabled = true
         self.joinGameView.join.isUserInteractionEnabled = true
