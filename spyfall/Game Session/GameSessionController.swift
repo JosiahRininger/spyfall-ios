@@ -9,12 +9,15 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseFirestore
+import GoogleMobileAds
+import os.log
 
-final class GameSessionController: UIViewController {
+final class GameSessionController: UIViewController, GADBannerViewDelegate {
 
     var scrollView = UIScrollView()
     var gameSessionView = GameSessionView()
     var customPopUp = EndGamePopUpView()
+    var bannerView = UIElementsManager.createBannerView()
     
     private var gameData = GameData()
     private var firstPlayer = String()
@@ -29,6 +32,7 @@ final class GameSessionController: UIViewController {
         self.gameData = gameData
         self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
         self.gameData.playerObjectList.shuffle()
+        self.gameData.playerList.shuffle()
         self.gameData.locationList.shuffle()
         super.init(nibName: nil, bundle: nil)
     }
@@ -51,6 +55,7 @@ final class GameSessionController: UIViewController {
         gameSessionView.locationsCollectionView.dataSource = self
         
         listenForGameUpdates()
+        initializeBanner()
         setupView()
     }
     
@@ -66,7 +71,7 @@ final class GameSessionController: UIViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         view.backgroundColor = .primaryBackgroundColor
-        view.addSubviews(scrollView, customPopUp)
+        view.addSubviews(scrollView, customPopUp, bannerView)
         scrollView.addSubview(gameSessionView)
         
         NSLayoutConstraint.activate([
@@ -78,7 +83,10 @@ final class GameSessionController: UIViewController {
             gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            
+            bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
+            bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
     }
     
@@ -106,6 +114,14 @@ final class GameSessionController: UIViewController {
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
             FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
         }
+    }
+    
+    private func initializeBanner() {
+        bannerView.delegate = self
+        bannerView.adUnitID = Constants.IDs.gameSessionAdUnitID
+        bannerView.rootViewController = self
+        bannerView.load(GADRequest())
+        os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
     }
     
     private func listenForGameUpdates() {

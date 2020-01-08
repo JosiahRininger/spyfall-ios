@@ -20,6 +20,17 @@
 	<string>1.0</string>
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-6687613409331343~7630030040</string>
+    <key>GADIsAdManagerApp</key>
+    <true/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsForMedia</key>
+        <true/>
+        <key>NSAllowsArbitraryLoadsInWebContent</key>
+        <true/>
+    </dict>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>

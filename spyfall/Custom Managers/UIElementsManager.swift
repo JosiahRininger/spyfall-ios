@@ -67,6 +67,7 @@ class UIElementsManager {
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.secondaryGray.cgColor
+        t.autocorrectionType = UITextAutocorrectionType.no
         t.translatesAutoresizingMaskIntoConstraints = false
         t.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
         
@@ -83,6 +84,7 @@ class UIElementsManager {
         t.layer.borderWidth = 1
         t.layer.cornerRadius = 9
         t.layer.borderColor = UIColor.secondaryGray.cgColor
+        t.autocorrectionType = UITextAutocorrectionType.no
         t.translatesAutoresizingMaskIntoConstraints = false
         t.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
         t.widthAnchor.constraint(equalToConstant: numberTextFieldWidth).isActive = true

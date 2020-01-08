@@ -19,9 +19,9 @@ class StatsManager {
     }
     
     // Updates total number of players
-    static func incrementTotalNumberOfPlayers(by number: Int) {
+    static func incrementTotalNumberOfPlayers() {
         FirestoreManager.updateStatData(for: Constants.DBStrings.game, data: [
-            Constants.DBStrings.numberOfPlayers: FieldValue.increment(Int64(number))
+            Constants.DBStrings.numberOfPlayers: FieldValue.increment(Int64(1))
         ])
     }
 }
