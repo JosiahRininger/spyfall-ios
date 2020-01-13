@@ -27,11 +27,22 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         newGameView.timeLimitTextField.delegate = self
         
         setupView()
+        
+        // Listen to changes in connection
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
 
         // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    deinit {
+        reachability.stopNotifier()
     }
     
     // MARK: - Setup UI

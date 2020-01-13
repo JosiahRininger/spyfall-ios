@@ -62,8 +62,19 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     deinit {
+        // Remove any listeners
         guard let listener = listener else { return }
         listener.remove()
+        
+        // Remove current user from playerList and delete game if playerList is empty
+        switch gameData.playerList.count {
+        case let x where x > 1:
+            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
+        case 1:
+            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
     }
     
     // MARK: - Setup UI & Listeners
@@ -135,7 +146,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     private func listenToPlayerListSuccess(with document: DocumentSnapshot) {
-        guard let playerList = document.get("playerList") as? [String],
+        guard let playerList = document.get(Constants.DBStrings.playerList) as? [String],
             let started = document.get("started") as? Bool else {
                 os_log("Document data was empty.")
                 return
@@ -210,7 +221,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         switch gameData.playerList.isEmpty {
         case true: FirestoreManager.deleteGame(accessCode: gameData.accessCode)
         case false: FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                            data: ["playerList": FieldValue.arrayRemove([gameData.playerObject.username])])
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
         }
         navigationController?.popToRootViewController(animated: true)
     }
@@ -317,7 +328,7 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
             if gameData.playerList[indexPath.row] == oldUsername {
                 gameData.playerList[indexPath.row] = gameData.playerObject.username
                 self.oldUsername = nil
-                FirestoreManager.updateGameData(accessCode: gameData.accessCode, data: ["playerList": gameData.playerList])
+                FirestoreManager.updateGameData(accessCode: gameData.accessCode, data: [Constants.DBStrings.playerList: gameData.playerList])
             }
         }
         

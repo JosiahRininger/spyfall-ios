@@ -9,9 +9,28 @@
 import Foundation
 
 class GameData {
-    var accessCode: String
-    var playerObject: Player
-    var playerList: [String]
+    
+    // Static variables created to check current game data in the AppDelegate
+    static var staticPlayerListCount: Int = 0
+    static var staticCurrentUsername: String = ""
+    static var staticAccessCode: String = ""
+    
+    // Variable Declaration
+    var accessCode: String {
+        didSet(newValue) {
+            GameData.staticAccessCode = newValue
+        }
+    }
+    var playerObject: Player {
+        didSet(newValue) {
+            GameData.staticCurrentUsername = newValue.username
+        }
+    }
+    var playerList: [String] {
+        didSet(newValue) {
+            GameData.staticPlayerListCount = newValue.count
+        }
+    }
     var playerObjectList: [Player]
     var started: Bool
     var seguedToGameSession: Bool
@@ -67,7 +86,7 @@ class GameData {
         let dictionary: [String: Any] = [
             "chosenLocation": self.chosenLocation,
             "chosenPacks": self.chosenPacks,
-            "playerList": self.playerList,
+            Constants.DBStrings.playerList: self.playerList,
             "playerObjectList": self.playerObjectList,
             "started": self.started,
             "timeLimit": self.timeLimit

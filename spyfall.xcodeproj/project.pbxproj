@@ -52,6 +52,7 @@
 		D7A9F655232068FD00649F6D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F654232068FD00649F6D /* Button.swift */; };
 		D7C4E77D2330721B00771C3F /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C4E77C2330721B00771C3F /* Spinner.swift */; };
 		D7D65A7A239AD40C007CEB08 /* StatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D65A79239AD40C007CEB08 /* StatsManager.swift */; };
+		D7DA72E323CC092900ECF67B /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DA72E223CC092900ECF67B /* DispatchQueue.swift */; };
 		D7E2296823C56276007D9F99 /* NetworkErrorPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */; };
 		D7FC262C225BD891009EA32D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
 		D7FC262E225BFDB0009EA32D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
@@ -124,6 +125,7 @@
 		D7A9F654232068FD00649F6D /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		D7C4E77C2330721B00771C3F /* Spinner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		D7D65A79239AD40C007CEB08 /* StatsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsManager.swift; sourceTree = "<group>"; };
+		D7DA72E223CC092900ECF67B /* DispatchQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DispatchQueue.swift; sourceTree = "<group>"; };
 		D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkErrorPopUpView.swift; sourceTree = "<group>"; };
 		D7FC262B225BD891009EA32D /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				D7A9F652232053B300649F6D /* ColorOptions.swift */,
 				D70AA4DF235A085800B372D7 /* SystemLogger.swift */,
 				D74ECC3923BA54EB00970369 /* GameDataValidity.swift */,
+				D7DA72E223CC092900ECF67B /* DispatchQueue.swift */,
 			);
 			path = "Custom Classes & Enums";
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				D70D43D1232ABDEB005F10FA /* PacksPopUpView.swift in Sources */,
 				D7C4E77D2330721B00771C3F /* Spinner.swift in Sources */,
 				D7A9F653232053B300649F6D /* ColorOptions.swift in Sources */,
+				D7DA72E323CC092900ECF67B /* DispatchQueue.swift in Sources */,
 				D769B743231459BB003F05E3 /* Constants.swift in Sources */,
 				D7FF08EA228FB98600C1ED43 /* PlayersCollectionViewCell.swift in Sources */,
 				D769B7512314764F003F05E3 /* UIImageView.swift in Sources */,

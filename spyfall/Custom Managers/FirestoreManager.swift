@@ -54,7 +54,7 @@ class FirestoreManager {
                 os_log("Document does not exist")
             }
             
-            guard let playerList = gameObject["playerList"] as? [String],
+            guard let playerList = gameObject[Constants.DBStrings.playerList] as? [String],
                 let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
                 let timeLimit = gameObject["timeLimit"] as? Int,
                 let chosenLocation = gameObject["chosenLocation"] as? String else {
@@ -222,7 +222,7 @@ class FirestoreManager {
             }
             if let document = document {
                 if document.exists {
-                    if let playerList = document.data()?["playerList"] as? [String] {
+                    if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
                         if playerList.contains(username) { validity = .usernameIsTaken }
                         if playerList.count > 7 { validity = .playersAreFull }
                     }

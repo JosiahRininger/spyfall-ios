@@ -60,8 +60,19 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
     }
     
     deinit {
+        // Remove any listeners
         guard let listener = listener else { return }
         listener.remove()
+        
+        // Remove current user from playerList and delete game if playerList is empty
+        switch gameData.playerList.count {
+        case let x where x > 1:
+            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
+        case 1:
+            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
     }
     
     // MARK: - Setup UI & Listeners
