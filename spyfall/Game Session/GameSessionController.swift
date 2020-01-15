@@ -57,22 +57,15 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         listenForGameUpdates()
         initializeBanner()
         setupView()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     deinit {
         // Remove any listeners
         guard let listener = listener else { return }
         listener.remove()
-        
-        // Remove current user from playerList and delete game if playerList is empty
-        switch gameData.playerList.count {
-        case let x where x > 1:
-            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
-        case 1:
-            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
-        default: return
-        }
+        NotificationCenter.default.removeObserver(self, name: .gameInactive, object: nil)
     }
     
     // MARK: - Setup UI & Listeners
@@ -194,6 +187,19 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         gameSessionView.locationsCollectionView.setNeedsUpdateConstraints()
         gameSessionView.playersCollectionView.layoutIfNeeded()
         gameSessionView.locationsCollectionView.layoutIfNeeded()
+    }
+    
+    // Remove current user from playerList and delete game if playerList is empty
+    @objc private func gameInactive() {
+        navigationController?.popToRootViewController(animated: true)
+        switch gameData.playerList.count {
+        case let x where x > 1:
+            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
+        case 1:
+            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
     }
     
     // MARK: - Timer Logic

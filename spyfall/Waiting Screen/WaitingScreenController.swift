@@ -45,6 +45,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         setupView()
 
         NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -65,16 +66,8 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         // Remove any listeners
         guard let listener = listener else { return }
         listener.remove()
-        
-        // Remove current user from playerList and delete game if playerList is empty
-        switch gameData.playerList.count {
-        case let x where x > 1:
-            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
-        case 1:
-            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
-        default: return
-        }
+        NotificationCenter.default.removeObserver(self, name: .editUsername, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .gameInactive, object: nil)
     }
     
     // MARK: - Setup UI & Listeners
@@ -256,6 +249,19 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         customPopUp.changeNamePopUpView.isHidden = true
         waitingScreenView.leaveGame.isUserInteractionEnabled = true
         waitingScreenView.startGame.isUserInteractionEnabled = true
+    }
+    
+    // Remove current user from playerList and delete game if playerList is empty
+    @objc private func gameInactive() {
+        navigationController?.popToRootViewController(animated: true)
+        switch gameData.playerList.count {
+        case let x where x > 1:
+            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
+        case 1:
+            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {

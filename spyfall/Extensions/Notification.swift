@@ -10,5 +10,5 @@ import UIKit
 
 extension Notification.Name {
     static let editUsername = NSNotification.Name("editUsername")
-    static let gameDataRetrieved = NSNotification.Name("gameDataRetrieved")
+    static let gameInactive = NSNotification.Name("gameInactive")
 }

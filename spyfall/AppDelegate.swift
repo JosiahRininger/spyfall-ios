@@ -51,9 +51,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        DispatchQueue.background(delay: 900.0) { [weak self] in
+        DispatchQueue.background(delay: 900.0) {
             if UIApplication.shared.applicationState == .background {
-                self?.window?.rootViewController = NavigationController(rootViewController: HomeController())
+                NotificationCenter.default.post(name: .gameInactive, object: nil)
             }
         }
     }
