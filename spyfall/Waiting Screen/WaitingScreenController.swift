@@ -168,7 +168,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     // MARK: - Helper Methods
-    // Is called if user did not create game
+    // Retrieves the stored chosenPacks and ChosenLocation
     private func retrieveChosenPacksAndLocation() {
         FirestoreManager.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { [weak self] result in
             self?.gameData.chosenPacks = result.chosenPacks
@@ -184,7 +184,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         gameData.started = true
         FirestoreManager.updateGameData(accessCode: self.gameData.accessCode, data: ["started": true])
         
-        FirestoreManager.retrieveRoles(chosenPack: gameData.chosenPacks[0], chosenLocation: gameData.chosenLocation) { [weak self] result in
+        FirestoreManager.retrieveRoles(chosenPacks: self.gameData.chosenPacks, chosenLocation: gameData.chosenLocation) { [weak self] result in
             self?.handleRolesFromFirebase(with: result)
         }
         StatsManager.incrementTotalNumberOfGamesPlayed()

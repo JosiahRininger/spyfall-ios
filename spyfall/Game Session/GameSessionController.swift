@@ -102,7 +102,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         gameSessionView.playAgain.touchUpInside = { [weak self] in
             DispatchQueue.main.async {
                 self?.gameData.chosenPacks.shuffle()
-                FirestoreManager.retrieveChosenLocation(chosenPack: self?.gameData.chosenPacks[0] ?? "") { result in
+                FirestoreManager.resetChosenLocation(with: self?.gameData.accessCode ?? "") { result in
                     self?.gameData.chosenLocation = result
                     self?.gameData.playerObjectList = []
                     self?.gameData.started = false

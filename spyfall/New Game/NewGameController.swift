@@ -77,12 +77,11 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
             
             spinner.animate(with: newGameView.create)
             
-            let firstPack = chosenPacks[0]
             var accessCode = NSUUID().uuidString.lowercased().prefix(6)
-            FirestoreManager.gameExist(with: String(accessCode)) { gameExist in
+            FirestoreManager.gameExist(with: String(accessCode)) { [weak self] gameExist in
                 if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
-                FirestoreManager.retrieveChosenLocation(chosenPack: firstPack) { [weak self] result in
-                    self?.handleChosenLocation(from: result, with: String(accessCode))
+                FirestoreManager.retrieveLocationList(chosenPacks: self?.chosenPacks ?? []) { result in
+                    self?.handleGameData(locationList: result, with: String(accessCode))
                 }
             }
         case .unavailable, .none:
@@ -91,12 +90,13 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    private func handleChosenLocation(from location: String, with accessCode: String) {
+    private func handleGameData(locationList: [String], with accessCode: String) {
         let gameData = GameData(accessCode: accessCode,
                                 initialPlayer: self.newGameView.usernameTextField.text ?? "",
                                 chosenPacks: chosenPacks,
+                                locationList: locationList,
                                 timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
-                                chosenLocation: location)
+                                chosenLocation: locationList.shuffled().first ?? "")
         
         // Add a new document with a generated ID
         FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())

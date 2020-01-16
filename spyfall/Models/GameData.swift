@@ -9,28 +9,10 @@
 import Foundation
 
 class GameData {
-    
-    // Static variables created to check current game data in the AppDelegate
-    static var staticPlayerListCount: Int = 0
-    static var staticCurrentUsername: String = ""
-    static var staticAccessCode: String = ""
-    
     // Variable Declaration
-    var accessCode: String {
-        didSet(newValue) {
-            GameData.staticAccessCode = newValue
-        }
-    }
-    var playerObject: Player {
-        didSet(newValue) {
-            GameData.staticCurrentUsername = newValue.username
-        }
-    }
-    var playerList: [String] {
-        didSet(newValue) {
-            GameData.staticPlayerListCount = newValue.count
-        }
-    }
+    var accessCode: String
+    var playerObject: Player
+    var playerList: [String]
     var playerObjectList: [Player]
     var started: Bool
     var seguedToGameSession: Bool
@@ -54,7 +36,7 @@ class GameData {
     }
     
     // For initializing GameData object with actual data
-    init(accessCode: String, initialPlayer: String, chosenPacks: [String], timeLimit: Int, chosenLocation: String) {
+    init(accessCode: String, initialPlayer: String, chosenPacks: [String], locationList: [String], timeLimit: Int, chosenLocation: String) {
         self.accessCode = accessCode
         self.playerObject = Player(role: "", username: initialPlayer, votes: 0)
         self.playerList = [initialPlayer]
@@ -62,9 +44,9 @@ class GameData {
         self.started = false
         self.seguedToGameSession = false
         self.timeLimit = timeLimit
-        self.chosenPacks = chosenPacks
         self.chosenLocation = chosenLocation
-        self.locationList = []
+        self.chosenPacks = chosenPacks
+        self.locationList = locationList
     }
     
     // For comparing GameData objects
@@ -86,6 +68,7 @@ class GameData {
         let dictionary: [String: Any] = [
             "chosenLocation": self.chosenLocation,
             "chosenPacks": self.chosenPacks,
+            Constants.DBStrings.locationList: self.locationList,
             Constants.DBStrings.playerList: self.playerList,
             "playerObjectList": self.playerObjectList,
             "started": self.started,
