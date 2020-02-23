@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
 import os.log

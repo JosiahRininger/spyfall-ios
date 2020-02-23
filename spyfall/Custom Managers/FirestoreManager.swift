@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import FirebaseDatabase
 import FirebaseFirestore
 import os.log
 

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseDatabase
 import FirebaseFirestore
 import GoogleMobileAds
 import os.log
