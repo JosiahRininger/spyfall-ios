@@ -6,7 +6,6 @@
 //  Copyright © 2019 Josiah Rininger. All rights reserved.
 //
 
-//import Foundation
 import FirebaseFirestore
 
 class StatsManager {

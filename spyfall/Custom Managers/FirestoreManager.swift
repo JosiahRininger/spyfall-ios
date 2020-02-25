@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import FirebaseDatabase
 import FirebaseFirestore
 import os.log
 
 class FirestoreManager {
     typealias GameDataHandler = (GameData) -> Void
-    typealias ChosenLocationHandler = (String) -> Void
-    typealias ChosenPacksAndLocationHandler = ((chosenPacks: [String], chosenLocation: String)) -> Void
+    typealias ResetChosenLocationHandler = (String) -> Void
+    typealias RetrieveChosenPacksAndLocationHandler = ((chosenPacks: [String], chosenLocation: String)) -> Void
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
@@ -39,12 +38,6 @@ class FirestoreManager {
         var gameData = GameData()
         gameData += oldGameData
         
-        var gameDataReady = [false, false]
-        
-        retrieveLocationList(chosenPacks: gameData.chosenPacks) { result in
-            gameData.locationList = result
-            gameDataReady[1] ? completion(gameData) : gameDataReady[0].toggle()
-        }
         db.collection(Constants.DBStrings.games).document(gameData.accessCode).getDocument { document, error in
             var gameObject = [String: Any]()
             if let document = document, document.exists {
@@ -54,9 +47,10 @@ class FirestoreManager {
                 os_log("Document does not exist")
             }
             
-            guard let playerList = gameObject["playerList"] as? [String],
+            guard let playerList = gameObject[Constants.DBStrings.playerList] as? [String],
                 let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
                 let timeLimit = gameObject["timeLimit"] as? Int,
+                let locationList = gameObject[Constants.DBStrings.locationList] as? [String],
                 let chosenLocation = gameObject["chosenLocation"] as? String else {
                     os_log("Error writing document")
                     return
@@ -64,32 +58,35 @@ class FirestoreManager {
             gameData.timeLimit = timeLimit
             gameData.chosenLocation = chosenLocation
             gameData.playerList = playerList
+            gameData.locationList = locationList
             
             for playerObject in playerObjectList where playerObject["username"] as? String == gameData.playerObject.username {
                 gameData.playerObject = Player.dictToPlayer(with: playerObject)
             }
-            gameDataReady[0] ? completion(gameData) : gameDataReady[1].toggle()
+            completion(gameData)
         }
     }
     
-    // Retrieves the chosen location randomly from the given pack
-    static func retrieveChosenLocation(chosenPack: String, completion: @escaping ChosenLocationHandler) {
+    // Retrieves the chosen location randomly from the locationList
+    static func resetChosenLocation(with accessCode: String, completion: @escaping ResetChosenLocationHandler) {
         var chosenLocation = String()
-        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
-            if let error = error {
-                os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            } else {
-                if let docs = querySnapshot!.data(), let location = docs.randomElement()?.key {
-                    chosenLocation = location
+        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+            if let document = document, document.exists {
+                guard let locationList = document.data()?[Constants.DBStrings.locationList] as? [String] else {
+                        os_log("Error writing document")
+                        return
                 }
+                chosenLocation = locationList.shuffled().first ?? ""
+            } else {
+                os_log("Document does not exist")
             }
             completion(chosenLocation)
         }
     }
     
     // Retrieves all the chosen packs and the chosen location
-    static func retrieveChosenPacksAndLocation(accessCode: String, completion: @escaping ChosenPacksAndLocationHandler) {
-        var data = (chosenPacks: [""], chosenLocation: "")
+    static func retrieveChosenPacksAndLocation(accessCode: String, completion: @escaping RetrieveChosenPacksAndLocationHandler) {
+        var data = (chosenPacks: [String](), chosenLocation: String())
         db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
             if let document = document, document.exists {
                 guard let chosenPacks = document.data()?["chosenPacks"] as? [String],
@@ -105,44 +102,49 @@ class FirestoreManager {
         }
     }
     
-    // Retrieves all the locations within the given packs
+    // Retrieves 14 of the locations within the given packs
     static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
         var locationList = [String]()
-        var locationDataReady = 1
-        
+        var numberOfLocationsToGrab = Int()
+        switch chosenPacks.count {
+        case 3: numberOfLocationsToGrab = 5
+        case 2: numberOfLocationsToGrab = 7
+        default: numberOfLocationsToGrab = 14
+        }
         for pack in chosenPacks {
             self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, error in
                 if let error = error {
                     os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
                 } else {
                     if let docs = querySnapshot!.data() {
-                        for doc in docs {
-                            locationList.append(doc.key)
+                        let randomLocations = docs.map { $0.key }.shuffled()
+                        if locationList.count == 10 { numberOfLocationsToGrab -= 1 }
+                        for loc in randomLocations.indices where loc < numberOfLocationsToGrab {
+                            locationList.append(randomLocations[loc])
                         }
                     }
                 }
-                switch locationDataReady {
-                case chosenPacks.count: completion(locationList)
-                default: locationDataReady += 1
-                }
+                if locationList.count == 14 { completion(locationList) }
             }
         }
     }
     
     // Retrieves all the roles for the chosen location
-    static func retrieveRoles(chosenPack: String, chosenLocation: String, completion: @escaping RolesHandler) {
-        var roles = [String]()
-        db.collection(Constants.DBStrings.packs).document(chosenPack).getDocument { querySnapshot, error in
-            if let error = error {
-                os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            } else {
-                if let docs = querySnapshot!.data() as? [String: [String]] {
-                    for doc in docs where doc.key == chosenLocation {
-                        roles = doc.value
+    static func retrieveRoles(chosenPacks: [String], chosenLocation: String, completion: @escaping RolesHandler) {
+        var roles: [String] = []
+        for pack in chosenPacks {
+            db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, error in
+                if let error = error {
+                    os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+                } else {
+                    if let docs = querySnapshot!.data() as? [String: [String]] {
+                        for doc in docs where doc.key == chosenLocation {
+                            roles = doc.value
+                        }
                     }
                 }
+                if !roles.isEmpty { completion(roles) }
             }
-            completion(roles)
         }
     }
     
@@ -222,7 +224,7 @@ class FirestoreManager {
             }
             if let document = document {
                 if document.exists {
-                    if let playerList = document.data()?["playerList"] as? [String] {
+                    if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
                         if playerList.contains(username) { validity = .usernameIsTaken }
                         if playerList.count > 7 { validity = .playersAreFull }
                     }

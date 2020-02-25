@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FirebaseDatabase
 import FirebaseFirestore
 import GoogleMobileAds
 import PKHUD
@@ -45,6 +44,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         setupView()
 
         NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -62,8 +62,11 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     deinit {
+        // Remove any listeners
         guard let listener = listener else { return }
         listener.remove()
+        NotificationCenter.default.removeObserver(self, name: .editUsername, object: nil)
+        NotificationCenter.default.removeObserver(self, name: .gameInactive, object: nil)
     }
     
     // MARK: - Setup UI & Listeners
@@ -135,7 +138,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     private func listenToPlayerListSuccess(with document: DocumentSnapshot) {
-        guard let playerList = document.get("playerList") as? [String],
+        guard let playerList = document.get(Constants.DBStrings.playerList) as? [String],
             let started = document.get("started") as? Bool else {
                 os_log("Document data was empty.")
                 return
@@ -164,7 +167,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     }
     
     // MARK: - Helper Methods
-    // Is called if user did not create game
+    // Retrieves the stored chosenPacks and ChosenLocation
     private func retrieveChosenPacksAndLocation() {
         FirestoreManager.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { [weak self] result in
             self?.gameData.chosenPacks = result.chosenPacks
@@ -180,7 +183,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         gameData.started = true
         FirestoreManager.updateGameData(accessCode: self.gameData.accessCode, data: ["started": true])
         
-        FirestoreManager.retrieveRoles(chosenPack: gameData.chosenPacks[0], chosenLocation: gameData.chosenLocation) { [weak self] result in
+        FirestoreManager.retrieveRoles(chosenPacks: self.gameData.chosenPacks, chosenLocation: gameData.chosenLocation) { [weak self] result in
             self?.handleRolesFromFirebase(with: result)
         }
         StatsManager.incrementTotalNumberOfGamesPlayed()
@@ -210,7 +213,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         switch gameData.playerList.isEmpty {
         case true: FirestoreManager.deleteGame(accessCode: gameData.accessCode)
         case false: FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                            data: ["playerList": FieldValue.arrayRemove([gameData.playerObject.username])])
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
         }
         navigationController?.popToRootViewController(animated: true)
     }
@@ -245,6 +248,19 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         customPopUp.changeNamePopUpView.isHidden = true
         waitingScreenView.leaveGame.isUserInteractionEnabled = true
         waitingScreenView.startGame.isUserInteractionEnabled = true
+    }
+    
+    // Remove current user from playerList and delete game if playerList is empty
+    @objc private func gameInactive() {
+        navigationController?.popToRootViewController(animated: true)
+        switch gameData.playerList.count {
+        case let x where x > 1:
+            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
+        case 1:
+            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -317,7 +333,7 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
             if gameData.playerList[indexPath.row] == oldUsername {
                 gameData.playerList[indexPath.row] = gameData.playerObject.username
                 self.oldUsername = nil
-                FirestoreManager.updateGameData(accessCode: gameData.accessCode, data: ["playerList": gameData.playerList])
+                FirestoreManager.updateGameData(accessCode: gameData.accessCode, data: [Constants.DBStrings.playerList: gameData.playerList])
             }
         }
         

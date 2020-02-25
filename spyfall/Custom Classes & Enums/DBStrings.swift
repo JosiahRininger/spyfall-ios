@@ -13,6 +13,8 @@ extension Constants {
     struct DBStrings {
         // Strings for game data
         static let games = "games"
+        static let playerList = "playerList"
+        static let locationList = "locationList"
         
         // Strings for pack data
         static let packs = "packs"

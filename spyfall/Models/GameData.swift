@@ -9,6 +9,7 @@
 import Foundation
 
 class GameData {
+    // Variable Declaration
     var accessCode: String
     var playerObject: Player
     var playerList: [String]
@@ -35,7 +36,7 @@ class GameData {
     }
     
     // For initializing GameData object with actual data
-    init(accessCode: String, initialPlayer: String, chosenPacks: [String], timeLimit: Int, chosenLocation: String) {
+    init(accessCode: String, initialPlayer: String, chosenPacks: [String], locationList: [String], timeLimit: Int, chosenLocation: String) {
         self.accessCode = accessCode
         self.playerObject = Player(role: "", username: initialPlayer, votes: 0)
         self.playerList = [initialPlayer]
@@ -43,9 +44,9 @@ class GameData {
         self.started = false
         self.seguedToGameSession = false
         self.timeLimit = timeLimit
-        self.chosenPacks = chosenPacks
         self.chosenLocation = chosenLocation
-        self.locationList = []
+        self.chosenPacks = chosenPacks
+        self.locationList = locationList
     }
     
     // For comparing GameData objects
@@ -67,7 +68,8 @@ class GameData {
         let dictionary: [String: Any] = [
             "chosenLocation": self.chosenLocation,
             "chosenPacks": self.chosenPacks,
-            "playerList": self.playerList,
+            Constants.DBStrings.locationList: self.locationList,
+            Constants.DBStrings.playerList: self.playerList,
             "playerObjectList": self.playerObjectList,
             "started": self.started,
             "timeLimit": self.timeLimit

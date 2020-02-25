@@ -43,5 +43,4 @@ class PacksNamePopUpView: UIView {
             textField.bottomAnchor.constraint(equalTo: packsNamePopUpView.contentsView.bottomAnchor, constant: -20)
             ])
     }
-    
 }

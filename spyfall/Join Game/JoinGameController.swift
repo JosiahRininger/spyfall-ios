@@ -7,16 +7,18 @@
 //
 
 import UIKit
-import FirebaseDatabase
 import FirebaseFirestore
 import PKHUD
 import os.log
+import Reachability
 
 final class JoinGameController: UIViewController, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
+    var networkErrorPopUp = NetworkErrorPopUpView()
     var spinner = Spinner(frame: .zero)
     var keyboardHeight: CGFloat = 0.0
+    let reachability = try! Reachability()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +28,21 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         
         setupView()
         
+        // Listen to changes in connection
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+        
         // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(JoinGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(JoinGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    }
+    
+    deinit {
+        reachability.stopNotifier()
     }
     
     // MARK: - Setup UI
@@ -37,7 +50,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         setupButtons()
         setupKeyboard()
         spinner = Spinner(frame: CGRect(x: 45.0, y: joinGameView.join.frame.minY + 21.0, width: 20.0, height: 20.0))
-        view.addSubview(joinGameView)
+        view.addSubviews(joinGameView, networkErrorPopUp)
         joinGameView.join.addSubview(spinner)
     }
     
@@ -47,15 +60,27 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         joinGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
+        
+        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.networkErrorPopUp.isUserInteractionEnabled = false
+            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
+        }
     }
     
     // MARK: - Helper Methods
     @objc private func joinGameWasTapped() {
+        
+        switch reachability.connection {
+        case .wifi, .cellular:
         self.joinGameView.back.isUserInteractionEnabled = false
         self.joinGameView.join.isUserInteractionEnabled = false
         spinner.animate(with: self.joinGameView.join)
         FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { [weak self] result in
             self?.handleGamData(validity: result)
+            }
+        case .unavailable, .none:
+            networkErrorPopUp.isUserInteractionEnabled = true
+            networkErrorPopUp.networkErrorPopUpView.isHidden = false
         }
     }
     
@@ -66,7 +91,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         gameData.playerObject.username = self.joinGameView.usernameTextField.text ?? ""
         gameData.playerList = [gameData.playerObject.username]
         FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                        data: ["playerList": FieldValue.arrayUnion([gameData.playerObject.username])])
+                                        data: [Constants.DBStrings.playerList: FieldValue.arrayUnion([gameData.playerObject.username])])
         self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
     }
     
