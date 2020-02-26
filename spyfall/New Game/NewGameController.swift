@@ -71,6 +71,9 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         
         switch reachability.connection {
         case .wifi, .cellular:
+            newGameView.usernameTextField.isUserInteractionEnabled = false
+            newGameView.packStackView.isUserInteractionEnabled = false
+            newGameView.timeLimitTextField.isUserInteractionEnabled = false
             newGameView.back.isUserInteractionEnabled = false
             newGameView.create.isUserInteractionEnabled = false
             
