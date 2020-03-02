@@ -131,22 +131,28 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
             switch result {
             // Successfully adds listener
-            case .success(let document):
-                
-                // Check if game has been deleted
-                if !document.exists {
-                    self?.navigationController?.popToRootViewController(animated: true)
-                } else {
-                    if let started = document.get("started") as? Bool {
-                        if !started {
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                    }
-                }
-
+            case .success(let document): self?.listener(document)
             // Failure to add listener
-            case .failure(let error):
-                print("FirestoreManager.addListener error: ", error)
+            case .failure(let error): print("FirestoreManager.addListener error: ", error)
+            }
+        }
+    }
+    
+    private func listener(_ document: DocumentSnapshot) {
+        // Check if game has been deleted
+        if !document.exists {
+            navigationController?.popToRootViewController(animated: true)
+        } else {
+            if let started = document.get("started") as? Bool {
+                if !started {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+            if let playerList = document.get("playerList") as? [String],
+                let locationList = document.get("locationList") as? [String] {
+                gameData.playerList = playerList
+                gameData.locationList = locationList
+                updateCollectionViews()
             }
         }
     }

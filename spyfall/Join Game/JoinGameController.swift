@@ -72,11 +72,13 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         
         switch reachability.connection {
         case .wifi, .cellular:
-        self.joinGameView.back.isUserInteractionEnabled = false
-        self.joinGameView.join.isUserInteractionEnabled = false
-        spinner.animate(with: self.joinGameView.join)
-        FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { [weak self] result in
-            self?.handleGamData(validity: result)
+            joinGameView.accessCodeTextField.isUserInteractionEnabled = false
+            joinGameView.usernameTextField.isUserInteractionEnabled = false
+            joinGameView.back.isUserInteractionEnabled = false
+            joinGameView.join.isUserInteractionEnabled = false
+            spinner.animate(with: self.joinGameView.join)
+            FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { [weak self] result in
+                self?.handleGamData(validity: result)
             }
         case .unavailable, .none:
             networkErrorPopUp.isUserInteractionEnabled = true
@@ -107,8 +109,10 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         case .gameHasAlreadyStarted: HUD.flash(.label("Game has already started"), delay: 1.0)
         case .AllFieldsAreValid: return true
         }
-        self.joinGameView.back.isUserInteractionEnabled = true
-        self.joinGameView.join.isUserInteractionEnabled = true
+        joinGameView.accessCodeTextField.isUserInteractionEnabled = true
+        joinGameView.usernameTextField.isUserInteractionEnabled = true
+        joinGameView.back.isUserInteractionEnabled = true
+        joinGameView.join.isUserInteractionEnabled = true
         return false
     }
     

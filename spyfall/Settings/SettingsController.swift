@@ -13,6 +13,8 @@ final class SettingsController: UIViewController {
     var settingsView = SettingsView()
     var colors: [UIColor] = []
     var selectedColor = UIColor.clear
+    var secondaryColor = UIColor.secondaryColor
+    var oldColorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor)
     var homeVC = UIViewController()
     
     override func viewDidLoad() {
@@ -41,16 +43,7 @@ final class SettingsController: UIViewController {
         let colorTapGesture = UITapGestureRecognizer(target: self, action: #selector(colorTapped))
         settingsView.colorView.addGestureRecognizer(colorTapGesture)
         settingsView.colorPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
-        settingsView.colorPopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.resetViews()
-            self?.checkUserDefaults()
-            UIColor.secondaryColor = self?.retrieveSavedColor() ?? UIColor.blue
-            self?.settingsView.colorPopUpView.doneButton.backgroundColor = .secondaryColor
-            self?.settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
-            self?.settingsView.emailLabel.textColor = .secondaryColor
-            self?.settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
-            self?.homeVC.viewWillAppear(true)
-        }
+        settingsView.colorPopUpView.doneButton.touchUpInside = { [weak self] in self?.colorPopupDoneTapped() }
         
         // Sets up the actions around the info pop up
         let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
@@ -116,6 +109,15 @@ final class SettingsController: UIViewController {
         self.settingsView.adPopUpView.isHidden = true
     }
     
+    private func colorPopupDoneTapped() {
+        resetViews()
+        UIColor.secondaryColor = self.secondaryColor
+        settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
+        settingsView.emailLabel.textColor = .secondaryColor
+        settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
+        homeVC.viewWillAppear(true)
+    }
+    
     private func getColors() {
         colors.append(.customPurple)
         colors.append(.customBlue)
@@ -125,35 +127,17 @@ final class SettingsController: UIViewController {
     }
     
     private func checkUserDefaults() {
-        // TODO: possibly set default without checking
         if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
             switch selectedColor {
-            case .customPurple:
-                if colorString != ColorOptions.purple.rawValue {
-                    UserDefaults.standard.set(ColorOptions.purple.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
-            case .customBlue:
-                if colorString != ColorOptions.blue.rawValue {
-                    UserDefaults.standard.set(ColorOptions.blue.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
-            case .customGreen:
-                if colorString != ColorOptions.green.rawValue {
-                    UserDefaults.standard.set(ColorOptions.green.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
-            case .customOrange:
-                if colorString != ColorOptions.orange.rawValue {
-                    UserDefaults.standard.set(ColorOptions.orange.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
-            case .customRed:
-                if colorString != ColorOptions.red.rawValue {
-                    UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
-            case .secondaryBackgroundColor:
-                if colorString != ColorOptions.random.rawValue {
-                    UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-                }
+            case .customPurple: UserDefaults.standard.set(ColorOptions.purple.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+            case .customBlue: UserDefaults.standard.set(ColorOptions.blue.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+            case .customGreen: UserDefaults.standard.set(ColorOptions.green.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+            case .customOrange: UserDefaults.standard.set(ColorOptions.orange.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+            case .customRed: UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
+            case .secondaryBackgroundColor: UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
             default: print("Could not correctly retrieve user default")
             }
+            oldColorString = colorString
         }
     }
 }
@@ -176,6 +160,13 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
         if !cell.isChecked {
             cell.isChecked = true
             selectedColor = cell.cellBackgroundView.backgroundColor ?? UIColor.clear
+            checkUserDefaults()
+            secondaryColor = selectedColor == .secondaryBackgroundColor
+                ? UIColor.colors.randomElement()?.value ?? UIColor.blue
+                : selectedColor
+            UIView.animate(withDuration: 0.3, animations: {
+                self.settingsView.colorPopUpView.doneButton.backgroundColor = self.secondaryColor
+            })
             collectionView.reloadData()
         }
     }
