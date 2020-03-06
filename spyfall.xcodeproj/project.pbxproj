@@ -39,10 +39,66 @@
 		D769B74D2314611B003F05E3 /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */; };
 		D769B7512314764F003F05E3 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7502314764F003F05E3 /* UIImageView.swift */; };
 		D769B75323158B63003F05E3 /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
+		D774E9832412909F0089094E /* SpyfallPaid.plist in Resources */ = {isa = PBXBuildFile; fileRef = D774E9822412909F0089094E /* SpyfallPaid.plist */; };
 		D7798B0F22B86766006D7615 /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
 		D7798B1222B8684E006D7615 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
 		D7798B1A22B86A43006D7615 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
 		D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
+		D77A0DA524121671005AF53D /* StatsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7D65A79239AD40C007CEB08 /* StatsManager.swift */; };
+		D77A0DA624121671005AF53D /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
+		D77A0DA724121671005AF53D /* EndGamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D43D923300287005F10FA /* EndGamePopUpView.swift */; };
+		D77A0DA824121671005AF53D /* JoinGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D726325E228CD60900E385E8 /* JoinGameController.swift */; };
+		D77A0DA924121671005AF53D /* ColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD2A231DBAC40075020D /* ColorsCell.swift */; };
+		D77A0DAA24121671005AF53D /* NetworkErrorPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7E2296723C56276007D9F99 /* NetworkErrorPopUpView.swift */; };
+		D77A0DAB24121671005AF53D /* UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F573234EA5DD003CA462 /* UIImage.swift */; };
+		D77A0DAC24121671005AF53D /* CustomPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B75223158B63003F05E3 /* CustomPopUpView.swift */; };
+		D77A0DAD24121671005AF53D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
+		D77A0DAE24121671005AF53D /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD6DA92331768100917F7B /* Toast.swift */; };
+		D77A0DAF24121671005AF53D /* Encodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74823145F80003F05E3 /* Encodable.swift */; };
+		D77A0DB024121671005AF53D /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */; };
+		D77A0DB124121671005AF53D /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D738F591234FAF1D003CA462 /* NavigationController.swift */; };
+		D77A0DB224121671005AF53D /* CreateAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B0E22B86766006D7615 /* CreateAlertController.swift */; };
+		D77A0DB324121671005AF53D /* UIScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D43DB233009DE005F10FA /* UIScrollView.swift */; };
+		D77A0DB424121671005AF53D /* PlayersWaitingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DB22666D180043A8D4 /* PlayersWaitingTableViewCell.swift */; };
+		D77A0DB524121671005AF53D /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70CF92222D3CC840093AB94 /* GameData.swift */; };
+		D77A0DB624121671005AF53D /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
+		D77A0DB724121671005AF53D /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
+		D77A0DB824121671005AF53D /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
+		D77A0DB924121671005AF53D /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F654232068FD00649F6D /* Button.swift */; };
+		D77A0DBA24121671005AF53D /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
+		D77A0DBB24121671005AF53D /* DBStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74423145A59003F05E3 /* DBStrings.swift */; };
+		D77A0DBC24121671005AF53D /* PacksPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70D43D0232ABDEB005F10FA /* PacksPopUpView.swift */; };
+		D77A0DBD24121671005AF53D /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7C4E77C2330721B00771C3F /* Spinner.swift */; };
+		D77A0DBE24121671005AF53D /* ColorOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A9F652232053B300649F6D /* ColorOptions.swift */; };
+		D77A0DBF24121671005AF53D /* DispatchQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7DA72E223CC092900ECF67B /* DispatchQueue.swift */; };
+		D77A0DC024121671005AF53D /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B742231459BB003F05E3 /* Constants.swift */; };
+		D77A0DC124121671005AF53D /* PlayersCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E9228FB98600C1ED43 /* PlayersCollectionViewCell.swift */; };
+		D77A0DC224121671005AF53D /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B7502314764F003F05E3 /* UIImageView.swift */; };
+		D77A0DC324121671005AF53D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FC262B225BD891009EA32D /* Player.swift */; };
+		D77A0DC424121671005AF53D /* WaitingScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EE922BB226D002CB9B2 /* WaitingScreenView.swift */; };
+		D77A0DC524121671005AF53D /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0822EC7D7B0083DA2A /* SettingsController.swift */; };
+		D77A0DC624121671005AF53D /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
+		D77A0DC724121671005AF53D /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */; };
+		D77A0DC824121671005AF53D /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */; };
+		D77A0DC924121671005AF53D /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
+		D77A0DCA24121671005AF53D /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4DF235A085800B372D7 /* SystemLogger.swift */; };
+		D77A0DCB24121671005AF53D /* LocationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */; };
+		D77A0DCC24121671005AF53D /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1922B86A43006D7615 /* HomeView.swift */; };
+		D77A0DCD24121671005AF53D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0A22EC85AB0083DA2A /* SettingsView.swift */; };
+		D77A0DCE24121671005AF53D /* GameDataValidity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D74ECC3923BA54EB00970369 /* GameDataValidity.swift */; };
+		D77A0DCF24121671005AF53D /* WaitingScreenController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FD37DF2267C9A30043A8D4 /* WaitingScreenController.swift */; };
+		D77A0DD024121671005AF53D /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3D22C14788005D1831 /* Notification.swift */; };
+		D77A0DD124121671005AF53D /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
+		D77A0DD224121671005AF53D /* UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72DCD28231DA2C60075020D /* UIView.swift */; };
+		D77A0DD324121671005AF53D /* ChangeNamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */; };
+		D77A0DD424121671005AF53D /* UIElementsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1B22B86E03006D7615 /* UIElementsManager.swift */; };
+		D77A0DD524121671005AF53D /* Decodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74A23145FA3003F05E3 /* Decodable.swift */; };
+		D77A0DD624121671005AF53D /* IDs.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769B74623145BE3003F05E3 /* IDs.swift */; };
+		D77A0DD724121671005AF53D /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
+		D77A0DDA24121671005AF53D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */; };
+		D77A0DDB24121671005AF53D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D738F59723501208003CA462 /* Localizable.strings */; };
+		D77A0DDC24121671005AF53D /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = D7A72D3F22C19013005D1831 /* check_animation.json */; };
+		D77A0DDD24121671005AF53D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
 		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
@@ -75,10 +131,10 @@
 		D704EB0822EC7D7B0083DA2A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		D704EB0A22EC85AB0083DA2A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeNamePopUpView.swift; sourceTree = "<group>"; };
-		D706255E22586D3800A80B76 /* spyfall.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = spyfall.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D706255E22586D3800A80B76 /* SpyfallFree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpyfallFree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D706256122586D3800A80B76 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D706256822586D3900A80B76 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		D706256D22586D3900A80B76 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D706256D22586D3900A80B76 /* SpyfallFree.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SpyfallFree.plist; sourceTree = "<group>"; };
 		D706257722586DBC00A80B76 /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
 		D706257A225B87E600A80B76 /* NewGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameController.swift; sourceTree = "<group>"; };
 		D70AA4DF235A085800B372D7 /* SystemLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemLogger.swift; sourceTree = "<group>"; };
@@ -110,10 +166,12 @@
 		D769B74C2314611B003F05E3 /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
 		D769B7502314764F003F05E3 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
 		D769B75223158B63003F05E3 /* CustomPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPopUpView.swift; sourceTree = "<group>"; };
+		D774E9822412909F0089094E /* SpyfallPaid.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = SpyfallPaid.plist; sourceTree = "<group>"; };
 		D7798B0E22B86766006D7615 /* CreateAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAlertController.swift; sourceTree = "<group>"; };
 		D7798B1122B8684E006D7615 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		D7798B1922B86A43006D7615 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		D7798B1B22B86E03006D7615 /* UIElementsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementsManager.swift; sourceTree = "<group>"; };
+		D77A0DE424121671005AF53D /* SpyfallPaid.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpyfallPaid.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7A72D3722BED262005D1831 /* PackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackView.swift; sourceTree = "<group>"; };
 		D7A72D3922BFCE75005D1831 /* GameSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionView.swift; sourceTree = "<group>"; };
 		D7A72D3B22BFD260005D1831 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
@@ -138,6 +196,13 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		D706255B22586D3800A80B76 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D77A0DD824121671005AF53D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -187,7 +252,8 @@
 		D706255F22586D3800A80B76 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D706255E22586D3800A80B76 /* spyfall.app */,
+				D706255E22586D3800A80B76 /* SpyfallFree.app */,
+				D77A0DE424121671005AF53D /* SpyfallPaid.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -210,7 +276,8 @@
 				D7FF08E4228FB86A00C1ED43 /* Game Session */,
 				D706256822586D3900A80B76 /* Assets.xcassets */,
 				D738F59723501208003CA462 /* Localizable.strings */,
-				D706256D22586D3900A80B76 /* Info.plist */,
+				D706256D22586D3900A80B76 /* SpyfallFree.plist */,
+				D774E9822412909F0089094E /* SpyfallPaid.plist */,
 				D7FC262D225BFDB0009EA32D /* GoogleService-Info.plist */,
 			);
 			path = spyfall;
@@ -336,9 +403,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D706255D22586D3800A80B76 /* spyfall */ = {
+		D706255D22586D3800A80B76 /* SpyfallFree */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "spyfall" */;
+			buildConfigurationList = D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "SpyfallFree" */;
 			buildPhases = (
 				21D68E510F008F759B73C4E6 /* [CP] Check Pods Manifest.lock */,
 				D706255A22586D3800A80B76 /* Sources */,
@@ -352,9 +419,30 @@
 			);
 			dependencies = (
 			);
-			name = spyfall;
+			name = SpyfallFree;
 			productName = spyfall;
-			productReference = D706255E22586D3800A80B76 /* spyfall.app */;
+			productReference = D706255E22586D3800A80B76 /* SpyfallFree.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D77A0DA224121671005AF53D /* SpyfallPaid */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D77A0DE124121671005AF53D /* Build configuration list for PBXNativeTarget "SpyfallPaid" */;
+			buildPhases = (
+				D77A0DA324121671005AF53D /* [CP] Check Pods Manifest.lock */,
+				D77A0DA424121671005AF53D /* Sources */,
+				D77A0DD824121671005AF53D /* Frameworks */,
+				D77A0DD924121671005AF53D /* Resources */,
+				D77A0DDE24121671005AF53D /* SwiftLint Script */,
+				D77A0DDF24121671005AF53D /* Crashlytics Script */,
+				D77A0DE024121671005AF53D /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpyfallPaid;
+			productName = spyfall;
+			productReference = D77A0DE424121671005AF53D /* SpyfallPaid.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -394,7 +482,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D706255D22586D3800A80B76 /* spyfall */,
+				D706255D22586D3800A80B76 /* SpyfallFree */,
+				D77A0DA224121671005AF53D /* SpyfallPaid */,
 			);
 		};
 /* End PBXProject section */
@@ -408,6 +497,18 @@
 				D738F59523501208003CA462 /* Localizable.strings in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
 				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D77A0DD924121671005AF53D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D77A0DDA24121671005AF53D /* GoogleService-Info.plist in Resources */,
+				D77A0DDB24121671005AF53D /* Localizable.strings in Resources */,
+				D77A0DDC24121671005AF53D /* check_animation.json in Resources */,
+				D77A0DDD24121671005AF53D /* Assets.xcassets in Resources */,
+				D774E9832412909F0089094E /* SpyfallPaid.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +573,82 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		D77A0DA324121671005AF53D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-spyfall-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D77A0DDE24121671005AF53D /* SwiftLint Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "SwiftLint Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+		D77A0DDF24121671005AF53D /* Crashlytics Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+			);
+			name = "Crashlytics Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
+		D77A0DE024121671005AF53D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-spyfall/Pods-spyfall-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-spyfall/Pods-spyfall-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-spyfall/Pods-spyfall-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		EB051D4ACC7B1E28FEE096D5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -548,6 +725,64 @@
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,
 				D769B74723145BE3003F05E3 /* IDs.swift in Sources */,
 				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D77A0DA424121671005AF53D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D77A0DA524121671005AF53D /* StatsManager.swift in Sources */,
+				D77A0DA624121671005AF53D /* UserInfoView.swift in Sources */,
+				D77A0DA724121671005AF53D /* EndGamePopUpView.swift in Sources */,
+				D77A0DA824121671005AF53D /* JoinGameController.swift in Sources */,
+				D77A0DA924121671005AF53D /* ColorsCell.swift in Sources */,
+				D77A0DAA24121671005AF53D /* NetworkErrorPopUpView.swift in Sources */,
+				D77A0DAB24121671005AF53D /* UIImage.swift in Sources */,
+				D77A0DAC24121671005AF53D /* CustomPopUpView.swift in Sources */,
+				D77A0DAD24121671005AF53D /* AppDelegate.swift in Sources */,
+				D77A0DAE24121671005AF53D /* Toast.swift in Sources */,
+				D77A0DAF24121671005AF53D /* Encodable.swift in Sources */,
+				D77A0DB024121671005AF53D /* UserDefaultKeys.swift in Sources */,
+				D77A0DB124121671005AF53D /* NavigationController.swift in Sources */,
+				D77A0DB224121671005AF53D /* CreateAlertController.swift in Sources */,
+				D77A0DB324121671005AF53D /* UIScrollView.swift in Sources */,
+				D77A0DB424121671005AF53D /* PlayersWaitingTableViewCell.swift in Sources */,
+				D77A0DB524121671005AF53D /* GameData.swift in Sources */,
+				D77A0DB624121671005AF53D /* PackView.swift in Sources */,
+				D77A0DB724121671005AF53D /* HomeController.swift in Sources */,
+				D77A0DB824121671005AF53D /* NewGameView.swift in Sources */,
+				D77A0DB924121671005AF53D /* Button.swift in Sources */,
+				D77A0DBA24121671005AF53D /* NewGameController.swift in Sources */,
+				D77A0DBB24121671005AF53D /* DBStrings.swift in Sources */,
+				D77A0DBC24121671005AF53D /* PacksPopUpView.swift in Sources */,
+				D77A0DBD24121671005AF53D /* Spinner.swift in Sources */,
+				D77A0DBE24121671005AF53D /* ColorOptions.swift in Sources */,
+				D77A0DBF24121671005AF53D /* DispatchQueue.swift in Sources */,
+				D77A0DC024121671005AF53D /* Constants.swift in Sources */,
+				D77A0DC124121671005AF53D /* PlayersCollectionViewCell.swift in Sources */,
+				D77A0DC224121671005AF53D /* UIImageView.swift in Sources */,
+				D77A0DC324121671005AF53D /* Player.swift in Sources */,
+				D77A0DC424121671005AF53D /* WaitingScreenView.swift in Sources */,
+				D77A0DC524121671005AF53D /* SettingsController.swift in Sources */,
+				D77A0DC624121671005AF53D /* JoinGameView.swift in Sources */,
+				D77A0DC724121671005AF53D /* GameSessionController.swift in Sources */,
+				D77A0DC824121671005AF53D /* FirestoreManager.swift in Sources */,
+				D77A0DC924121671005AF53D /* UIColor.swift in Sources */,
+				D77A0DCA24121671005AF53D /* SystemLogger.swift in Sources */,
+				D77A0DCB24121671005AF53D /* LocationsCollectionViewCell.swift in Sources */,
+				D77A0DCC24121671005AF53D /* HomeView.swift in Sources */,
+				D77A0DCD24121671005AF53D /* SettingsView.swift in Sources */,
+				D77A0DCE24121671005AF53D /* GameDataValidity.swift in Sources */,
+				D77A0DCF24121671005AF53D /* WaitingScreenController.swift in Sources */,
+				D77A0DD024121671005AF53D /* Notification.swift in Sources */,
+				D77A0DD124121671005AF53D /* String.swift in Sources */,
+				D77A0DD224121671005AF53D /* UIView.swift in Sources */,
+				D77A0DD324121671005AF53D /* ChangeNamePopUpView.swift in Sources */,
+				D77A0DD424121671005AF53D /* UIElementsManager.swift in Sources */,
+				D77A0DD524121671005AF53D /* Decodable.swift in Sources */,
+				D77A0DD624121671005AF53D /* IDs.swift in Sources */,
+				D77A0DD724121671005AF53D /* GameSessionView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -703,7 +938,15 @@
 				CURRENT_PROJECT_VERSION = 6;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = BPW45ZHW4H;
-				INFOPLIST_FILE = spyfall/Info.plist;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+				);
+				INFOPLIST_FILE = spyfall/SpyfallFree.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -712,6 +955,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jdr.spyfall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG FREE";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -725,7 +969,15 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = BPW45ZHW4H;
-				INFOPLIST_FILE = spyfall/Info.plist;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+				);
+				INFOPLIST_FILE = spyfall/SpyfallFree.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -734,6 +986,70 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jdr.spyfall;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = FREE;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		D77A0DE224121671005AF53D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C019C7D47C102D0B17AE64E1 /* Pods-spyfall.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BPW45ZHW4H;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+				);
+				INFOPLIST_FILE = spyfall/SpyfallPaid.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdr.spyfall;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG PAID";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D77A0DE324121671005AF53D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F12B7631DCE402B988B3BB7 /* Pods-spyfall.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 6;
+				DEVELOPMENT_TEAM = BPW45ZHW4H;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"$(inherited)",
+					"PB_FIELD_32BIT=1",
+					"PB_NO_PACKED_STRUCTS=1",
+					"PB_ENABLE_MALLOC=1",
+				);
+				INFOPLIST_FILE = spyfall/SpyfallPaid.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) -D COCOAPODS -Xfrontend -warn-long-expression-type-checking=200 -Xfrontend -warn-long-function-bodies=200";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdr.spyfall;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = PAID;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -751,11 +1067,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "spyfall" */ = {
+		D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "SpyfallFree" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D706257122586D3900A80B76 /* Debug */,
 				D706257222586D3900A80B76 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D77A0DE124121671005AF53D /* Build configuration list for PBXNativeTarget "SpyfallPaid" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D77A0DE224121671005AF53D /* Debug */,
+				D77A0DE324121671005AF53D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

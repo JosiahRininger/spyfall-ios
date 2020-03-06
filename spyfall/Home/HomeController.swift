@@ -18,6 +18,11 @@ final class HomeController: UIViewController {
         
         setupView()
         animateView()
+#if FREE
+        print("FREE")
+#elseif PAID
+        print("PAID")
+#endif
     }
     
     override func viewWillAppear(_ animated: Bool) {
