@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "D77A0DA224121671005AF53D"
-               BuildableName = "spyfallPaid.app"
-               BlueprintName = "spyfallPaid"
+               BuildableName = "SpyfallPaid.app"
+               BlueprintName = "SpyfallPaid"
                ReferencedContainer = "container:spyfall.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D77A0DA224121671005AF53D"
-            BuildableName = "spyfallPaid.app"
-            BlueprintName = "spyfallPaid"
+            BuildableName = "SpyfallPaid.app"
+            BlueprintName = "SpyfallPaid"
             ReferencedContainer = "container:spyfall.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "D77A0DA224121671005AF53D"
-            BuildableName = "spyfallPaid.app"
-            BlueprintName = "spyfallPaid"
+            BuildableName = "SpyfallPaid.app"
+            BlueprintName = "SpyfallPaid"
             ReferencedContainer = "container:spyfall.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
