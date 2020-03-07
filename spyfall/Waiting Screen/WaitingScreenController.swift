@@ -106,7 +106,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             waitingScreenView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
             ])
         
 #if FREE

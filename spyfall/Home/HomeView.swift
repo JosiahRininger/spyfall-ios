@@ -33,7 +33,7 @@ class HomeView: UIView {
     var rulesLabel = UIElementsManager.createLabel(with: "Rules".localize(), fontSize: 14, color: .secondaryColor)
     
     var rulesPopUpView = CustomPopUpView(frame: .zero, title: "Rules".localize())
-    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "Rules Message".localize(), fontSize: 24, color: .subText, textAlignment: .center)
+    lazy var gameRulesLabel = UIElementsManager.createLabel(with: "Rules Message".localize(), fontSize: 16, numberOfLines: 0, color: .subText, textAlignment: .left)
     
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -67,10 +67,10 @@ class NewGameView: UIView {
     }
     
     private func setupConstraints() {
-        
+        let distanceRatio = UIElementsManager.windowHeight > 750 ? 1 : 2.3
         NSLayoutConstraint.activate([
             newGameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.padding),
-            newGameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 105),
+            newGameLabel.topAnchor.constraint(equalTo: topAnchor, constant: CGFloat(105 / distanceRatio)),
             
             newGameStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             newGameStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -105,7 +105,7 @@ class NewGameView: UIView {
             disclaimerLabel.bottomAnchor.constraint(equalTo: timeLimitTextField.bottomAnchor),
             disclaimerLabel.leadingAnchor.constraint(equalTo: timeView.leadingAnchor, constant: UIElementsManager.padding),
             
-            create.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -87),
+            create.bottomAnchor.constraint(equalTo: bottomAnchor, constant: CGFloat(-87 / distanceRatio)),
             create.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIElementsManager.buttonPadding),
             create.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -UIElementsManager.buttonPadding),
             

@@ -18,7 +18,7 @@
 "Welcome to" = "Welcome to";
 "Spyfall" = "Spyfall";
 "Rules" = "Rules";
-"Rules Message" = "*These are the rules*";
+"Rules Message" = "• As soon as you start a game, you are all given roles at a location\n• One of you is a spy\n• The goal is to find out who the spy is\n• And as for the spy, he is trying to find the location\n• When the timers up, everyone cast your votes for the spy (majority vote wins)\n• If you guys didn’t catch the spy, he gets to guess the location\n• If he guesses right, the spy wins";
 // "Rules Message" = " • Spyfall is a game best played with 3 or more players. \n • Once the game starts a location such as “pirate ship” or “library is chosen”. \n • Everyone is made aware of the location and assigned a role at the location. Everyone except for the player randomly assigned to be the spy that is. \n • Starting with the player assigned to be first, each player takes turns asking each other questions that only someone who is not the spy would know such as “ Is this a place you would bring your family? “ \n • The players goals are to find out who the spy is, and also make sure the spy does not find out what the location is. \n • The spy’s goal is to not get found out as the spy, and to find out what the location is. \n • When the timer is up, everyone votes on who they think the spy is. \n • The spy then reveals themselves, and votes on what they think the location is.\n •  If the spy gets the location right, the spy wins. Otherwise, everyone who guesses the spy correctly wins.  \n • Have fun!";
 
 // MARK: - Settings
@@ -32,9 +32,12 @@
 "About Spyfall" = "Spyfall is a board game originally published by Hobby World. This mobile adaptation of the board game is developed and maintained by Josiah Rininger (iOS) and Elijah Dangerfield (Android). Any questions or concerns may be sent here:";
 "Ads" = "Ads";
 "Remove Ads?" = "Remove Ads?";
+"You Have No Ads" = "You Have No Ads";
 // TODO - Check string with Eli
 "Would you like to upgrade?" = "Would you like to upgrade Spyfall to remove all ads?";
+"Congrats, you're using the upgraded Spyfall!" = "Congrats, you're using the upgraded Spyfall!";
 "Upgrade" = "Upgrade";
+"Yeah!" = "Yeah!";
 
 // MARK: - New Game
 "New Game" = "New Game";
