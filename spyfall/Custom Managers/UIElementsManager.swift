@@ -215,10 +215,13 @@ class UIElementsManager {
         return cv
     }
 
+#if FREE
     static func createBannerView() -> GADBannerView {
         let bannerView = GADBannerView(adSize: kGADAdSizeBanner)
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         
         return bannerView
     }
+#endif
+    
 }

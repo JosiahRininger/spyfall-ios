@@ -11,11 +11,17 @@ import Foundation
 extension Constants {
     /// IDs used throughout the app
     struct IDs {
-        static let waitingScreenAdUnitID = "ca-app-pub-6687613409331343/4405100902"
-        static let gameSessionAdUnitID = "ca-app-pub-6687613409331343/4405950965"
         static let playerListCellId = "playerListCellId"
         static let playersCollectionViewCellId = "playersCollectionViewCellId"
         static let locationsCollectionViewCellId = "locationsCollectionViewCellId"
         static let colorsCollectionViewCellId = "colorsCollectionViewCellId"
+        
+#if DEBUG
+        static let waitingScreenAdUnitID = "ca-app-pub-3940256099942544/2934735716"
+        static let gameSessionAdUnitID = "ca-app-pub-3940256099942544/2934735716"
+#else
+        static let waitingScreenAdUnitID = "ca-app-pub-6687613409331343/4405100902"
+        static let gameSessionAdUnitID = "ca-app-pub-6687613409331343/4405950965"
+#endif
     }
 }

@@ -16,7 +16,10 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
     var scrollView = UIScrollView()
     var gameSessionView = GameSessionView()
     var customPopUp = EndGamePopUpView()
+    
+#if FREE
     var bannerView = UIElementsManager.createBannerView()
+#endif
     
     private var gameData = GameData()
     private var firstPlayer = String()
@@ -54,7 +57,11 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         gameSessionView.locationsCollectionView.dataSource = self
         
         listenForGameUpdates()
+        
+#if FREE
         initializeBanner()
+#endif
+        
         setupView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
@@ -74,7 +81,12 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         
         view.backgroundColor = .primaryBackgroundColor
-        view.addSubviews(scrollView, customPopUp, bannerView)
+        view.addSubviews(scrollView, customPopUp)
+        
+#if FREE
+        view.addSubview(bannerView)
+#endif
+        
         scrollView.addSubview(gameSessionView)
         
         NSLayoutConstraint.activate([
@@ -86,11 +98,14 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
             gameSessionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             gameSessionView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             gameSessionView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            
-            bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
-            bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-            ])
+            gameSessionView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
+        
+#if FREE
+        bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
+        bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+#endif
+        
     }
     
     private func setupButtons() {
@@ -119,6 +134,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         }
     }
     
+#if FREE
     private func initializeBanner() {
         bannerView.delegate = self
         bannerView.adUnitID = Constants.IDs.gameSessionAdUnitID
@@ -126,6 +142,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         bannerView.load(GADRequest())
         os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
     }
+#endif
     
     private func listenForGameUpdates() {
         listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in

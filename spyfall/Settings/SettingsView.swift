@@ -35,9 +35,14 @@ class SettingsView: UIView {
     lazy var infoPopUpView = CustomPopUpView(frame: .zero, title: "About".localize())
     lazy var summaryLabel = UIElementsManager.createLabel(with: "About Spyfall".localize(), fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
     lazy var emailLabel = UIElementsManager.createLabel(with: "Spyfallmobile@gmail.com", fontSize: 24, color: .secondaryColor, textAlignment: .center)
-    
+
+#if FREE
     lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "Remove Ads?".localize(), twoButtons: true)
-    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Would you like to upgrade?".localize(), fontSize: 14)
+    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Would you like to upgrade?".localize(), fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
+#else
+    lazy var adPopUpView = CustomPopUpView(frame: .zero, title: "You Have No Ads".localize(), twoButtons: false)
+    lazy var adStatementLabel = UIElementsManager.createLabel(with: "Congrats, you're using the upgraded Spyfall!".localize(), fontSize: 24, numberOfLines: 0, color: .subText, textAlignment: .center)
+#endif
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -147,7 +152,21 @@ class SettingsView: UIView {
     }
     
     func setupAdPopUpView() {
+        adPopUpView.addSubview(adStatementLabel)
+        
+#if FREE
         adPopUpView.cancelButton.setTitle("Cancel".localize(), for: .normal)
         adPopUpView.doneButton.setTitle("Upgrade".localize(), for: .normal)
+#else
+        adPopUpView.doneButton.setTitle("Yeah!".localize(), for: .normal)
+#endif
+        
+        NSLayoutConstraint.activate([
+            adStatementLabel.topAnchor.constraint(equalTo: adPopUpView.titleLabel.bottomAnchor, constant: 15),
+            adStatementLabel.leadingAnchor.constraint(equalTo: adPopUpView.popUpView.leadingAnchor, constant: 20),
+            adStatementLabel.trailingAnchor.constraint(equalTo: adPopUpView.popUpView.trailingAnchor, constant: -20),
+            
+            adPopUpView.doneButton.topAnchor.constraint(equalTo: adStatementLabel.bottomAnchor, constant: 20)
+            ])
     }
 }
