@@ -10,7 +10,7 @@ import UIKit
 
 class LocationsCollectionViewCell: UICollectionViewCell {
     
-    let locationLabel = UIElementsManager.createLabel(with: "", fontSize: 16)
+    let locationLabel = UIElementsManager.createLabel(with: "", fontSize: 16, numberOfLines: 0, textAlignment: .center)
 
     var isTapped: Bool = false {
         didSet {
@@ -47,7 +47,9 @@ class LocationsCollectionViewCell: UICollectionViewCell {
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             locationLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor)
+            locationLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            locationLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            locationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5)
             ])
     }
     

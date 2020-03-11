@@ -10,7 +10,7 @@ import UIKit
 
 class PlayersCollectionViewCell: UICollectionViewCell {
     
-    let usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16)
+    let usernameLabel = UIElementsManager.createLabel(with: "", fontSize: 16, numberOfLines: 0, textAlignment: .center)
     
     var firstView: UIView = {
         var v = UIElementsManager.createCircleView()
@@ -58,6 +58,8 @@ class PlayersCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             usernameLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
             usernameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            usernameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            usernameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             firstView.centerYAnchor.constraint(equalTo: topAnchor, constant: 5),
             firstView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 1)
             ])
