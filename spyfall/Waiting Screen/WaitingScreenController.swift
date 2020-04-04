@@ -49,9 +49,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         
         if gameData.chosenLocation.isEmpty { retrieveChosenPacksAndLocation() }
         setupView()
-
-        NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -66,6 +63,9 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             oldUsername = nil
             retrieveChosenPacksAndLocation()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     deinit {

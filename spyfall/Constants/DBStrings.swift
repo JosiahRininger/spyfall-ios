@@ -15,6 +15,7 @@ extension Constants {
         static let games = "games"
         static let playerList = "playerList"
         static let locationList = "locationList"
+        static let playerObjectList = "playerObjectList"
         
         // Strings for pack data
         static let packs = "packs"

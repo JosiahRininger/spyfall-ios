@@ -70,10 +70,12 @@ class PlayersWaitingTableViewCell: UITableViewCell {
             cellBackgroundView.trailingAnchor.constraint(equalTo: trailingAnchor),
             cellBackgroundView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18),
             
-            rowNumberLabel.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor, constant: 24),
+            rowNumberLabel.leadingAnchor.constraint(equalTo: cellBackgroundView.leadingAnchor),
             rowNumberLabel.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
+            rowNumberLabel.heightAnchor.constraint(equalToConstant: UIElementsManager.tableViewCellHeight - 18),
+            rowNumberLabel.widthAnchor.constraint(equalToConstant: UIElementsManager.tableViewCellHeight - 18),
             
-            usernameLabel.leadingAnchor.constraint(equalTo: rowNumberLabel.trailingAnchor, constant: 18),
+            usernameLabel.leadingAnchor.constraint(equalTo: rowNumberLabel.trailingAnchor),
             usernameLabel.trailingAnchor.constraint(equalTo: pencilImageView.leadingAnchor, constant: -18),
             usernameLabel.centerYAnchor.constraint(equalTo: cellBackgroundView.centerYAnchor),
             

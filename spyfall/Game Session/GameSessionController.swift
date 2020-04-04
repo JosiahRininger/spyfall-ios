@@ -166,9 +166,16 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
                 }
             }
             if let playerList = document.get("playerList") as? [String],
-                let locationList = document.get("locationList") as? [String] {
+                let locationList = document.get("locationList") as? [String],
+                let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
                 gameData.playerList = playerList
                 gameData.locationList = locationList
+                gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
+                self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
+                self.gameData.playerObjectList.shuffle()
+                for playerObject in gameData.playerObjectList where playerObject.username == gameData.playerObject.username {
+                    gameData.playerObject = playerObject
+                }
                 updateCollectionViews()
             }
         }
