@@ -15,6 +15,7 @@ extension Constants {
         static let playersCollectionViewCellId = "playersCollectionViewCellId"
         static let locationsCollectionViewCellId = "locationsCollectionViewCellId"
         static let colorsCollectionViewCellId = "colorsCollectionViewCellId"
+        static let appStoreLinkURL = "https://itunes.apple.com/us/app/apple-store/id1501939797?mt=8"
         
 #if DEBUG
         static let waitingScreenAdUnitID = "ca-app-pub-3940256099942544/2934735716"
