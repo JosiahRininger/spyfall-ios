@@ -58,9 +58,11 @@ final class SettingsController: UIViewController {
         settingsView.adView.addGestureRecognizer(adTapGesture)
         settingsView.adPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
         settingsView.adPopUpView.doneButton.touchUpInside = { [weak self] in
-            if let url = URL(string: Constants.IDs.appStoreLinkURL) {
-                UIApplication.shared.open(url)
-            }
+            #if FREE
+                if let url = URL(string: Constants.IDs.appStoreLinkURL) {
+                    UIApplication.shared.open(url)
+                }
+            #endif
             self?.resetViews()
         }
     }
