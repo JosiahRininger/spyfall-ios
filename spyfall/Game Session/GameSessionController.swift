@@ -176,6 +176,8 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
                 for playerObject in gameData.playerObjectList where playerObject.username == gameData.playerObject.username {
                     gameData.playerObject = playerObject
                 }
+                gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
+                gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
                 updateCollectionViews()
             }
         }

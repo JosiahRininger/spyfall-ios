@@ -131,7 +131,6 @@ class FirestoreManager {
     
     // Retrieves all the roles for the chosen location
     static func retrieveRoles(chosenPacks: [String], chosenLocation: String, completion: @escaping RolesHandler) {
-        var roles: [String] = []
         for pack in chosenPacks {
             db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, error in
                 if let error = error {
@@ -139,11 +138,10 @@ class FirestoreManager {
                 } else {
                     if let docs = querySnapshot!.data() as? [String: [String]] {
                         for doc in docs where doc.key == chosenLocation {
-                            roles = doc.value
+                            completion(doc.value)
                         }
                     }
                 }
-                if !roles.isEmpty { completion(roles) }
             }
         }
     }
