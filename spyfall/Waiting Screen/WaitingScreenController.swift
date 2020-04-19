@@ -90,13 +90,12 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
+        waitingScreenView.startGame.addSubview(spinner)
         
 #if FREE
         view.addSubview(bannerView)
 #endif
-        
-        waitingScreenView.startGame.addSubview(spinner)
-        
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -118,6 +117,10 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     
     private func setupButtons() {
         waitingScreenView.startGame.addSubview(spinner)
+        self.spinner = Spinner(frame: CGRect(x: 45.0,
+                                             y: self.waitingScreenView.startGame.frame.minY + 21.0,
+                                             width: 20.0,
+                                             height: 20.0))
         
         waitingScreenView.startGame.touchUpInside = { [weak self] in self?.startGameWasTapped() }
         waitingScreenView.leaveGame.touchUpInside = { [weak self] in self?.leaveGameWasTapped() }
@@ -166,11 +169,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         self.waitingScreenView.tableView.reloadData()
         self.waitingScreenView.tableView.setNeedsUpdateConstraints()
         self.waitingScreenView.tableView.layoutIfNeeded()
-        self.spinner = Spinner(frame: CGRect(x: 45.0, y: self.waitingScreenView.startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
-        
-        if self.gameData.started {
-            self.spinner.animate(with: self.waitingScreenView.startGame)
-        }
         
         // Check for segue
         if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
@@ -194,6 +192,7 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
     // check if Start Game has been clicked
     private func startGameWasTapped() {
         if gameData.started == true { return }
+        spinner.animate(with: waitingScreenView.startGame)
         
         // Set started to true
         gameData.started = true
