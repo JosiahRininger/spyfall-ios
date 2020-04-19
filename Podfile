@@ -8,11 +8,10 @@ target 'SpyfallFree' do
 
   # Firebase
   pod 'Firebase/Analytics', '~> 6.0'
-  pod 'Firebase/AdMob', '~> 6.0'
   pod 'Firebase/Firestore', '~> 6.0'
   pod 'Firebase/Crashlytics', '~> 6.0'
 
-  pod 'Google-Mobile-Ads-SDK'
+  pod 'FBAudienceNetwork'
   pod 'lottie-ios', '3.1.3'
   pod 'PKHUD', '5.3.0'
   pod 'ReachabilitySwift'
@@ -26,11 +25,10 @@ target 'SpyfallPaid' do
 
   # Firebase
   pod 'Firebase/Analytics', '~> 6.0'
-  pod 'Firebase/AdMob', '~> 6.0'
   pod 'Firebase/Firestore', '~> 6.0'
   pod 'Firebase/Crashlytics', '~> 6.0'
 
-  pod 'Google-Mobile-Ads-SDK'
+  pod 'FBAudienceNetwork'
   pod 'lottie-ios', '3.1.3'
   pod 'PKHUD', '5.3.0'
   pod 'ReachabilitySwift'

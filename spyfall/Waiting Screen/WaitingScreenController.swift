@@ -8,19 +8,15 @@
 
 import UIKit
 import FirebaseFirestore
-import GoogleMobileAds
+import FBAudienceNetwork
 import PKHUD
 import os.log
 
-final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
+final class WaitingScreenController: UIViewController, FBAdViewDelegate {
     var scrollView = UIScrollView()
     var waitingScreenView = WaitingScreenView()
     var customPopUp = ChangeNamePopUpView()
     var spinner = Spinner(frame: .zero)
-    
-#if FREE
-    var bannerView = UIElementsManager.createBannerView()
-#endif
     
     private var gameData = GameData()
     private var oldUsername: String?
@@ -42,10 +38,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         waitingScreenView.tableView.dataSource = self
         
         listenToPlayerList()
-        
-#if FREE
-        initializeBanner()
-#endif
         
         if gameData.chosenLocation.isEmpty { retrieveChosenPacksAndLocation() }
         setupView()
@@ -91,10 +83,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
         waitingScreenView.startGame.addSubview(spinner)
-        
-#if FREE
-        view.addSubview(bannerView)
-#endif
 
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -109,8 +97,15 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             ])
         
 #if FREE
+        let bannerView = UIElementsManager.createBannerView(bannerID: Constants.IDs.waitingScreenPladementID, controller: self)
+        view.addSubview(bannerView)
+        bannerView.delegate = self
+        bannerView.isHidden = false
+        bannerView.loadAd()
+        bannerView.frame = CGRect(x: 0, y: 0, width: 320, height: 50)
         bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
         bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        os_log("FB Audience Network SDK version: %@", FBAdView.version())
 #endif
         // scrollView.contentSize = waitingScreenView.bounds.size
     }
@@ -131,16 +126,6 @@ final class WaitingScreenController: UIViewController, GADBannerViewDelegate {
             self?.finishChangingUsername()
         }
     }
-
-#if FREE
-    private func initializeBanner() {
-        bannerView.delegate = self
-        bannerView.adUnitID = Constants.IDs.waitingScreenAdUnitID
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
-    }
-#endif
     
     // listener that updates playerList and tableView when firestore playerList is updated
     private func listenToPlayerList() {

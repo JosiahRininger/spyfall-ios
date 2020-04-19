@@ -18,10 +18,10 @@ extension Constants {
         static let appStoreLinkURL = "https://itunes.apple.com/us/app/apple-store/id1501939797?mt=8"
         
 #if DEBUG
-        static let waitingScreenAdUnitID = "ca-app-pub-3940256099942544/2934735716"
+        static let waitingScreenPladementID = "ca-app-pub-3940256099942544/2934735716"
         static let gameSessionAdUnitID = "ca-app-pub-3940256099942544/2934735716"
 #else
-        static let waitingScreenAdUnitID = "ca-app-pub-6687613409331343/4405100902"
+        static let waitingScreenAdUnitID = "540161866691831_540165053358179"
         static let gameSessionAdUnitID = "ca-app-pub-6687613409331343/4405950965"
 #endif
     }

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Lottie
-import GoogleMobileAds
+import FBAudienceNetwork
 
 class UIElementsManager {
     
@@ -216,8 +216,10 @@ class UIElementsManager {
     }
 
 #if FREE
-    static func createBannerView() -> GADBannerView {
-        let bannerView = GADBannerView(adSize: kGADAdSizeBanner)
+    static func createBannerView(bannerID: String, controller: UIViewController) -> FBAdView {
+        let bannerView = FBAdView(placementID: bannerID,
+                                  adSize: FBAdSize(size: CGSize(width: 320, height: 50)),
+                                  rootViewController: controller)
         bannerView.translatesAutoresizingMaskIntoConstraints = false
         
         return bannerView

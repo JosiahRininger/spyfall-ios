@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8E2BD79AC050FC88879F694B /* Pods_SpyfallFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */; };
-		B2C6A5FED73E8626B3AA95D0 /* Pods_SpyfallPaid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */; };
+		682F0727C81D1FED1DE9ADD5 /* Pods_SpyfallFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F12279D29A8C000EAD2F47 /* Pods_SpyfallFree.framework */; };
+		98A39C731A9508F2681CA6A2 /* Pods_SpyfallPaid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C69D3EF6E892DE5EE3ED6F2D /* Pods_SpyfallPaid.framework */; };
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
 		D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
 		D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
@@ -122,15 +122,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1F12B7631DCE402B988B3BB7 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
-		2BB347A6C2AF7C3C5737C8A7 /* Pods-SpyfallFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.release.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.release.xcconfig"; sourceTree = "<group>"; };
-		43586E1DA46DE3A6B2C7CC5B /* Pods-SpyfallPaid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.release.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.release.xcconfig"; sourceTree = "<group>"; };
-		8FAF75D0360856B87D6ED4F7 /* Pods-SpyfallPaid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.debug.xcconfig"; sourceTree = "<group>"; };
-		964C4FE750111C1BCBE8DAEB /* Pods-SpyfallFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.debug.xcconfig"; sourceTree = "<group>"; };
-		AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpyfallFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpyfallPaid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		571EE8241DDDA9159D304774 /* Pods-SpyfallFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.release.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.release.xcconfig"; sourceTree = "<group>"; };
+		73B105AD31836B621F4F8EDD /* Pods-SpyfallPaid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.release.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.release.xcconfig"; sourceTree = "<group>"; };
+		81F12279D29A8C000EAD2F47 /* Pods_SpyfallFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpyfallFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF713A0323160C110045F8DC /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
-		C019C7D47C102D0B17AE64E1 /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
+		C4254101B1DC8C50C6475BED /* Pods-SpyfallFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.debug.xcconfig"; sourceTree = "<group>"; };
+		C69D3EF6E892DE5EE3ED6F2D /* Pods_SpyfallPaid.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpyfallPaid.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
 		D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
 		D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
@@ -198,7 +195,7 @@
 		D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionController.swift; sourceTree = "<group>"; };
 		D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationsCollectionViewCell.swift; sourceTree = "<group>"; };
 		D7FF08E9228FB98600C1ED43 /* PlayersCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayersCollectionViewCell.swift; sourceTree = "<group>"; };
-		EA67DF5AE703F53DC5D69A7F /* Pods_spyfall.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_spyfall.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FB8E2074B707E4C58F8C7473 /* Pods-SpyfallPaid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,7 +203,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8E2BD79AC050FC88879F694B /* Pods_SpyfallFree.framework in Frameworks */,
+				682F0727C81D1FED1DE9ADD5 /* Pods_SpyfallFree.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,19 +211,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2C6A5FED73E8626B3AA95D0 /* Pods_SpyfallPaid.framework in Frameworks */,
+				98A39C731A9508F2681CA6A2 /* Pods_SpyfallPaid.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1F2E75AA5034579384D10036 /* Frameworks */ = {
+		5A166401012E52CBEB233EB0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EA67DF5AE703F53DC5D69A7F /* Pods_spyfall.framework */,
-				AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */,
-				AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */,
+				81F12279D29A8C000EAD2F47 /* Pods_SpyfallFree.framework */,
+				C69D3EF6E892DE5EE3ED6F2D /* Pods_SpyfallPaid.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -234,12 +230,10 @@
 		601F979B90D37F94FA61C43B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				C019C7D47C102D0B17AE64E1 /* Pods-spyfall.debug.xcconfig */,
-				1F12B7631DCE402B988B3BB7 /* Pods-spyfall.release.xcconfig */,
-				964C4FE750111C1BCBE8DAEB /* Pods-SpyfallFree.debug.xcconfig */,
-				2BB347A6C2AF7C3C5737C8A7 /* Pods-SpyfallFree.release.xcconfig */,
-				8FAF75D0360856B87D6ED4F7 /* Pods-SpyfallPaid.debug.xcconfig */,
-				43586E1DA46DE3A6B2C7CC5B /* Pods-SpyfallPaid.release.xcconfig */,
+				C4254101B1DC8C50C6475BED /* Pods-SpyfallFree.debug.xcconfig */,
+				571EE8241DDDA9159D304774 /* Pods-SpyfallFree.release.xcconfig */,
+				FB8E2074B707E4C58F8C7473 /* Pods-SpyfallPaid.debug.xcconfig */,
+				73B105AD31836B621F4F8EDD /* Pods-SpyfallPaid.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -260,7 +254,7 @@
 				D706256022586D3800A80B76 /* spyfall */,
 				D706255F22586D3800A80B76 /* Products */,
 				601F979B90D37F94FA61C43B /* Pods */,
-				1F2E75AA5034579384D10036 /* Frameworks */,
+				5A166401012E52CBEB233EB0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -422,13 +416,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D706257022586D3900A80B76 /* Build configuration list for PBXNativeTarget "SpyfallFree" */;
 			buildPhases = (
-				21D68E510F008F759B73C4E6 /* [CP] Check Pods Manifest.lock */,
+				82869F5754FFB0D801271760 /* [CP] Check Pods Manifest.lock */,
 				D706255A22586D3800A80B76 /* Sources */,
 				D706255B22586D3800A80B76 /* Frameworks */,
 				D706255C22586D3800A80B76 /* Resources */,
 				D72F018B22C5622E00977179 /* SwiftLint Script */,
 				D70D43D2232ABF85005F10FA /* Crashlytics Script */,
-				EB051D4ACC7B1E28FEE096D5 /* [CP] Embed Pods Frameworks */,
+				ABD1E6A00898937B4745FA13 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -443,13 +437,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D77A0DE124121671005AF53D /* Build configuration list for PBXNativeTarget "SpyfallPaid" */;
 			buildPhases = (
-				D77A0DA324121671005AF53D /* [CP] Check Pods Manifest.lock */,
+				3F4A4FE959760DFA7DFF9DDF /* [CP] Check Pods Manifest.lock */,
 				D77A0DA424121671005AF53D /* Sources */,
 				D77A0DD824121671005AF53D /* Frameworks */,
 				D77A0DD924121671005AF53D /* Resources */,
 				D77A0DDE24121671005AF53D /* SwiftLint Script */,
 				D77A0DDF24121671005AF53D /* Crashlytics Script */,
-				D77A0DE024121671005AF53D /* [CP] Embed Pods Frameworks */,
+				D4BCD6C189B121ABD9716FE9 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -529,7 +523,29 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		21D68E510F008F759B73C4E6 /* [CP] Check Pods Manifest.lock */ = {
+		3F4A4FE959760DFA7DFF9DDF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SpyfallPaid-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		82869F5754FFB0D801271760 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -549,6 +565,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ABD1E6A00898937B4745FA13 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D4BCD6C189B121ABD9716FE9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D70D43D2232ABF85005F10FA /* Crashlytics Script */ = {
@@ -588,28 +638,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
-		D77A0DA324121671005AF53D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-SpyfallPaid-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D77A0DDE24121671005AF53D /* SwiftLint Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -646,40 +674,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
-		};
-		D77A0DE024121671005AF53D /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EB051D4ACC7B1E28FEE096D5 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -945,7 +939,7 @@
 		};
 		D706257122586D3900A80B76 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 964C4FE750111C1BCBE8DAEB /* Pods-SpyfallFree.debug.xcconfig */;
+			baseConfigurationReference = C4254101B1DC8C50C6475BED /* Pods-SpyfallFree.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -978,7 +972,7 @@
 		};
 		D706257222586D3900A80B76 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2BB347A6C2AF7C3C5737C8A7 /* Pods-SpyfallFree.release.xcconfig */;
+			baseConfigurationReference = 571EE8241DDDA9159D304774 /* Pods-SpyfallFree.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1010,7 +1004,7 @@
 		};
 		D77A0DE224121671005AF53D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8FAF75D0360856B87D6ED4F7 /* Pods-SpyfallPaid.debug.xcconfig */;
+			baseConfigurationReference = FB8E2074B707E4C58F8C7473 /* Pods-SpyfallPaid.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -1044,7 +1038,7 @@
 		};
 		D77A0DE324121671005AF53D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 43586E1DA46DE3A6B2C7CC5B /* Pods-SpyfallPaid.release.xcconfig */;
+			baseConfigurationReference = 73B105AD31836B621F4F8EDD /* Pods-SpyfallPaid.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

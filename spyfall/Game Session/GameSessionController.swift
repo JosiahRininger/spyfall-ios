@@ -8,18 +8,14 @@
 
 import UIKit
 import FirebaseFirestore
-import GoogleMobileAds
+import FBAudienceNetwork
 import os.log
 
-final class GameSessionController: UIViewController, GADBannerViewDelegate {
+final class GameSessionController: UIViewController, FBAdViewDelegate {
 
     var scrollView = UIScrollView()
     var gameSessionView = GameSessionView()
     var customPopUp = EndGamePopUpView()
-    
-#if FREE
-    var bannerView = UIElementsManager.createBannerView()
-#endif
     
     private var gameData = GameData()
     private var firstPlayer = String()
@@ -57,11 +53,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         gameSessionView.locationsCollectionView.dataSource = self
         
         listenForGameUpdates()
-        
-#if FREE
-        initializeBanner()
-#endif
-        
+
         setupView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
@@ -83,10 +75,6 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
         
-#if FREE
-        view.addSubview(bannerView)
-#endif
-        
         scrollView.addSubview(gameSessionView)
         
         NSLayoutConstraint.activate([
@@ -102,10 +90,16 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         ])
         
 #if FREE
+        let bannerView = UIElementsManager.createBannerView(bannerID: "___", controller: self)
+        view.addSubview(bannerView)
+        bannerView.delegate = self
+        bannerView.isHidden = false
+        bannerView.loadAd()
+        bannerView.frame = CGRect(x: 0, y: 0, width: 320, height: 50)
         bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
         bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        os_log("FB Audience Network SDK version: %@", FBAdView.version())
 #endif
-        
     }
     
     private func setupButtons() {
@@ -133,16 +127,6 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
             FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
         }
     }
-    
-#if FREE
-    private func initializeBanner() {
-        bannerView.delegate = self
-        bannerView.adUnitID = Constants.IDs.gameSessionAdUnitID
-        bannerView.rootViewController = self
-        bannerView.load(GADRequest())
-        os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
-    }
-#endif
     
     private func listenForGameUpdates() {
         listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
