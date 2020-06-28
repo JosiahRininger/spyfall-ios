@@ -20,6 +20,7 @@ class GameData {
     var chosenPacks: [String]
     var chosenLocation: String
     var locationList: [String]
+    var expiration: Int64
     
     // For initializing GameData object with dummy data
     init() {
@@ -33,6 +34,7 @@ class GameData {
         self.chosenPacks = [String]()
         self.chosenLocation = String()
         self.locationList = [String()]
+        self.expiration = Int64(Date().timeIntervalSince1970 * 1000 + 21600000)
     }
     
     // For initializing GameData object with actual data
@@ -47,6 +49,7 @@ class GameData {
         self.chosenLocation = chosenLocation
         self.chosenPacks = chosenPacks
         self.locationList = locationList
+        self.expiration = Int64(Date().timeIntervalSince1970 * 1000 + 21600000)
     }
     
     // For comparing GameData objects
@@ -61,6 +64,7 @@ class GameData {
         lhs.chosenPacks = rhs.chosenPacks
         lhs.chosenLocation = rhs.chosenLocation
         lhs.locationList = rhs.locationList
+        lhs.expiration = rhs.expiration
     }
     
     // Converts desired GameData properties to a dictionary for Firebase
@@ -72,7 +76,8 @@ class GameData {
             Constants.DBStrings.playerList: self.playerList,
             "playerObjectList": self.playerObjectList,
             "started": self.started,
-            "timeLimit": self.timeLimit
+            "timeLimit": self.timeLimit,
+            "expiration": self.expiration
         ]
         return dictionary
     }
