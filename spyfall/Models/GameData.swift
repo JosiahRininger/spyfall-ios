@@ -34,7 +34,7 @@ class GameData {
         self.chosenPacks = [String]()
         self.chosenLocation = String()
         self.locationList = [String()]
-        self.expiration = Int64(Date().timeIntervalSince1970 * 1000 + 21600000)
+        self.expiration = Int64(Date().timeIntervalSince1970 + 21600)
     }
     
     // For initializing GameData object with actual data
@@ -49,7 +49,7 @@ class GameData {
         self.chosenLocation = chosenLocation
         self.chosenPacks = chosenPacks
         self.locationList = locationList
-        self.expiration = Int64(Date().timeIntervalSince1970 * 1000 + 21600000)
+        self.expiration = Int64(Date().timeIntervalSince1970 + 21600)
     }
     
     // For comparing GameData objects

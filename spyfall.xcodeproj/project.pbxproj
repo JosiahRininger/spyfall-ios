@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8AC7920124A90E1C004F882E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC7920024A90E1C004F882E /* GoogleService-Info.plist */; };
+		8AC7920224A919C6004F882E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC7920024A90E1C004F882E /* GoogleService-Info.plist */; };
 		8E2BD79AC050FC88879F694B /* Pods_SpyfallFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */; };
 		B2C6A5FED73E8626B3AA95D0 /* Pods_SpyfallPaid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */; };
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
@@ -519,6 +520,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D77A0DDB24121671005AF53D /* Localizable.strings in Resources */,
+				8AC7920224A919C6004F882E /* GoogleService-Info.plist in Resources */,
 				D77A0DDC24121671005AF53D /* check_animation.json in Resources */,
 				D77A0DDD24121671005AF53D /* Assets.xcassets in Resources */,
 			);
