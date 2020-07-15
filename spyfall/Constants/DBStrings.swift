@@ -12,7 +12,11 @@ extension Constants {
     /// Our firestore collection names
     struct DBStrings {
         // Strings for game data
+#if DEBUG
+        static let games = "games_test"
+#else
         static let games = "games"
+#endif
         static let playerList = "playerList"
         static let locationList = "locationList"
         static let playerObjectList = "playerObjectList"
