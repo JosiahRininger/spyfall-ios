@@ -10,6 +10,7 @@ import UIKit
 import FirebaseFirestore
 
 protocol JoinGameViewModelDelegate: class {
+    @discardableResult
     func fieldsAreValid(_ validity: GameDataValidity) -> Bool
     func gameDataUpdated(gameData: GameData)
 }

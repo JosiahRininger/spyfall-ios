@@ -154,7 +154,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
                 os_log("Firestore error: ",
                 log: SystemLogger.shared.logger,
                 type: .error,
-                "Error adding listener to GameSessionController")                
+                error.localizedDescription)                
             }
         }
     }
