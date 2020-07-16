@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 final class SettingsController: UIViewController {
 
@@ -140,7 +141,11 @@ final class SettingsController: UIViewController {
             case .customOrange: UserDefaults.standard.set(ColorOptions.orange.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
             case .customRed: UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
             case .secondaryBackgroundColor: UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            default: print("Could not correctly retrieve user default")
+            default:
+                os_log("UserDefaults error: ",
+                       log: SystemLogger.shared.logger,
+                       type: .error,
+                       "Error checking UserDefaults")
             }
             oldColorString = colorString
         }

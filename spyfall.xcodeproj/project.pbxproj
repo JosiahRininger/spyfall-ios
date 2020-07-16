@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A29864524C07E42007BBC44 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */; };
+		8A29864724C08D70007BBC44 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */; };
+		8A29864824C08D7F007BBC44 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */; };
 		8AC1CDA024BFAFF70052E01D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */; };
 		8AC1CDA124BFAFF70052E01D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */; };
+		8AC1CDA324BFEE410052E01D /* NewGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */; };
+		8AC1CDA424BFEE480052E01D /* NewGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */; };
+		8AC1CDA624BFF01B0052E01D /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */; };
 		8E2BD79AC050FC88879F694B /* Pods_SpyfallFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */; };
 		B2C6A5FED73E8626B3AA95D0 /* Pods_SpyfallPaid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */; };
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
@@ -123,7 +129,10 @@
 		1F12B7631DCE402B988B3BB7 /* Pods-spyfall.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.release.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.release.xcconfig"; sourceTree = "<group>"; };
 		2BB347A6C2AF7C3C5737C8A7 /* Pods-SpyfallFree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.release.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.release.xcconfig"; sourceTree = "<group>"; };
 		43586E1DA46DE3A6B2C7CC5B /* Pods-SpyfallPaid.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.release.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.release.xcconfig"; sourceTree = "<group>"; };
+		8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewModel.swift; sourceTree = "<group>"; };
 		8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewModel.swift; sourceTree = "<group>"; };
+		8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		8FAF75D0360856B87D6ED4F7 /* Pods-SpyfallPaid.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallPaid.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallPaid/Pods-SpyfallPaid.debug.xcconfig"; sourceTree = "<group>"; };
 		964C4FE750111C1BCBE8DAEB /* Pods-SpyfallFree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SpyfallFree.debug.xcconfig"; path = "Target Support Files/Pods-SpyfallFree/Pods-SpyfallFree.debug.xcconfig"; sourceTree = "<group>"; };
 		AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SpyfallFree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -309,6 +318,7 @@
 			children = (
 				D706257A225B87E600A80B76 /* NewGameController.swift */,
 				D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */,
+				8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */,
 				D70D43D0232ABDEB005F10FA /* PacksPopUpView.swift */,
 			);
 			path = "New Game";
@@ -319,6 +329,7 @@
 			children = (
 				D726325E228CD60900E385E8 /* JoinGameController.swift */,
 				D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */,
+				8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */,
 			);
 			path = "Join Game";
 			sourceTree = "<group>";
@@ -341,6 +352,7 @@
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
 				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
 				D7D65A79239AD40C007CEB08 /* StatsManager.swift */,
+				8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */,
 			);
 			path = "Custom Managers";
 			sourceTree = "<group>";
@@ -685,6 +697,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D7D65A7A239AD40C007CEB08 /* StatsManager.swift in Sources */,
+				8AC1CDA324BFEE410052E01D /* NewGameViewModel.swift in Sources */,
 				D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */,
 				D70D43DA23300287005F10FA /* EndGamePopUpView.swift in Sources */,
 				D726325F228CD60900E385E8 /* JoinGameController.swift in Sources */,
@@ -712,6 +725,7 @@
 				D7DA72E323CC092900ECF67B /* DispatchQueue.swift in Sources */,
 				D769B743231459BB003F05E3 /* Constants.swift in Sources */,
 				D7FF08EA228FB98600C1ED43 /* PlayersCollectionViewCell.swift in Sources */,
+				8AC1CDA624BFF01B0052E01D /* FirestoreService.swift in Sources */,
 				D769B7512314764F003F05E3 /* UIImageView.swift in Sources */,
 				D7FC262C225BD891009EA32D /* Player.swift in Sources */,
 				D7030EEA22BB226D002CB9B2 /* WaitingScreenView.swift in Sources */,
@@ -729,6 +743,7 @@
 				D7A72D3E22C14788005D1831 /* Notification.swift in Sources */,
 				BF713A0423160C110045F8DC /* String.swift in Sources */,
 				D72DCD29231DA2C70075020D /* UIView.swift in Sources */,
+				8A29864724C08D70007BBC44 /* JoinGameViewModel.swift in Sources */,
 				D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,
@@ -742,6 +757,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D77A0DA524121671005AF53D /* StatsManager.swift in Sources */,
+				8AC1CDA424BFEE480052E01D /* NewGameViewModel.swift in Sources */,
 				D77A0DA624121671005AF53D /* UserInfoView.swift in Sources */,
 				D77A0DA724121671005AF53D /* EndGamePopUpView.swift in Sources */,
 				D77A0DA824121671005AF53D /* JoinGameController.swift in Sources */,
@@ -769,6 +785,7 @@
 				D77A0DBF24121671005AF53D /* DispatchQueue.swift in Sources */,
 				D77A0DC024121671005AF53D /* Constants.swift in Sources */,
 				D77A0DC124121671005AF53D /* PlayersCollectionViewCell.swift in Sources */,
+				8A29864524C07E42007BBC44 /* FirestoreService.swift in Sources */,
 				D77A0DC224121671005AF53D /* UIImageView.swift in Sources */,
 				D77A0DC324121671005AF53D /* Player.swift in Sources */,
 				D77A0DC424121671005AF53D /* WaitingScreenView.swift in Sources */,
@@ -786,6 +803,7 @@
 				D77A0DD024121671005AF53D /* Notification.swift in Sources */,
 				D77A0DD124121671005AF53D /* String.swift in Sources */,
 				D77A0DD224121671005AF53D /* UIView.swift in Sources */,
+				8A29864824C08D7F007BBC44 /* JoinGameViewModel.swift in Sources */,
 				D77A0DD324121671005AF53D /* ChangeNamePopUpView.swift in Sources */,
 				D77A0DD424121671005AF53D /* UIElementsManager.swift in Sources */,
 				D77A0DD524121671005AF53D /* Decodable.swift in Sources */,

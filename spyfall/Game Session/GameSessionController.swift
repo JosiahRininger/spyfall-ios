@@ -150,7 +150,11 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
             // Successfully adds listener
             case .success(let document): self?.listener(document)
             // Failure to add listener
-            case .failure(let error): print("FirestoreManager.addListener error: ", error)
+            case .failure(let error):
+                os_log("Firestore error: ",
+                log: SystemLogger.shared.logger,
+                type: .error,
+                "Error adding listener to GameSessionController")                
             }
         }
     }

@@ -12,11 +12,11 @@ import PKHUD
 import os.log
 import Reachability
 
-final class JoinGameController: UIViewController, UITextFieldDelegate {
+final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UITextFieldDelegate {
 
     var joinGameView = JoinGameView()
+    var joinGameViewModel: JoinGameViewModel?
     var networkErrorPopUp = NetworkErrorPopUpView()
-    var spinner = Spinner(frame: .zero)
     var keyboardHeight: CGFloat = 0.0
     let reachability = try! Reachability()
     
@@ -25,6 +25,7 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         
         joinGameView.usernameTextField.delegate = self
         joinGameView.accessCodeTextField.delegate = self
+        joinGameViewModel = JoinGameViewModel(delegate: self)
         
         setupView()
         
@@ -32,7 +33,10 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         do {
             try reachability.startNotifier()
         } catch {
-            print("Unable to start notifier")
+            os_log("Notifier error: ",
+                   log: SystemLogger.shared.logger,
+                   type: .error,
+                   "Unable to start notifier")
         }
         
         // Notifications for KeyBoard Behavior
@@ -43,15 +47,14 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     
     deinit {
         reachability.stopNotifier()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Setup UI
     private func setupView() {
         setupButtons()
         setupKeyboard()
-        spinner = Spinner(frame: CGRect(x: 45.0, y: joinGameView.join.frame.minY + 21.0, width: 20.0, height: 20.0))
         view.addSubviews(joinGameView, networkErrorPopUp)
-        joinGameView.join.addSubview(spinner)
     }
     
     private func setupButtons() {
@@ -68,52 +71,19 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Helper Methods
-    @objc private func joinGameWasTapped() {
+    @objc
+    private func joinGameWasTapped() {
         
         switch reachability.connection {
         case .wifi, .cellular:
-            joinGameView.accessCodeTextField.isUserInteractionEnabled = false
-            joinGameView.usernameTextField.isUserInteractionEnabled = false
-            joinGameView.back.isUserInteractionEnabled = false
-            joinGameView.join.isUserInteractionEnabled = false
-            spinner.animate(with: self.joinGameView.join)
-            FirestoreManager.checkGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "", username: joinGameView.usernameTextField.text ?? "") { [weak self] result in
-                self?.handleGamData(validity: result)
-            }
+            joinGameView.isUserInteractionEnabled = false
+            joinGameView.spinner.animate(with: self.joinGameView.join)
+            joinGameViewModel?.handleGamData(accessCode: joinGameView.accessCodeTextField.text?.lowercased() ?? "",
+                                             username: joinGameView.usernameTextField.text ?? "")
         case .unavailable, .none:
             networkErrorPopUp.isUserInteractionEnabled = true
             networkErrorPopUp.networkErrorPopUpView.isHidden = false
         }
-    }
-    
-    private func handleGamData(validity: GameDataValidity) {
-        guard self.fieldsAreValid(validity) else { return }
-        let gameData = GameData()
-        gameData.accessCode = self.joinGameView.accessCodeTextField.text?.lowercased() ?? ""
-        gameData.playerObject.username = self.joinGameView.usernameTextField.text ?? ""
-        gameData.playerList = [gameData.playerObject.username]
-        FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                        data: [Constants.DBStrings.playerList: FieldValue.arrayUnion([gameData.playerObject.username])])
-        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
-    }
-    
-    private func fieldsAreValid(_ validity: GameDataValidity) -> Bool {
-        spinner.reset()
-        HUD.dimsBackground = false
-        switch validity {
-        case .accessCodeIsEmpty: HUD.flash(.label("Please enter an access code"), delay: 1.0)
-        case .usernameIsEmpty: HUD.flash(.label("Please enter a username"), delay: 1.0)
-        case .gameDoesNotExist: HUD.flash(.label("No game with that access code"), delay: 1.0)
-        case .usernameIsTaken: HUD.flash(.label("Username is already taken"), delay: 1.0)
-        case .playersAreFull: HUD.flash(.label("Game is full"), delay: 1.0)
-        case .gameHasAlreadyStarted: HUD.flash(.label("Game has already started"), delay: 1.0)
-        case .AllFieldsAreValid: return true
-        }
-        joinGameView.accessCodeTextField.isUserInteractionEnabled = true
-        joinGameView.usernameTextField.isUserInteractionEnabled = true
-        joinGameView.back.isUserInteractionEnabled = true
-        joinGameView.join.isUserInteractionEnabled = true
-        return false
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -134,6 +104,28 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: - NewGameViewModel Methods
+    @discardableResult
+    func fieldsAreValid(_ validity: GameDataValidity) -> Bool {
+        joinGameView.spinner.reset()
+        HUD.dimsBackground = false
+        switch validity {
+        case .accessCodeIsEmpty: HUD.flash(.label("Please enter an access code"), delay: 1.0)
+        case .usernameIsEmpty: HUD.flash(.label("Please enter a username"), delay: 1.0)
+        case .gameDoesNotExist: HUD.flash(.label("No game with that access code"), delay: 1.0)
+        case .usernameIsTaken: HUD.flash(.label("Username is already taken"), delay: 1.0)
+        case .playersAreFull: HUD.flash(.label("Game is full"), delay: 1.0)
+        case .gameHasAlreadyStarted: HUD.flash(.label("Game has already started"), delay: 1.0)
+        case .AllFieldsAreValid: return true
+        }
+        joinGameView.isUserInteractionEnabled = true
+        return false
+    }
+    
+    func gameDataUpdated(gameData: GameData) {
+        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
+    }
+    
     // MARK: - Keyboard Set Up
     private func setupKeyboard() {
         createToolBar()
@@ -142,7 +134,8 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
     }
     
-    @objc private func dismissKeyboard() {
+    @objc
+    private func dismissKeyboard() {
         view.endEditing(true)
     }
     
@@ -170,7 +163,8 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc private func keyboardWillShow(notification: NSNotification) {
+    @objc
+    private func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         if joinGameView.usernameTextField.isFirstResponder {
@@ -179,13 +173,15 @@ final class JoinGameController: UIViewController, UITextFieldDelegate {
     }
     
     // Moves view down if not centerd on screen
-    @objc private func keyboardWillHide(notification: NSNotification) {
+    @objc
+    private func keyboardWillHide(notification: NSNotification) {
         if self.joinGameView.frame.origin.y != 0 {
             self.joinGameView.frame.origin.y = 0
         }
     }
     
-    @objc private func keyboardWillChangeFrame(_ notification: Notification) {
+    @objc
+    private func keyboardWillChangeFrame(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             if joinGameView.usernameTextField.isFirstResponder {
                 keyboardHeight = keyboardFrame.cgRectValue.size.height

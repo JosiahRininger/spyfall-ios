@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import GoogleMobileAds
+import os.log
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -27,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             case ColorOptions.orange.rawValue: UIColor.secondaryColor = UIColor.customOrange
             case ColorOptions.red.rawValue: UIColor.secondaryColor = UIColor.customRed
             case ColorOptions.random.rawValue: UIColor.secondaryColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
-            default: print("Could not correctly assign secondaryColor")
+            default: os_log("Could not correctly assign secondaryColor")
             }
         } else {
             UserDefaults.standard.set("random", forKey: Constants.UserDefaultKeys.secondaryColor)

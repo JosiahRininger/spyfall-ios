@@ -26,7 +26,10 @@ class FirestoreManager {
     static func setGameData(accessCode: String, data: [String: Any]) {
         db.collection(Constants.DBStrings.games).document(accessCode).setData(data) { error in
             if let error = error {
-                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
+                os_log("Error writing document: ",
+                       log: SystemLogger.shared.logger,
+                       type: .error,
+                       error.localizedDescription)
             } else {
                 os_log("Document successfully written!")
             }
@@ -42,7 +45,6 @@ class FirestoreManager {
             var gameObject = [String: Any]()
             if let document = document, document.exists {
                 gameObject = (document.data())!
-                print("Document data: \(gameObject))")
             } else {
                 os_log("Document does not exist")
             }
@@ -99,33 +101,6 @@ class FirestoreManager {
                 os_log("Document does not exist")
             }
             completion(data)
-        }
-    }
-    
-    // Retrieves 14 of the locations within the given packs
-    static func retrieveLocationList(chosenPacks: [String], completion: @escaping LocationListHandler) {
-        var locationList = [String]()
-        var numberOfLocationsToGrab = Int()
-        switch chosenPacks.count {
-        case 3: numberOfLocationsToGrab = 5
-        case 2: numberOfLocationsToGrab = 7
-        default: numberOfLocationsToGrab = 14
-        }
-        for pack in chosenPacks {
-            self.db.collection(Constants.DBStrings.packs).document(pack).getDocument { querySnapshot, error in
-                if let error = error {
-                    os_log("Error getting documents: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-                } else {
-                    if let docs = querySnapshot!.data() {
-                        let randomLocations = docs.map { $0.key }.shuffled()
-                        if locationList.count == 10 { numberOfLocationsToGrab -= 1 }
-                        for loc in randomLocations.indices where loc < numberOfLocationsToGrab {
-                            locationList.append(randomLocations[loc])
-                        }
-                    }
-                }
-                if locationList.count == 14 { completion(locationList) }
-            }
         }
     }
     
@@ -244,22 +219,6 @@ class FirestoreManager {
                 os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
             } else {
                 os_log("Document successfully written!")
-            }
-        }
-    }
-    
-    // Checks if the game already exist
-    static func gameExist(with accessCode: String, completion: @escaping GameExistHandler) {
-        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error  in
-            if let error = error {
-                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            } else {
-                os_log("Document successfully written!")
-            }
-            if let doc = document {
-                completion(doc.exists)
-            } else {
-                completion(false)
             }
         }
     }
