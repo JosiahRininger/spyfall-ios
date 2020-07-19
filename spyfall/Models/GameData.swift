@@ -23,10 +23,12 @@ class GameData {
     var expiration: Int64
     
     // For initializing GameData object with dummy data
-    init() {
-        self.accessCode = String()
-        self.playerObject = Player(role: String(), username: String(), votes: Int())
-        self.playerList = [String]()
+    init(accessCode: String = String(),
+         playerList: [String] = [String](),
+         playerObject: Player = Player(role: String(), username: String(), votes: Int())) {
+        self.accessCode = accessCode
+        self.playerObject = playerObject
+        self.playerList = playerList
         self.playerObjectList = [Player]()
         self.started = true
         self.seguedToGameSession = false

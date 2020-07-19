@@ -51,6 +51,7 @@ class HomeView: UIView {
         
         addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, rulesView, rulesPopUpView)
         rulesView.addSubviews(infoView, rulesLabel)
+        rulesPopUpView.alpha = 0.0
         
         setupConstraints()
         setupRulesPopUpView()

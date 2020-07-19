@@ -7,10 +7,13 @@
 //
 
 import UIKit
-import FirebaseFirestore
 
 protocol NewGameViewModelDelegate: class {
-    func gameDataSet(gameData: GameData)
+    func newGameLoading()
+    func networkErrorOccurred()
+    func createGameSucceeded(gameData: GameData)
+    func createGameFailed()
+    func showErrorFlash(_ error: SpyfallError)
 }
 
 class NewGameViewModel {
@@ -19,31 +22,37 @@ class NewGameViewModel {
     init(delegate: NewGameViewModelDelegate) {
         self.delegate = delegate
     }
-    
-    func createNewGame(chosenPacks: [String], initialPlayer: String, timeLimit: Int) {
-        var accessCode = NSUUID().uuidString.lowercased().prefix(6)
-        FirestoreService.retrieveGamData(accessCode: String(accessCode)) { [weak self] document in
-            if let gameExist = document?.exists, gameExist {
-                accessCode = NSUUID().uuidString.lowercased().prefix(6)
-            }
-            var retrieveAmount = 0
-            switch chosenPacks.count {
-            case 3: retrieveAmount = 5
-            case 2: retrieveAmount = 7
-            default: retrieveAmount = 14
-            }
-            FirestoreService.retrieveLocationList(chosenPacks: chosenPacks, retrieveAmount: retrieveAmount) { locationList in
-                let gameData = GameData(accessCode: String(accessCode),
+
+    // MARK: - Public Methods
+    func createGame(chosenPacks: [String], initialPlayer: String, timeLimit: Int) {
+        if initialPlayer.isEmpty {
+            errorExist(.newGame(.usernameIsEmpty))
+        } else if chosenPacks.isEmpty {
+            errorExist(.newGame(.noPacksSelected))
+        } else if timeLimit == -1 {
+            errorExist(.newGame(.noTimeLimitSelected))
+        } else if timeLimit > 10
+            || timeLimit < 1 {
+            errorExist(.newGame(.invalidTimeLimitSelected))
+        } else {
+            delegate?.newGameLoading()
+            FirestoreService.createGame(chosenPacks: chosenPacks,
                                         initialPlayer: initialPlayer,
-                                        chosenPacks: chosenPacks,
-                                        locationList: locationList,
-                                        timeLimit: timeLimit,
-                                        chosenLocation: locationList.shuffled().first ?? "")
-                
-                // Add a new document with a generated ID
-                FirestoreService.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
-                self?.delegate?.gameDataSet(gameData: gameData)
+                                        timeLimit: timeLimit) { [weak self] result in
+                                            switch result {
+                                            case .success(let gameData):
+                                                self?.delegate?.createGameSucceeded(gameData: gameData)
+                                            case .failure(let error):
+                                                self?.errorExist(error)
+                                            }
             }
         }
+    }
+    
+    // MARK: - Private Methods
+    private func errorExist(_ error: SpyfallError) {
+        error.log()
+        delegate?.createGameFailed()
+        delegate?.showErrorFlash(error)
     }
 }

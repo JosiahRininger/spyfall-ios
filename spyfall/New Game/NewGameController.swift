@@ -9,81 +9,12 @@
 import UIKit
 import PKHUD
 import os.log
-import Reachability
 
 final class NewGameController: UIViewController, NewGameViewModelDelegate, UITextFieldDelegate {
-    var newGameView = NewGameView()
-    var newGameViewModel: NewGameViewModel?
-    var networkErrorPopUp = NetworkErrorPopUpView()
-    var keyboardHeight: CGFloat = 0.0
-    let reachability = try! Reachability()
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        newGameView.usernameTextField.delegate = self
-        newGameView.timeLimitTextField.delegate = self
-        newGameViewModel = NewGameViewModel(delegate: self)
-        
-        setupView()
-        
-        // Listen to changes in connection
-        do {
-            try reachability.startNotifier()
-        } catch {
-            os_log("Notifier error: ",
-                   log: SystemLogger.shared.logger,
-                   type: .error,
-                   "Unable to start notifier")
-        }
-
-        // Notifications for KeyBoard Behavior
-        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-    deinit {
-        reachability.stopNotifier()
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    // MARK: - Setup UI
-    private func setupView() {
-        setupButtons()
-        setUpKeyboard()
-        view.addSubviews(newGameView, networkErrorPopUp)
-    }
-    
-    private func setupButtons() {
-        newGameView.create.touchUpInside = { [weak self] in self?.createWasTapped() }
-        newGameView.back.touchUpInside = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-        
-        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.networkErrorPopUp.isUserInteractionEnabled = false
-            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
-        }
-    }
-    
-    // MARK: - Helper Methods
-    private func createWasTapped() {
-        guard textFieldsAreValid else { return }
-        
-        switch reachability.connection {
-        case .wifi, .cellular:
-            newGameView.isUserInteractionEnabled = false
-            newGameView.spinner.animate(with: newGameView.create)
-
-            newGameViewModel?.createNewGame(chosenPacks: chosenPacks,
-                                           initialPlayer: newGameView.usernameTextField.text ?? "",
-                                           timeLimit: Int(newGameView.timeLimitTextField.text ?? "0") ?? 1)
-        case .unavailable, .none:
-            networkErrorPopUp.isUserInteractionEnabled = true
-            networkErrorPopUp.networkErrorPopUpView.isHidden = false
-        }
-    }
+    private var newGameView = NewGameView()
+    private var newGameViewModel: NewGameViewModel?
+    private var networkErrorPopUp = NetworkErrorPopUpView()
+    private var keyboardHeight: CGFloat = 0.0
     
     private var chosenPacks: [String] {
         // store selected location packs
@@ -95,25 +26,80 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         
         return chosenPacks
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    private var textFieldsAreValid: Bool {
-        HUD.dimsBackground = false
-        if newGameView.usernameTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if chosenPacks.isEmpty {
-            HUD.flash(.label("Please select pack(s)"), delay: 1.0)
-        } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a time limit"), delay: 1.0)
-        } else if Int(newGameView.timeLimitTextField.text ?? "11") ?? 11 > 10
-            || Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 < 1 {
-            newGameView.timeLimitTextField.text = ""
-            HUD.flash(.label("Please enter a time limit between 1 and 10"), delay: 1.0)
-        } else {
-            return true
-        }
-        return false
+        newGameView.usernameTextField.delegate = self
+        newGameView.timeLimitTextField.delegate = self
+        newGameViewModel = NewGameViewModel(delegate: self)
+        
+        setupView()
+
+        // Notifications for KeyBoard Behavior
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    // MARK: - Setup UI
+    private func setupView() {
+        setupButtons()
+        setUpKeyboard()
+        view.addSubviews(newGameView, networkErrorPopUp)
+    }
+    
+    private func setupButtons() {
+        newGameView.back.touchUpInside = { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        newGameView.create.touchUpInside = { [weak self] in
+            guard let self = self else { return }
+            self.newGameViewModel?.createGame(chosenPacks: self.chosenPacks,
+                                              initialPlayer: self.newGameView.usernameTextField.text ?? "",
+                                              timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "-1") ?? -1)
+        }
+        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.networkErrorPopUp.isUserInteractionEnabled = false
+            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
+        }
+    }
+    
+    // MARK: - NewGameViewModel Methods
+    func newGameLoading() {
+        newGameView.isUserInteractionEnabled = false
+        newGameView.spinner.animate(with: newGameView.create)
+    }
+    
+    func networkErrorOccurred() {
+        networkErrorPopUp.isUserInteractionEnabled = true
+        networkErrorPopUp.networkErrorPopUpView.isHidden = false
+    }
+    
+    func createGameSucceeded(gameData: GameData) {
+        newGameView.spinner.reset()
+        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
+                                                      animated: true)
+    }
+    
+    func createGameFailed() {
+        newGameView.spinner.reset()
+        newGameView.isUserInteractionEnabled = true
+    }
+    
+    func showErrorFlash(_ error: SpyfallError) {
+        if error.message == SpyfallError.newGame(.invalidTimeLimitSelected).message {
+            newGameView.timeLimitTextField.text = ""
+        }
+        HUD.dimsBackground = false
+        HUD.flash(.label(error.message), delay: 1.0)
+    }
+    
+    // MARK: - TextField & Keyboard Methods
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // get the current text, or use an empty string if that failed
         let currentText = textField.text ?? ""
@@ -132,16 +118,13 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         }
     }
     
-    // MARK: - NewGameViewModel Methods
-    func gameDataSet(gameData: GameData) {
-        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
-                                                      animated: true)
-    }
-    
-    // MARK: - Keyboard Set Up
     private func setUpKeyboard() {
-        createToolBar()
-
+        let toolBar = UIElementsManager.createToolBar(with: UIBarButtonItem(title: "Done",
+                                                                            style: .plain,
+                                                                            target: self,
+                                                                            action: #selector(NewGameController.dismissKeyboard)))
+        newGameView.usernameTextField.inputAccessoryView = toolBar
+        newGameView.timeLimitTextField.inputAccessoryView = toolBar
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
@@ -150,18 +133,6 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     @objc
     private func dismissKeyboard() {
         view.endEditing(true)
-    }
-    
-    private func createToolBar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
-        doneButton.tintColor = .secondaryColor
-        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        newGameView.usernameTextField.inputAccessoryView = toolBar
-        newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
     // Moves view up if textfield is covered

@@ -68,8 +68,7 @@ final class HomeController: UIViewController {
         homeView.rulesPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
     }
     
-    @objc
-    func rulesViewTapped() {
+    @objc func rulesViewTapped() {
         homeView.newGame.isUserInteractionEnabled = false
         homeView.joinGame.isUserInteractionEnabled = false
         homeView.rulesPopUpView.isHidden = false

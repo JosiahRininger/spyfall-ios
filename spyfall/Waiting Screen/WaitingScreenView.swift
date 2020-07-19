@@ -25,6 +25,7 @@ class WaitingScreenView: UIView {
 
     var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .secondaryBackgroundColor)
     var startGame = UIElementsManager.createButton(with: "Start Game")
+    var spinner = Spinner(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -44,6 +45,8 @@ class WaitingScreenView: UIView {
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
         addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)
+        spinner = Spinner(frame: CGRect(x: 45.0, y: startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
+        startGame.addSubview(spinner)
         setupConstraints()
     }
     

@@ -7,36 +7,36 @@
 //
 
 import UIKit
-import FirebaseFirestore
 import GoogleMobileAds
 import os.log
 
-final class GameSessionController: UIViewController, GADBannerViewDelegate {
+final class GameSessionController: UIViewController, GameSessionViewModelDelegate, GADBannerViewDelegate {
 
-    var scrollView = UIScrollView()
-    var gameSessionView = GameSessionView()
-    var customPopUp = EndGamePopUpView()
-    
-#if FREE
-    var bannerView = UIElementsManager.createBannerView()
-#endif
-    
-    private var gameData = GameData()
+    private var scrollView = UIScrollView()
+    private var gameSessionView = GameSessionView()
+    private var gameSessionViewModel: GameSessionViewModel?
+    private var customPopUp = EndGamePopUpView()
     private var firstPlayer = String()
-    private var listener: ListenerRegistration?
-
+    private var playerList = [String]()
+    private var locationList = [String]()
     private var timer = Timer()
     private var currentTimeLeft: TimeInterval = 0.0
     private var maxTimeInterval: TimeInterval = 0.0
     private var startDate: Date?
     
+#if FREE
+    private var bannerView = UIElementsManager.createBannerView()
+#endif
+    
     init(gameData: GameData) {
-        self.gameData = gameData
-        self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
-        self.gameData.playerObjectList.shuffle()
-        self.gameData.playerList.shuffle()
-        self.gameData.locationList.shuffle()
+        self.firstPlayer = gameData.playerObjectList.first?.username ?? ""
+        gameData.playerObjectList.shuffle()
+        gameData.playerList.shuffle()
+        gameData.locationList.shuffle()
+        playerList = gameData.playerList
+        locationList = gameData.locationList
         super.init(nibName: nil, bundle: nil)
+        gameSessionViewModel = GameSessionViewModel(delegate: self, gameData: gameData)
     }
     
     required init?(coder: NSCoder) {
@@ -45,50 +45,22 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        FirestoreManager.retrieveGameData(oldGameData: self.gameData) { [weak self] result in
-            self?.gameData += result
-            self?.updateGameData()
-        }
-        
         gameSessionView.playersCollectionView.delegate = self
         gameSessionView.playersCollectionView.dataSource = self
         gameSessionView.locationsCollectionView.delegate = self
         gameSessionView.locationsCollectionView.dataSource = self
         
-        listenForGameUpdates()
-        
-#if FREE
-        initializeBanner()
-#endif
-        
         setupView()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
-    deinit {
-        // Remove any listeners
-        guard let listener = listener else { return }
-        listener.remove()
-        NotificationCenter.default.removeObserver(self, name: .gameInactive, object: nil)
-    }
-    
-    // MARK: - Setup UI & Listeners
+    // MARK: - Setup UI
     private func setupView() {
         setupButtons()
         scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
+        scrollView.addSubview(gameSessionView)
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
-        
-#if FREE
-        view.addSubview(bannerView)
-#endif
-        
-        scrollView.addSubview(gameSessionView)
-        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -102,106 +74,32 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         ])
         
 #if FREE
-        bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
-        bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-#endif
-        
-    }
-    
-    private func setupButtons() {
-        gameSessionView.endGame.touchUpInside = { [weak self] in
-            guard self?.timerIsAtZero() ?? true else { return }
-            FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
-        }
-        gameSessionView.playAgain.touchUpInside = { [weak self] in
-            DispatchQueue.main.async {
-                self?.gameData.chosenPacks.shuffle()
-                FirestoreManager.resetChosenLocation(with: self?.gameData.accessCode ?? "") { result in
-                    self?.gameData.chosenLocation = result
-                    self?.gameData.playerObjectList = []
-                    self?.gameData.started = false
-                    if let newGame = self?.gameData.toDictionary() {
-                        FirestoreManager.setGameData(accessCode: self?.gameData.accessCode ?? "", data: newGame)
-                    }
-                }
-            }
-        }
-
-        // Sets up the actions around the end game pop up
-        customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
-        customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
-            FirestoreManager.deleteGame(accessCode: self?.gameData.accessCode ?? "")
-        }
-    }
-    
-#if FREE
-    private func initializeBanner() {
+        view.addSubview(bannerView)
         bannerView.delegate = self
         bannerView.adUnitID = Constants.IDs.gameSessionAdUnitID
         bannerView.rootViewController = self
         bannerView.load(GADRequest())
-        os_log("Google Mobile Ads SDK version: %@", GADRequest.sdkVersion())
-    }
+        bannerView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor).isActive = true
+        bannerView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
 #endif
-    
-    private func listenForGameUpdates() {
-        listener = FirestoreManager.addListener(accessCode: gameData.accessCode) { [weak self] result in
-            switch result {
-            // Successfully adds listener
-            case .success(let document): self?.listener(document)
-            // Failure to add listener
-            case .failure(let error):
-                os_log("Firestore error: ",
-                log: SystemLogger.shared.logger,
-                type: .error,
-                error.localizedDescription)                
-            }
-        }
     }
     
-    private func listener(_ document: DocumentSnapshot) {
-        // Check if game has been deleted
-        if !document.exists {
-            navigationController?.popToRootViewController(animated: true)
-        } else {
-            if let started = document.get("started") as? Bool {
-                if !started {
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-            if let playerList = document.get("playerList") as? [String],
-                let locationList = document.get("locationList") as? [String],
-                let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-                gameData.playerList = playerList
-                gameData.locationList = locationList
-                gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
-                self.firstPlayer = self.gameData.playerObjectList.first?.username ?? ""
-                self.gameData.playerObjectList.shuffle()
-                for playerObject in gameData.playerObjectList where playerObject.username == gameData.playerObject.username {
-                    gameData.playerObject = playerObject
-                }
-                gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-                gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
-                updateCollectionViews()
-            }
+    private func setupButtons() {
+        gameSessionView.endGame.touchUpInside = { [weak self] in
+            self?.gameSessionViewModel?.endGame(if: self?.timerIsAtZero())
+        }
+        gameSessionView.playAgain.touchUpInside = { [weak self] in
+            self?.gameSessionViewModel?.resetGameData()
+        }
+        customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in
+            self?.resetViews()
+        }
+        customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.gameSessionViewModel?.deleteGame()
         }
     }
     
     // MARK: - Helper Methods
-    private func updateGameData() {
-        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
-
-        gameSessionView.timerLabel.text = "\(gameData.timeLimit):00"
-        maxTimeInterval = TimeInterval(gameData.timeLimit * 60)  // Minutes * Seconds
-                
-        setupTimer()
-        updateCollectionViews()
-        
-        gameSessionView.setNeedsUpdateConstraints()
-        gameSessionView.layoutIfNeeded()
-    }
-    
     private func resetViews() {
         customPopUp.isUserInteractionEnabled = false
         gameSessionView.userInfoView.isUserInteractionEnabled = true
@@ -214,8 +112,8 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
     }
 
     private func updateCollectionViews() {
-        gameSessionView.playersCollectionHeight.constant = CGFloat((gameData.playerList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
-        gameSessionView.locationsCollectionHeight.constant = CGFloat((gameData.locationList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
+        gameSessionView.playersCollectionHeight.constant = CGFloat((playerList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
+        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
         gameSessionView.playersCollectionView.reloadData()
         gameSessionView.locationsCollectionView.reloadData()
         gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
@@ -224,17 +122,44 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         gameSessionView.locationsCollectionView.layoutIfNeeded()
     }
     
-    // Remove current user from playerList and delete game if playerList is empty
-    @objc private func gameInactive() {
-        navigationController?.popToRootViewController(animated: true)
-        switch gameData.playerList.count {
-        case let x where x > 1:
-            FirestoreManager.updateGameData(accessCode: gameData.accessCode,
-                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
-        case 1:
-            FirestoreManager.deleteGame(accessCode: gameData.accessCode)
-        default: return
+    private func updateUserInfoView(gameData: GameData) {
+        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
+    }
+    
+    // MARK: - GameSessionViewModel Methods
+    func updateGameData(with newGameData: GameData) {
+        updateUserInfoView(gameData: newGameData)
+
+        gameSessionView.timerLabel.text = "\(newGameData.timeLimit):00"
+        maxTimeInterval = TimeInterval(newGameData.timeLimit * 60)  // Minutes * Seconds
+                
+        setupTimer()
+        playerList = newGameData.playerList
+        locationList = newGameData.locationList
+        updateCollectionViews()
+        
+        gameSessionView.setNeedsUpdateConstraints()
+        gameSessionView.layoutIfNeeded()
+    }
+    
+    func leaveGameSession(goToHomeScreen: Bool) {
+        switch goToHomeScreen {
+        case true: navigationController?.popToRootViewController(animated: true)
+        case false: navigationController?.popViewController(animated: true)
         }
+    }
+    
+    func updateViews(firstPlayer: String, gameData: GameData) {
+        self.firstPlayer = firstPlayer
+        playerList = gameData.playerList
+        locationList = gameData.locationList
+        updateUserInfoView(gameData: gameData)
+        updateCollectionViews()
+    }
+    
+    func goHome() {
+        navigationController?.popToRootViewController(animated: true)
     }
     
     // MARK: - Timer Logic
@@ -261,7 +186,7 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
             gameSessionView.endGameTopAnchor.constant = UIElementsManager.buttonHeight + 48
             gameSessionView.playAgain.isHidden = false
         default:
-            gameSessionView.timerLabel.text = string(from: currentTimeLeft)
+            gameSessionView.timerLabel.text = String.timerFormat(timeInterval: currentTimeLeft)
         }
     }
     
@@ -279,13 +204,6 @@ final class GameSessionController: UIViewController, GADBannerViewDelegate {
         
         return false
     }
-    
-    private func string(from timeInterval: TimeInterval) -> String {
-        let interval = Int(timeInterval)
-        let seconds = interval % 60
-        let minutes = (interval / 60) % 60
-        return String(format: "%01d:%02d", minutes, seconds)
-    }
 }
 
 // MARK: - Collection View Delegate & Data Source
@@ -293,9 +211,9 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {
         case gameSessionView.playersCollectionView:
-            return gameData.playerList.count
+            return playerList.count
         default:
-            return gameData.locationList.count
+            return locationList.count
         }
     }
 
@@ -303,12 +221,12 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
         switch collectionView {
         case gameSessionView.playersCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(username: gameData.playerList[indexPath.row], isFirstPlayer: gameData.playerList[indexPath.row] == firstPlayer)
+            cell.configure(username: playerList[indexPath.row], isFirstPlayer: playerList[indexPath.row] == firstPlayer)
             return cell
             
         default:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.locationsCollectionViewCellId, for: indexPath) as? LocationsCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(location: gameData.locationList[indexPath.row])
+            cell.configure(location: locationList[indexPath.row])
             return cell
             
         }
@@ -319,11 +237,9 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
         case gameSessionView.playersCollectionView:
             let cell = gameSessionView.playersCollectionView.cellForItem(at: indexPath) as? PlayersCollectionViewCell
             cell?.isTapped.toggle()
-            
         default:
             let cell = gameSessionView.locationsCollectionView.cellForItem(at: indexPath) as? LocationsCollectionViewCell
             cell?.isTapped.toggle()
-            
         }
     }
 }

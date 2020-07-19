@@ -15,6 +15,11 @@ import os.log
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    private var workItem = DispatchWorkItem {
+            if UIApplication.shared.applicationState == .background {
+                NotificationCenter.default.post(name: .gameInactive, object: nil)
+            }
+    }
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -38,12 +43,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = NavigationController(rootViewController: HomeController())
         
         FirebaseApp.configure()
+        FirestoreService.listenForNetworkChanges()
         
 #if FREE
         GADMobileAds.sharedInstance().start(completionHandler: nil)
         
         #if DEBUG
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [ "2077ef9a63d2b398840261c8221a0c9b" ] // Sample device ID
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = ["2077ef9a63d2b398840261c8221a0c9b"] // Sample device ID
         #endif
         
 #endif
@@ -57,15 +63,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
-        DispatchQueue.background(delay: 900.0) {
+        DispatchQueue.background(delay: 900.0, workItem: self.workItem)
+    }
+
+    func applicationWillEnterForeground(_ application: UIApplication) {
+        workItem.cancel()
+        workItem = DispatchWorkItem {
             if UIApplication.shared.applicationState == .background {
                 NotificationCenter.default.post(name: .gameInactive, object: nil)
             }
         }
-    }
-
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

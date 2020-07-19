@@ -7,12 +7,13 @@
 //
 
 import UIKit
-import FirebaseFirestore
 
 protocol JoinGameViewModelDelegate: class {
-    @discardableResult
-    func fieldsAreValid(_ validity: GameDataValidity) -> Bool
-    func gameDataUpdated(gameData: GameData)
+    func joinGameLoading()
+    func networkErrorOccurred()
+    func joinGameSucceeded(gameData: GameData)
+    func joinGameFailed()
+    func showErrorFlash(_ error: SpyfallError)
 }
 
 class JoinGameViewModel {
@@ -22,38 +23,37 @@ class JoinGameViewModel {
         self.delegate = delegate
     }
     
-    func handleGamData(accessCode: String, username: String) {
-        var validity: GameDataValidity = .AllFieldsAreValid
-        if accessCode.isEmpty || username.isEmpty {
-            validity = accessCode.isEmpty
-                ? .accessCodeIsEmpty
-                : .usernameIsEmpty
-            delegate?.fieldsAreValid(validity)
-            return
-        }
-        FirestoreService.retrieveGamData(accessCode: accessCode) { [weak self] document in
-            if let document = document {
-                if document.exists {
-                    if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
-                        if playerList.contains(username) { validity = .usernameIsTaken }
-                        if playerList.count > 7 { validity = .playersAreFull }
+    // MARK: - Public Methods
+    func joinGame(accessCode: String, username: String) {
+        delegate?.joinGameLoading()
+        guard !accessCode.isEmpty else {
+            errorExist(.joinGame(.accessCodeIsEmpty))
+             return
+         }
+         guard !username.isEmpty else {
+             errorExist(.joinGame(.usernameIsEmpty))
+             return
+         }
+         FirestoreService.joinGame(accessCode: accessCode, username: username) { [weak self] result in
+             switch result {
+             case .success:
+                 if let self = self, let delegate = self.delegate {
+                     let gameData = GameData(accessCode: accessCode,
+                                             playerList: [username],
+                                             playerObject: Player(role: String(), username: username, votes: Int()))
+                    FirestoreService.addToPlayerList(accessCode: accessCode, username: username) {
+                        delegate.joinGameSucceeded(gameData: gameData)
                     }
-                    if let started = document.data()?["started"] as? Bool {
-                        if started { validity = .gameHasAlreadyStarted }
-                    }
-                } else {
-                    validity = .gameDoesNotExist
                 }
-            }
-            if let delegate = self?.delegate, delegate.fieldsAreValid(validity) {
-                let gameData = GameData()
-                gameData.accessCode = accessCode
-                gameData.playerObject.username = username
-                gameData.playerList = [gameData.playerObject.username]
-                FirestoreService.updateGameData(accessCode: gameData.accessCode,
-                                                data: [Constants.DBStrings.playerList: FieldValue.arrayUnion([gameData.playerObject.username])])
-                delegate.gameDataUpdated(gameData: gameData)
-            }
-        }
+             case .failure(let error): self?.errorExist(error)
+             }
+         }
+    }
+    
+    // MARK: - Private Methods
+    private func errorExist(_ error: SpyfallError) {
+        error.log()
+        delegate?.joinGameFailed()
+        delegate?.showErrorFlash(error)
     }
 }

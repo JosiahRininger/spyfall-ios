@@ -11,80 +11,12 @@ import FirebaseFirestore
 import os.log
 
 class FirestoreManager {
-    typealias GameDataHandler = (GameData) -> Void
-    typealias ResetChosenLocationHandler = (String) -> Void
     typealias RetrieveChosenPacksAndLocationHandler = ((chosenPacks: [String], chosenLocation: String)) -> Void
     typealias LocationListHandler = ([String]) -> Void
     typealias RolesHandler = ([String]) -> Void
     typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
-    typealias CheckHandler = (GameDataValidity) -> Void
-    typealias GameExistHandler = (Bool) -> Void
     
     static let db = Firestore.firestore()
-    
-    // Adds a new document with a generated ID and sets the game data with the user's parameters
-    static func setGameData(accessCode: String, data: [String: Any]) {
-        db.collection(Constants.DBStrings.games).document(accessCode).setData(data) { error in
-            if let error = error {
-                os_log("Error writing document: ",
-                       log: SystemLogger.shared.logger,
-                       type: .error,
-                       error.localizedDescription)
-            } else {
-                os_log("Document successfully written!")
-            }
-        }
-    }
-    
-    // Retrieves all the game data being used on the game session controller
-    static func retrieveGameData(oldGameData: GameData, completion: @escaping GameDataHandler) {
-        var gameData = GameData()
-        gameData += oldGameData
-        
-        db.collection(Constants.DBStrings.games).document(gameData.accessCode).getDocument { document, error in
-            var gameObject = [String: Any]()
-            if let document = document, document.exists {
-                gameObject = (document.data())!
-            } else {
-                os_log("Document does not exist")
-            }
-            
-            guard let playerList = gameObject[Constants.DBStrings.playerList] as? [String],
-                let playerObjectList = gameObject["playerObjectList"] as? [[String: Any]],
-                let timeLimit = gameObject["timeLimit"] as? Int,
-                let locationList = gameObject[Constants.DBStrings.locationList] as? [String],
-                let chosenLocation = gameObject["chosenLocation"] as? String else {
-                    os_log("Error writing document")
-                    return
-            }
-            gameData.timeLimit = timeLimit
-            gameData.chosenLocation = chosenLocation
-            gameData.playerList = playerList
-            gameData.locationList = locationList
-            
-            for playerObject in playerObjectList where playerObject["username"] as? String == gameData.playerObject.username {
-                gameData.playerObject = Player.dictToPlayer(with: playerObject)
-            }
-            completion(gameData)
-        }
-    }
-    
-    // Retrieves the chosen location randomly from the locationList
-    static func resetChosenLocation(with accessCode: String, completion: @escaping ResetChosenLocationHandler) {
-        var chosenLocation = String()
-        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
-            if let document = document, document.exists {
-                guard let locationList = document.data()?[Constants.DBStrings.locationList] as? [String] else {
-                        os_log("Error writing document")
-                        return
-                }
-                chosenLocation = locationList.shuffled().first ?? ""
-            } else {
-                os_log("Document does not exist")
-            }
-            completion(chosenLocation)
-        }
-    }
     
     // Retrieves all the chosen packs and the chosen location
     static func retrieveChosenPacksAndLocation(accessCode: String, completion: @escaping RetrieveChosenPacksAndLocationHandler) {
@@ -178,48 +110,6 @@ class FirestoreManager {
                     return
                 }
                 completion(.success(document))
-        }
-    }
-    
-    // Checks if accessCode given exists and checks if the username given is taken
-    static func checkGamData(accessCode: String, username: String, completion: @escaping CheckHandler) {
-        var validity: GameDataValidity = .AllFieldsAreValid
-        if accessCode.isEmpty || username.isEmpty {
-            validity = accessCode.isEmpty
-                ? .accessCodeIsEmpty
-                : .usernameIsEmpty
-            completion(validity)
-            return
-        }
-        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
-            if let error = error {
-                os_log("Error fetching document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            }
-            if let document = document {
-                if document.exists {
-                    if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
-                        if playerList.contains(username) { validity = .usernameIsTaken }
-                        if playerList.count > 7 { validity = .playersAreFull }
-                    }
-                    if let started = document.data()?["started"] as? Bool {
-                        if started { validity = .gameHasAlreadyStarted }
-                    }
-                } else {
-                    validity = .gameDoesNotExist
-                }
-            }
-            completion(validity)
-        }
-    }
-    
-    // Updates stats
-    static func updateStatData(for document: String, data: [String: Any]) {
-        db.collection(Constants.DBStrings.stats).document(document).updateData(data) { error in
-            if let error = error {
-                os_log("Error writing document: ", log: SystemLogger.shared.logger, type: .error, error.localizedDescription)
-            } else {
-                os_log("Document successfully written!")
-            }
         }
     }
 }
