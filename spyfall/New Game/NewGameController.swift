@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import PKHUD
 import os.log
 
 final class NewGameController: UIViewController, NewGameViewModelDelegate, UITextFieldDelegate {
@@ -50,7 +49,7 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     private func setupView() {
         setupButtons()
         setUpKeyboard()
-        view.addSubviews(newGameView, networkErrorPopUp)
+        view.addSubview(newGameView)
     }
     
     private func setupButtons() {
@@ -63,21 +62,12 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
                                               initialPlayer: self.newGameView.usernameTextField.text ?? "",
                                               timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "-1") ?? -1)
         }
-        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.networkErrorPopUp.isUserInteractionEnabled = false
-            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
-        }
     }
     
     // MARK: - NewGameViewModel Methods
     func newGameLoading() {
         newGameView.isUserInteractionEnabled = false
         newGameView.spinner.animate(with: newGameView.create)
-    }
-    
-    func networkErrorOccurred() {
-        networkErrorPopUp.isUserInteractionEnabled = true
-        networkErrorPopUp.networkErrorPopUpView.isHidden = false
     }
     
     func createGameSucceeded(gameData: GameData) {
@@ -91,12 +81,15 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         newGameView.isUserInteractionEnabled = true
     }
     
-    func showErrorFlash(_ error: SpyfallError) {
-        if error.message == SpyfallError.newGame(.invalidTimeLimitSelected).message {
-            newGameView.timeLimitTextField.text = ""
+    func showErrorMessage(_ error: SpyfallError) {
+        switch error {
+        case SpyfallError.network: ErrorManager.showPopUp(for: view)
+        default:
+            if error.message == SpyfallError.newGame(.invalidTimeLimitSelected).message {
+                newGameView.timeLimitTextField.text = ""
+            }
+            ErrorManager.showFlash(with: error.message)
         }
-        HUD.dimsBackground = false
-        HUD.flash(.label(error.message), delay: 1.0)
     }
     
     // MARK: - TextField & Keyboard Methods

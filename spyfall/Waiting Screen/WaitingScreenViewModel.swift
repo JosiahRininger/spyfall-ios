@@ -11,80 +11,93 @@ import FirebaseFirestore
 import os.log
 
 protocol WaitingScreenViewModelDelegate: class {
-    func listenToPlayerListSuccess(with document: DocumentSnapshot)
+    func startGameSucceeded(gameData: GameData)
+    func updateTableView()
+    func startGameLoading()
+    func startGameFailed()
+    func changeNameSucceeded()
+    func leaveGame()
+    func showErrorFlash(_ error: SpyfallError)
 }
 
 class WaitingScreenViewModel {
     private weak var delegate: WaitingScreenViewModelDelegate?
     
+    private var gameData: GameData?
+    
     private var listener: ListenerRegistration?
     
     init(delegate: WaitingScreenViewModelDelegate, gameData: GameData) {
         self.delegate = delegate
-        listenForGameUpdates(gameData: gameData)
+        self.gameData = gameData
+        
+        listenForGameUpdates()
         if gameData.chosenLocation.isEmpty {
-            retrieveChosenPacksAndLocation(gameData: gameData)
+            retrieveChosenPacksAndLocation()
         }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
+    }
+    
+    deinit {
+        listener?.remove()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Public Methods
     // Retrieves the stored chosenPacks and ChosenLocation
-    func retrieveChosenPacksAndLocation(gameData: GameData) {
-        FirestoreManager.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { result in
-            gameData.chosenPacks = result.chosenPacks
-            gameData.chosenLocation = result.chosenLocation
+    func retrieveChosenPacksAndLocation() {
+        guard let gameData = gameData else { return }
+        FirestoreService.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { [weak self] result in
+            switch result {
+            case .success(let (chosenPacks, chosenLocation)):
+                gameData.chosenPacks = chosenPacks
+                gameData.chosenLocation = chosenLocation
+            case .failure(let error):
+                self?.errorExist(error)
+            }
         }
     }
     
-    func startGame(gameData: GameData) {
+    func startGame() {
+        guard let gameData = gameData else { return }
+        guard !gameData.started else { return }
+        
+        gameData.started = true
+        delegate?.startGameLoading()
         FirestoreService.updateGameData(accessCode: gameData.accessCode,
                                         data: [Constants.DBStrings.started: true])
         
-        for pack in gameData.chosenPacks {
-            FirestoreService.retrievePack(pack: pack) { [weak self] document in
-                if let docs = document?.data() as? [String: [String]] {
-                    for doc in docs where doc.key == gameData.chosenLocation {
-                        self?.handleRoles(retrievedRoles: doc.value, gameData: gameData)
-                    }
-                }
-            }
+        FirestoreService.retrieveRoles(chosenPacks: gameData.chosenPacks, chosenLocation: gameData.chosenLocation) { [weak self] roles in
+            self?.handleRoles(roles)
         }
+        
         StatsManager.incrementTotalNumberOfGamesPlayed()
     }
     
-    func shouldLeaveGame(gameData: GameData) -> Bool {
-        if gameData.started { return false }
-        gameData.playerList.removeAll(where: { $0 == gameData.playerObject.username })
-        switch gameData.playerList.isEmpty {
-        case true: FirestoreService.deleteGame(accessCode: gameData.accessCode)
-        case false: FirestoreService.updateGameData(accessCode: gameData.accessCode,
-                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
-        }
-        return true
-    }
-    
-    func handleInActive(gameData: GameData) {
-        switch gameData.playerList.count {
-        case let x where x > 1:
-            FirestoreService.updateGameData(accessCode: gameData.accessCode,
-                                            data: [Constants.DBStrings.playerList: FieldValue.arrayRemove([gameData.playerObject.username])])
-        case 1:
-            FirestoreService.deleteGame(accessCode: gameData.accessCode)
-        default: return
+    func changeUsername(to text: String?) {
+        if text?.isEmpty ?? true {
+            delegate?.showErrorFlash(SpyfallError.waitingScreen(.usernameIsEmpty))
+        } else if text == gameData?.playerObject.username {
+            delegate?.showErrorFlash(SpyfallError.waitingScreen(.enteredOldUsername))
+        } else if gameData?.playerList.contains(text ?? "") ?? true {
+            delegate?.showErrorFlash(SpyfallError.waitingScreen(.usernameIsTaken))
+        } else {
+            delegate?.changeNameSucceeded()
         }
     }
     
-    func deleteGame(accessCode: String?) {
-        FirestoreService.deleteGame(accessCode: accessCode ?? "")
-    }
-    
-    func removeListener() {
-        listener?.remove()
+    func tryToLeaveGame() {
+        if let started = gameData?.started,
+            !started {
+            gameInactive()
+        }
     }
     
     // MARK: - Private Methods
     // Assigns each player a role
-    func handleRoles(retrievedRoles: [String], gameData: GameData) {
+    func handleRoles(_ retrievedRoles: [String]) {
+        guard let gameData = gameData else { return }
         var roles = retrievedRoles
         gameData.playerList.shuffle()
         roles.shuffle()
@@ -96,48 +109,62 @@ class WaitingScreenViewModel {
         // Add playerObjectList field to document
         gameData.playerObjectList.shuffle()
         let playerObjectListDict = gameData.playerObjectList.map { $0.toDictionary() }
-        FirestoreManager.updateGameData(accessCode: gameData.accessCode,
+        FirestoreService.updateGameData(accessCode: gameData.accessCode,
                                         data: [Constants.DBStrings.playerObjectList: playerObjectListDict])
     }
     
-    private func listenForGameUpdates(gameData: GameData) {
-        listener = FirestoreService.addListener(accessCode: gameData.accessCode) { [weak self] result in
+    private func listenForGameUpdates() {
+        guard let gameData = gameData else { return }
+        listener = FirestoreService.addWaitingScreenListener(accessCode: gameData.accessCode) { [weak self] result in
             switch result {
             // Successfully adds listener
-            case .success(let document): self?.delegate?.listenToPlayerListSuccess(with: document)// self?.listenerTriggered(document, gameData)
+            case .success(let updatedGameData):
+                self?.listenerTriggered(updatedGameData)
             // Failure to add listener
             case .failure(let error):
-                os_log("Firestore error: ",
-                       log: SystemLogger.shared.logger,
-                       type: .error,
-                       error.localizedDescription)
+                SpyfallError.firestore.log(error.localizedDescription)
             }
         }
     }
     
-//    private func listenerTriggered(_ document: DocumentSnapshot, _ gameData: GameData) {
-//        var firstPlayer = String()
-//        if !document.exists {
-//            delegate?.leaveGameSession(goToHomeScreen: true)
-//        } else {
-//            if let started = document.get("started") as? Bool {
-//                if !started {
-//                    delegate?.leaveGameSession(goToHomeScreen: false)
-//                }
-//            }
-//            if let playerList = document.get("playerList") as? [String],
-//                let locationList = document.get("locationList") as? [String],
-//                let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-//                gameData.playerList = playerList
-//                gameData.locationList = locationList
-//                gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
-//                firstPlayer = gameData.playerObjectList.first?.username ?? ""
-//                gameData.playerObjectList.shuffle()
-//                for playerObject in gameData.playerObjectList where playerObject.username == gameData.playerObject.username {
-//                    gameData.playerObject = playerObject
-//                }
-//                delegate?.updateViews(firstPlayer: firstPlayer)
-//            }
-//        }
-//    }
+    private func listenerTriggered(_ updatedGameData: GameData?) {
+        guard let gameData = self.gameData,
+            let updatedGameData = updatedGameData else {
+                delegate?.leaveGame()
+                return
+        }
+
+        gameData.playerList = updatedGameData.playerList
+        gameData.started = updatedGameData.started
+        
+        delegate?.updateTableView()
+        if updatedGameData.playerObjectList.count != 0 {
+            delegate?.startGameLoading()
+        }
+        if updatedGameData.playerObjectList.count == gameData.playerList.count {
+            gameData.playerObjectList = updatedGameData.playerObjectList
+            gameData.seguedToGameSession = true
+            StatsManager.incrementTotalNumberOfPlayers()
+            delegate?.startGameSucceeded(gameData: gameData)
+        }
+    }
+    
+    private func errorExist(_ error: SpyfallError) {
+        error.log()
+        delegate?.startGameFailed()
+        delegate?.showErrorFlash(error)
+    }
+    
+    // Remove current user from playerList and delete game if playerList is empty
+    @objc
+    private func gameInactive() {
+        delegate?.leaveGame()
+        guard let gameData = self.gameData else { return }
+        switch gameData.playerList.count {
+        case let x where x > 1: FirestoreService.removeUsername(accessCode: gameData.accessCode,
+                                                                username: gameData.playerObject.username)
+        case 1: FirestoreService.deleteGame(accessCode: gameData.accessCode)
+        default: return
+        }
+    }
 }

@@ -24,8 +24,10 @@ extension Constants {
         static let playerObjectList = "playerObjectList"
         static let timeLimit = "timeLimit"
         static let chosenLocation = "chosenLocation"
+        static let chosenPacks = "chosenPacks"
         static let started = "started"
         static let username = "username"
+        static let expiration = "expiration"
         
         // Strings for pack data
         static let packs = "packs"

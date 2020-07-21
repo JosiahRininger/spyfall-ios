@@ -58,7 +58,6 @@ class HomeView: UIView {
     }
     
     private func setupConstraints() {
-        
         NSLayoutConstraint.activate([
             infoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -89),
             infoView.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -11),

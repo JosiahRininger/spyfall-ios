@@ -10,10 +10,9 @@ import UIKit
 
 protocol NewGameViewModelDelegate: class {
     func newGameLoading()
-    func networkErrorOccurred()
     func createGameSucceeded(gameData: GameData)
     func createGameFailed()
-    func showErrorFlash(_ error: SpyfallError)
+    func showErrorMessage(_ error: SpyfallError)
 }
 
 class NewGameViewModel {
@@ -53,6 +52,6 @@ class NewGameViewModel {
     private func errorExist(_ error: SpyfallError) {
         error.log()
         delegate?.createGameFailed()
-        delegate?.showErrorFlash(error)
+        delegate?.showErrorMessage(error)
     }
 }

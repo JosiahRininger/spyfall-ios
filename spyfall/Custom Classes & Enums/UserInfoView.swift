@@ -40,7 +40,7 @@ class UserInfoView: UIView {
     @IBInspectable var isShown: Bool = true {
         didSet {
             subViewLabel.text = self.isShown ? "Hide" : "Show"
-            self.resetConstraints(isShown: isShown)
+            self.resetConstraints(isShown: self.isShown)
         }
     }
     

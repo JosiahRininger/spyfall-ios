@@ -15,6 +15,8 @@
 		8A031CC324C37AD000EAEFEB /* SpyfallError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A031CC124C37AC600EAEFEB /* SpyfallError.swift */; };
 		8A031CC524C49C9900EAEFEB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A031CC424C49C9900EAEFEB /* Reachability.swift */; };
 		8A031CC624C49C9900EAEFEB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A031CC424C49C9900EAEFEB /* Reachability.swift */; };
+		8A031CC824C66FF200EAEFEB /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A031CC724C66FF200EAEFEB /* ErrorManager.swift */; };
+		8A031CC924C66FF200EAEFEB /* ErrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A031CC724C66FF200EAEFEB /* ErrorManager.swift */; };
 		8A29864524C07E42007BBC44 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */; };
 		8A29864724C08D70007BBC44 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */; };
 		8A29864824C08D7F007BBC44 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */; };
@@ -30,7 +32,6 @@
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
 		D7030EDC22B9D0CC002CB9B2 /* NewGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */; };
 		D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
-		D7030EE022BA85D8002CB9B2 /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */; };
 		D7030EEA22BB226D002CB9B2 /* WaitingScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EE922BB226D002CB9B2 /* WaitingScreenView.swift */; };
 		D704EB0922EC7D7B0083DA2A /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0822EC7D7B0083DA2A /* SettingsController.swift */; };
 		D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0A22EC85AB0083DA2A /* SettingsView.swift */; };
@@ -92,7 +93,6 @@
 		D77A0DC524121671005AF53D /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0822EC7D7B0083DA2A /* SettingsController.swift */; };
 		D77A0DC624121671005AF53D /* JoinGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */; };
 		D77A0DC724121671005AF53D /* GameSessionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E5228FB8C800C1ED43 /* GameSessionController.swift */; };
-		D77A0DC824121671005AF53D /* FirestoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */; };
 		D77A0DC924121671005AF53D /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7798B1122B8684E006D7615 /* UIColor.swift */; };
 		D77A0DCA24121671005AF53D /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4DF235A085800B372D7 /* SystemLogger.swift */; };
 		D77A0DCB24121671005AF53D /* LocationsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7FF08E7228FB95F00C1ED43 /* LocationsCollectionViewCell.swift */; };
@@ -137,6 +137,7 @@
 		8A031CBE24C376E300EAEFEB /* UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDevice.swift; sourceTree = "<group>"; };
 		8A031CC124C37AC600EAEFEB /* SpyfallError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpyfallError.swift; sourceTree = "<group>"; };
 		8A031CC424C49C9900EAEFEB /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		8A031CC724C66FF200EAEFEB /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewModel.swift; sourceTree = "<group>"; };
 		8A29864924C113BA007BBC44 /* GameSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionViewModel.swift; sourceTree = "<group>"; };
 		8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -150,7 +151,6 @@
 		C019C7D47C102D0B17AE64E1 /* Pods-spyfall.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-spyfall.debug.xcconfig"; path = "Target Support Files/Pods-spyfall/Pods-spyfall.debug.xcconfig"; sourceTree = "<group>"; };
 		D7030EDB22B9D0CC002CB9B2 /* NewGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameView.swift; sourceTree = "<group>"; };
 		D7030EDD22B9D965002CB9B2 /* JoinGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameView.swift; sourceTree = "<group>"; };
-		D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreManager.swift; sourceTree = "<group>"; };
 		D7030EE922BB226D002CB9B2 /* WaitingScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingScreenView.swift; sourceTree = "<group>"; };
 		D704EB0822EC7D7B0083DA2A /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		D704EB0A22EC85AB0083DA2A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
@@ -356,8 +356,8 @@
 			isa = PBXGroup;
 			children = (
 				D7798B1B22B86E03006D7615 /* UIElementsManager.swift */,
-				D7030EDF22BA85D8002CB9B2 /* FirestoreManager.swift */,
 				D7D65A79239AD40C007CEB08 /* StatsManager.swift */,
+				8A031CC724C66FF200EAEFEB /* ErrorManager.swift */,
 				8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */,
 			);
 			path = "Custom Managers";
@@ -742,7 +742,6 @@
 				D704EB0922EC7D7B0083DA2A /* SettingsController.swift in Sources */,
 				D7030EDE22B9D965002CB9B2 /* JoinGameView.swift in Sources */,
 				D7FF08E6228FB8C800C1ED43 /* GameSessionController.swift in Sources */,
-				D7030EE022BA85D8002CB9B2 /* FirestoreManager.swift in Sources */,
 				D7798B1222B8684E006D7615 /* UIColor.swift in Sources */,
 				D70AA4E0235A085800B372D7 /* SystemLogger.swift in Sources */,
 				D7FF08E8228FB95F00C1ED43 /* LocationsCollectionViewCell.swift in Sources */,
@@ -755,6 +754,7 @@
 				8A29864724C08D70007BBC44 /* JoinGameViewModel.swift in Sources */,
 				D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */,
 				D7798B1C22B86E03006D7615 /* UIElementsManager.swift in Sources */,
+				8A031CC824C66FF200EAEFEB /* ErrorManager.swift in Sources */,
 				D769B74B23145FA3003F05E3 /* Decodable.swift in Sources */,
 				D769B74723145BE3003F05E3 /* IDs.swift in Sources */,
 				D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */,
@@ -804,7 +804,6 @@
 				D77A0DC524121671005AF53D /* SettingsController.swift in Sources */,
 				D77A0DC624121671005AF53D /* JoinGameView.swift in Sources */,
 				D77A0DC724121671005AF53D /* GameSessionController.swift in Sources */,
-				D77A0DC824121671005AF53D /* FirestoreManager.swift in Sources */,
 				D77A0DC924121671005AF53D /* UIColor.swift in Sources */,
 				D77A0DCA24121671005AF53D /* SystemLogger.swift in Sources */,
 				D77A0DCB24121671005AF53D /* LocationsCollectionViewCell.swift in Sources */,
@@ -817,6 +816,7 @@
 				8A29864824C08D7F007BBC44 /* JoinGameViewModel.swift in Sources */,
 				D77A0DD324121671005AF53D /* ChangeNamePopUpView.swift in Sources */,
 				D77A0DD424121671005AF53D /* UIElementsManager.swift in Sources */,
+				8A031CC924C66FF200EAEFEB /* ErrorManager.swift in Sources */,
 				D77A0DD524121671005AF53D /* Decodable.swift in Sources */,
 				D77A0DD624121671005AF53D /* IDs.swift in Sources */,
 				D77A0DD724121671005AF53D /* GameSessionView.swift in Sources */,

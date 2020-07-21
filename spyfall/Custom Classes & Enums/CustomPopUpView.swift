@@ -33,6 +33,7 @@ class CustomPopUpView: UIView {
     
     override var isHidden: Bool {
         didSet {
+            isUserInteractionEnabled = !isHidden
             UIView.animate(withDuration: 0.3) {
                 self.alpha = self.isHidden ? 0.0 : 1.0
             }
@@ -56,8 +57,6 @@ class CustomPopUpView: UIView {
         backgroundColor = UIColor.popupBackground.withAlphaComponent(0.4)
         
         isHidden = true
-        isUserInteractionEnabled = true
-        
         addSubviews(popUpView)
         popUpView.addSubviews(titleLabel, contentsView, doneButton)
         if twoButtons { popUpView.addSubview(cancelButton) }

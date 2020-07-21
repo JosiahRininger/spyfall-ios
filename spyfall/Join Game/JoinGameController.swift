@@ -7,13 +7,11 @@
 //
 
 import UIKit
-import PKHUD
 import os.log
 
 final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UITextFieldDelegate {
     private var joinGameView = JoinGameView()
     private var joinGameViewModel: JoinGameViewModel?
-    private var networkErrorPopUp = NetworkErrorPopUpView()
     private var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
@@ -39,7 +37,7 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
     private func setupView() {
         setupButtons()
         setupKeyboard()
-        view.addSubviews(joinGameView, networkErrorPopUp)
+        view.addSubview(joinGameView)
     }
     
     private func setupButtons() {
@@ -52,22 +50,12 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
         joinGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
-        
-        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.networkErrorPopUp.isUserInteractionEnabled = false
-            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
-        }
     }
     
     // MARK: - NewGameViewModel Methods
     func joinGameLoading() {
         joinGameView.isUserInteractionEnabled = false
         joinGameView.spinner.animate(with: self.joinGameView.join)
-    }
-    
-    func networkErrorOccurred() {
-        networkErrorPopUp.isUserInteractionEnabled = true
-        networkErrorPopUp.networkErrorPopUpView.isHidden = false
     }
     
     func joinGameSucceeded(gameData: GameData) {
@@ -80,9 +68,11 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
         joinGameView.isUserInteractionEnabled = true
     }
     
-    func showErrorFlash(_ error: SpyfallError) {
-        HUD.dimsBackground = false
-        HUD.flash(.label(error.message), delay: 1.0)
+    func showErrorMessage(_ error: SpyfallError) {
+        switch error {
+        case SpyfallError.network: ErrorManager.showPopUp(for: view)
+        default: ErrorManager.showFlash(with: error.message)
+        }
     }
     
     // MARK: - TextField & Keyboard Methods

@@ -10,10 +10,9 @@ import UIKit
 
 protocol JoinGameViewModelDelegate: class {
     func joinGameLoading()
-    func networkErrorOccurred()
     func joinGameSucceeded(gameData: GameData)
     func joinGameFailed()
-    func showErrorFlash(_ error: SpyfallError)
+    func showErrorMessage(_ error: SpyfallError)
 }
 
 class JoinGameViewModel {
@@ -54,6 +53,6 @@ class JoinGameViewModel {
     private func errorExist(_ error: SpyfallError) {
         error.log()
         delegate?.joinGameFailed()
-        delegate?.showErrorFlash(error)
+        delegate?.showErrorMessage(error)
     }
 }

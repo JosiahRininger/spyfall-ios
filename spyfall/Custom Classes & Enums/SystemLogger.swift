@@ -10,11 +10,9 @@ import UIKit
 import os.log
 
 class SystemLogger {
-    //  private init()
-    
     static let shared = SystemLogger()
     
     var logger: OSLog = {
-        return OSLog(subsystem: Bundle.main.bundleIdentifier!, category: String(describing: "SystemLogger"))
+        return OSLog(subsystem: Bundle.main.bundleIdentifier ?? "", category: String(describing: "SystemLogger"))
     }()
 }

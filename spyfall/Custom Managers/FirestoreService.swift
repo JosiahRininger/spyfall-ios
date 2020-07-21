@@ -12,11 +12,12 @@ import Reachability
 import os.log
 
 struct FirestoreService {
-    typealias RetrieveHandler = (DocumentSnapshot?) -> Void
+    typealias RetrieveRolesHandler = ([String]) -> Void
     typealias JoinGameHandler = (Result<Void, SpyfallError>) -> Void
     typealias GameDataHandler = (Result<GameData, SpyfallError>) -> Void
+    typealias RetrieveChosenHandler = (Result<([String], String), SpyfallError>) -> Void
     typealias VoidHandler = () -> Void
-    typealias ListenerHandler = (Result<DocumentSnapshot, Error>) -> Void
+    typealias ListenerHandler = (Result<GameData?, Error>) -> Void
     
     static private let db = Firestore.firestore()
     static private let reachability = try! Reachability()
@@ -29,7 +30,7 @@ struct FirestoreService {
         switch reachability.isConnectedToNetwork {
         case .success:
             var accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
-            retrieveGameData(accessCode: accessCode) { gameDataDocument in
+            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { gameDataDocument, error in
                 if let gameExist = gameDataDocument?.exists, gameExist {
                     accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
                 }
@@ -41,7 +42,7 @@ struct FirestoreService {
                 default: amount = 14
                 }
                 for pack in chosenPacks {
-                    FirestoreService.retrievePack(pack: pack) { packDocument in
+                    db.collection(Constants.DBStrings.packs).document(pack).getDocument { packDocument, error in
                         if let docs = packDocument?.data() {
                             let randomLocations = docs.map { $0.key }.shuffled()
                             if locationList.count == 10 { amount -= 1 }
@@ -57,8 +58,7 @@ struct FirestoreService {
                                                     timeLimit: timeLimit,
                                                     chosenLocation: locationList.shuffled().first ?? "")
                             
-                            db.collection(Constants.DBStrings.games)
-                                .document(gameData.accessCode).setData(gameData.toDictionary()) { error in
+                            db.collection(Constants.DBStrings.games).document(accessCode).setData(gameData.toDictionary()) { error in
                                     SpyfallError.firestore.log(error?.localizedDescription)
                                     completion(.success(gameData))
                             }
@@ -74,11 +74,10 @@ struct FirestoreService {
         switch reachability.isConnectedToNetwork {
         case .success:
             db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
-                guard error == nil else {
-                    completion(.failure(.unknown))
-                    return
-                }
                 var spyfallError: SpyfallError?
+                if let error = error {
+                    SpyfallError.firestore.log(error.localizedDescription)
+                }
 
                 if let document = document {
                     if document.exists {
@@ -106,14 +105,6 @@ struct FirestoreService {
         }
     }
     
-    // Retrieves gameData with accessCode
-    static func retrieveGameData(accessCode: String, completion: @escaping RetrieveHandler) {
-        db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
-            SpyfallError.firestore.log(error?.localizedDescription)
-            completion(document)
-        }
-    }
-    
     static func resetGameData(_ gameData: GameData) {
         DispatchQueue.main.async {
             gameData.chosenPacks.shuffle()
@@ -138,7 +129,7 @@ struct FirestoreService {
         case .success:
             var newGameData = GameData()
             newGameData += gameData
-            FirestoreService.retrieveGameData(accessCode: newGameData.accessCode) { document in
+            db.collection(Constants.DBStrings.games).document(newGameData.accessCode).getDocument { document, error in
                 if let document = document,
                     let gameObject = document.data(),
                     document.exists {
@@ -169,10 +160,34 @@ struct FirestoreService {
     }
     
     // Retrieves requested pack
-    static func retrievePack(pack: String, completion: @escaping RetrieveHandler) {
-        db.collection(Constants.DBStrings.packs).document(pack).getDocument { document, error in
-            SpyfallError.firestore.log(error?.localizedDescription)
-            completion(document)
+    static func retrieveRoles(chosenPacks: [String], chosenLocation: String, completion: @escaping RetrieveRolesHandler) {
+        for pack in chosenPacks {
+            db.collection(Constants.DBStrings.packs).document(pack).getDocument { document, error in
+                SpyfallError.firestore.log(error?.localizedDescription)
+                if let docs = document?.data() as? [String: [String]] {
+                    for doc in docs where doc.key == chosenLocation {
+                        completion(doc.value)
+                    }
+                }
+            }
+        }
+    }
+    
+    // Retrieves all the chosen packs and the chosen location
+    static func retrieveChosenPacksAndLocation(accessCode: String, completion: @escaping RetrieveChosenHandler) {
+        switch reachability.isConnectedToNetwork {
+        case .success:
+            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+                if let document = document, document.exists {
+                    if let chosenPacks = document.data()?[Constants.DBStrings.chosenPacks] as? [String],
+                        let chosenLocation = document.data()?[Constants.DBStrings.chosenLocation] as? String {
+                        completion(.success((chosenPacks, chosenLocation)))
+                    } else {
+                        completion(.failure(SpyfallError.firestore))
+                    }
+                }
+            }
+        case .failure(let error): completion(.failure(error))
         }
     }
     
@@ -181,6 +196,13 @@ struct FirestoreService {
         db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { error in
             SpyfallError.firestore.log(error?.localizedDescription)
             completion()
+        }
+    }
+    
+    // Updates the game data
+    static func updateGameData(accessCode: String, data: [String: Any]) {
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { error in
+            SpyfallError.firestore.log(error?.localizedDescription)
         }
     }
     
@@ -201,22 +223,14 @@ struct FirestoreService {
         }
     }
     
-    // Updates the game data
-    static func updateGameData(accessCode: String, data: [String: Any]) {
-        db.collection(Constants.DBStrings.games).document(accessCode).updateData(data) { error in
-            SpyfallError.firestore.log(error?.localizedDescription)
-        }
-    }
-    
     // Deletes game
     static func deleteGame(accessCode: String) {
         db.collection(Constants.DBStrings.games).document(accessCode).delete { error in
             SpyfallError.firestore.log(error?.localizedDescription)
         }
     }
-    
-    // Adds a listener to the game data
-    static func addListener(accessCode: String, completion: @escaping ListenerHandler) -> ListenerRegistration {
+
+    static func addWaitingScreenListener(accessCode: String, completion: @escaping ListenerHandler) -> ListenerRegistration {
         return db.collection(Constants.DBStrings.games).document(accessCode)
             .addSnapshotListener { documentSnapshot, error in
                 SpyfallError.firestore.log(error?.localizedDescription)
@@ -224,7 +238,48 @@ struct FirestoreService {
                     SpyfallError.firestore.log("Error fetching document: DocumentSnapshot was nil")
                     return
                 }
-                completion(.success(document))
+                let gameData = GameData()
+                if !document.exists {
+                    completion(.success(nil))
+                } else {
+                    if let started = document.get(Constants.DBStrings.started) as? Bool,
+                        let playerList = document.get(Constants.DBStrings.playerList) as? [String] {
+                        gameData.playerList = playerList
+                        gameData.started = started
+                    }
+                    if let playerObjectList = document.get(Constants.DBStrings.playerObjectList) as? [[String: Any]] {
+                        gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
+                    }
+                }
+                completion(.success(gameData))
+        }
+    }
+    
+    // Adds a listener to the game data
+    static func addGameSessionListener(accessCode: String, completion: @escaping ListenerHandler) -> ListenerRegistration {
+        return db.collection(Constants.DBStrings.games).document(accessCode)
+            .addSnapshotListener { documentSnapshot, error in
+                SpyfallError.firestore.log(error?.localizedDescription)
+                guard let document = documentSnapshot else {
+                    SpyfallError.firestore.log("Error fetching document: DocumentSnapshot was nil")
+                    return
+                }
+                let gameData = GameData()
+                if !document.exists {
+                    completion(.success(nil))
+                } else {
+                    if let started = document.get(Constants.DBStrings.started) as? Bool {
+                        gameData.started = started
+                        if let playerList = document.get(Constants.DBStrings.playerList) as? [String],
+                            let locationList = document.get(Constants.DBStrings.locationList) as? [String],
+                            let playerObjectList = document.get(Constants.DBStrings.playerObjectList) as? [[String: Any]] {
+                            gameData.playerList = playerList
+                            gameData.locationList = locationList
+                            gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
+                        }
+                        completion(.success(gameData))
+                    }
+                }
         }
     }
     

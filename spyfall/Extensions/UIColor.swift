@@ -27,7 +27,7 @@ extension UIColor {
         let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
         let green = CGFloat((hexint & 0xff00) >> 8) / 255.0
         let blue = CGFloat((hexint & 0xff) >> 0) / 255.0
-        let alpha = alpha!
+        let alpha = alpha ?? 1.0
         // Create color object, specifying alpha as well
         let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
         return color

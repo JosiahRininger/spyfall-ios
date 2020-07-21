@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NotificationCenter.default.post(name: .gameInactive, object: nil)
             }
     }
+    var networkErrorPopUp = NetworkErrorPopUpView()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -41,6 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         window?.rootViewController = NavigationController(rootViewController: HomeController())
+        window?.addSubview(networkErrorPopUp)
+        ErrorManager.setPopUp(networkErrorPopUp)
         
         FirebaseApp.configure()
         FirestoreService.listenForNetworkChanges()

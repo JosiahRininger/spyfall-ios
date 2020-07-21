@@ -26,7 +26,9 @@ enum JoinGame: String {
 }
 
 enum WaitingScreen: String {
-    case unknown = "Unknown WaitingScreen Error"
+    case usernameIsEmpty = "Please enter a username"
+    case enteredOldUsername = "Please enter a new username"
+    case usernameIsTaken = "Username is already taken"
 }
 
 enum GameSession: String {

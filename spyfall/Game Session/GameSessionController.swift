@@ -86,60 +86,50 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
     
     private func setupButtons() {
         gameSessionView.endGame.touchUpInside = { [weak self] in
-            self?.gameSessionViewModel?.endGame(if: self?.timerIsAtZero())
+            if self?.currentTimeLeft != 0 {
+                self?.endGamePopUp(shouldHide: false)
+            } else {
+                self?.gameSessionViewModel?.endGame()
+            }
         }
         gameSessionView.playAgain.touchUpInside = { [weak self] in
             self?.gameSessionViewModel?.resetGameData()
         }
         customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in
-            self?.resetViews()
+            self?.endGamePopUp(shouldHide: true)
         }
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.gameSessionViewModel?.deleteGame()
+            self?.gameSessionViewModel?.endGame()
         }
     }
     
     // MARK: - Helper Methods
-    private func resetViews() {
-        customPopUp.isUserInteractionEnabled = false
-        gameSessionView.userInfoView.isUserInteractionEnabled = true
-        gameSessionView.playersCollectionView.isUserInteractionEnabled = true
-        gameSessionView.locationsCollectionView.isUserInteractionEnabled = true
-        gameSessionView.endGame.isUserInteractionEnabled = true
-        customPopUp.endGamePopUpView.isHidden = true
-        scrollView.isUserInteractionEnabled = true
-        scrollView.isScrollEnabled = true
+    private func endGamePopUp(shouldHide: Bool) {
+        gameSessionView.isUserInteractionEnabled = shouldHide
+        scrollView.isUserInteractionEnabled = shouldHide
+        customPopUp.isHidden = shouldHide
     }
-
-    private func updateCollectionViews() {
+    
+    private func updateGameSessionView(gameData: GameData) {
+        playerList = gameData.playerList
+        locationList = gameData.locationList
+        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
+        
         gameSessionView.playersCollectionHeight.constant = CGFloat((playerList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
         gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
         gameSessionView.playersCollectionView.reloadData()
         gameSessionView.locationsCollectionView.reloadData()
-        gameSessionView.playersCollectionView.setNeedsUpdateConstraints()
-        gameSessionView.locationsCollectionView.setNeedsUpdateConstraints()
-        gameSessionView.playersCollectionView.layoutIfNeeded()
-        gameSessionView.locationsCollectionView.layoutIfNeeded()
-    }
-    
-    private func updateUserInfoView(gameData: GameData) {
-        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
     }
     
     // MARK: - GameSessionViewModel Methods
-    func updateGameData(with newGameData: GameData) {
-        updateUserInfoView(gameData: newGameData)
+    func beginGameSession(with newGameData: GameData) {
+        updateGameSessionView(gameData: newGameData)
 
         gameSessionView.timerLabel.text = "\(newGameData.timeLimit):00"
         maxTimeInterval = TimeInterval(newGameData.timeLimit * 60)  // Minutes * Seconds
                 
         setupTimer()
-        playerList = newGameData.playerList
-        locationList = newGameData.locationList
-        updateCollectionViews()
-        
-        gameSessionView.setNeedsUpdateConstraints()
         gameSessionView.layoutIfNeeded()
     }
     
@@ -150,16 +140,9 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
         }
     }
     
-    func updateViews(firstPlayer: String, gameData: GameData) {
-        self.firstPlayer = firstPlayer
-        playerList = gameData.playerList
-        locationList = gameData.locationList
-        updateUserInfoView(gameData: gameData)
-        updateCollectionViews()
-    }
-    
-    func goHome() {
-        navigationController?.popToRootViewController(animated: true)
+    func updateViews(gameData: GameData) {
+        firstPlayer = gameData.firstPlayer ?? ""
+        updateGameSessionView(gameData: gameData)
     }
     
     // MARK: - Timer Logic
@@ -188,21 +171,6 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
         default:
             gameSessionView.timerLabel.text = String.timerFormat(timeInterval: currentTimeLeft)
         }
-    }
-    
-    private func timerIsAtZero() -> Bool {
-        guard currentTimeLeft != 0 else { return true }
-        
-        customPopUp.isUserInteractionEnabled = true
-        gameSessionView.userInfoView.isUserInteractionEnabled = false
-        gameSessionView.playersCollectionView.isUserInteractionEnabled = false
-        gameSessionView.locationsCollectionView.isUserInteractionEnabled = false
-        gameSessionView.endGame.isUserInteractionEnabled = false
-        customPopUp.endGamePopUpView.isHidden = false
-        scrollView.isUserInteractionEnabled = false
-        scrollView.isScrollEnabled = false
-        
-        return false
     }
 }
 

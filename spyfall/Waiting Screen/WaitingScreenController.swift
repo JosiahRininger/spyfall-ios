@@ -27,6 +27,7 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     init(gameData: GameData) {
         self.gameData = gameData
         super.init(nibName: nil, bundle: nil)
+        waitingScreenViewModel = WaitingScreenViewModel(delegate: self, gameData: gameData)
     }
     
     required init?(coder: NSCoder) {
@@ -37,14 +38,13 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
         super.viewDidLoad()
         waitingScreenView.tableView.delegate = self
         waitingScreenView.tableView.dataSource = self
-        waitingScreenViewModel = WaitingScreenViewModel(delegate: self, gameData: gameData)
         
         setupView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        resetViews()
+        endGamePopUp(shouldHide: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -52,16 +52,13 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
             waitingScreenView.spinner.reset()
             gameData.resetToPlayAgain()
             oldUsername = nil
-            waitingScreenViewModel?.retrieveChosenPacksAndLocation(gameData: gameData)
+            waitingScreenViewModel?.retrieveChosenPacksAndLocation()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(gameInactive), name: .gameInactive, object: nil)
     }
     
     deinit {
-        // Remove any listeners
-        waitingScreenViewModel?.removeListener()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -73,7 +70,6 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
         scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        waitingScreenView.translatesAutoresizingMaskIntoConstraints = false
         waitingScreenView.codeLabel.text = gameData.accessCode
         
         view.backgroundColor = .primaryBackgroundColor
@@ -89,7 +85,7 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
             waitingScreenView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             waitingScreenView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             waitingScreenView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
-            ])
+        ])
         
 #if FREE
         view.addSubview(bannerView)
@@ -104,97 +100,73 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     }
     
     private func setupButtons() {
-        waitingScreenView.startGame.touchUpInside = { [weak self] in self?.startGameWasTapped() }
-        waitingScreenView.leaveGame.touchUpInside = { [weak self] in self?.leaveGameWasTapped() }
-        
-        // Sets up the actions around the change name pop up
-        customPopUp.changeNamePopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        waitingScreenView.startGame.touchUpInside = { [weak self] in
+            self?.waitingScreenViewModel?.startGame()
+        }
+        waitingScreenView.leaveGame.touchUpInside = { [weak self] in
+            self?.waitingScreenViewModel?.tryToLeaveGame()
+        }
+        customPopUp.changeNamePopUpView.cancelButton.touchUpInside = { [weak self] in
+            self?.endGamePopUp(shouldHide: true)
+        }
         customPopUp.changeNamePopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.finishChangingUsername()
-        }
-    }
-    
-    func listenToPlayerListSuccess(with document: DocumentSnapshot) {
-        guard let playerList = document.get(Constants.DBStrings.playerList) as? [String],
-            let started = document.get("started") as? Bool else {
-                os_log("Document data was empty.")
-                return
-        }
-        
-        gameData.playerList = playerList
-        gameData.started = started
-        waitingScreenView.tableHeight.constant = CGFloat(gameData.playerList.count) * UIElementsManager.tableViewCellHeight
-        waitingScreenView.tableView.reloadData()
-        waitingScreenView.tableView.setNeedsUpdateConstraints()
-        waitingScreenView.tableView.layoutIfNeeded()
-        
-        // Check for segue
-        if let playerObjectList = document.get("playerObjectList") as? [[String: Any]] {
-            if !playerObjectList.isEmpty
-                && !self.gameData.seguedToGameSession {
-                self.gameData.playerObjectList = Player.dictToPlayers(with: playerObjectList)
-                self.segueToGameSessionController()
-            }
+            self?.waitingScreenViewModel?.changeUsername(to: self?.customPopUp.textField.text)
         }
     }
     
     // MARK: - Helper Methods
-    // check if Start Game has been clicked
-    private func startGameWasTapped() {
-        if gameData.started == true { return }
-        waitingScreenView.spinner.animate(with: waitingScreenView.startGame)
-        
-        // Set started to true
-        gameData.started = true
-        waitingScreenViewModel?.startGame(gameData: gameData)
+    private func endGamePopUp(shouldHide: Bool) {
+        customPopUp.isHidden = shouldHide
+        waitingScreenView.isUserInteractionEnabled = shouldHide
     }
     
-    private func leaveGameWasTapped() {
-        if waitingScreenViewModel?.shouldLeaveGame(gameData: gameData) ?? false {
-            navigationController?.popToRootViewController(animated: true)
-        }
-    }
-        
     @objc
     private func pencilTapped() {
         customPopUp.textField.text = gameData.playerObject.username
-        customPopUp.isUserInteractionEnabled = true
-        customPopUp.changeNamePopUpView.isHidden = false
+        endGamePopUp(shouldHide: false)
         customPopUp.textField.becomeFirstResponder()
-        waitingScreenView.leaveGame.isUserInteractionEnabled = false
-        waitingScreenView.startGame.isUserInteractionEnabled = false
     }
     
-    private func segueToGameSessionController() {
-        gameData.seguedToGameSession = true
-        StatsManager.incrementTotalNumberOfPlayers()
+    // MARK: - WaitingScreenViewModel Methods
+    func startGameLoading() {
+        if !waitingScreenView.spinner.isAnimating {
+            waitingScreenView.spinner.animate(with: waitingScreenView.startGame)
+        }
+    }
+    
+    func updateTableView() {
+        waitingScreenView.tableHeight.constant = CGFloat(gameData.playerList.count) * UIElementsManager.tableViewCellHeight
+        waitingScreenView.tableView.reloadData()
+        waitingScreenView.tableView.layoutIfNeeded()
+    }
+
+    func startGameSucceeded(gameData: GameData) {
         navigationController?.pushViewController(GameSessionController(gameData: gameData), animated: true)
     }
     
-    private func finishChangingUsername() {
-        if !textFieldIsValid() { return }
+    func changeNameSucceeded() {
         if let text = customPopUp.textField.text {
             oldUsername = gameData.playerObject.username
             gameData.playerObject.username = text
             waitingScreenView.tableView.reloadData()
         }
-        resetViews()
+        endGamePopUp(shouldHide: true)
     }
     
-    private func resetViews() {
-        customPopUp.isUserInteractionEnabled = false
-        customPopUp.changeNamePopUpView.isHidden = true
-        waitingScreenView.leaveGame.isUserInteractionEnabled = true
-        waitingScreenView.startGame.isUserInteractionEnabled = true
+    func startGameFailed() {
+
     }
     
-    // Remove current user from playerList and delete game if playerList is empty
-    @objc
-    private func gameInactive() {
-        waitingScreenViewModel?.handleInActive(gameData: gameData)
+    func leaveGame() {
         navigationController?.popToRootViewController(animated: true)
     }
     
+    func showErrorFlash(_ error: SpyfallError) {
+        HUD.dimsBackground = false
+        HUD.flash(.label(error.message), delay: 1.0)
+    }
+    
+    // MARK: - TextField & Keyboard Methods
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // get the current text, or use an empty string if that failed
         let currentText = textField.text ?? ""
@@ -209,7 +181,6 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
         return updatedText.count <= 24
     }
     
-    // MARK: - Keyboard Set Up
     private func setUpKeyboard() {
         let toolBar = UIElementsManager.createToolBar(with: UIBarButtonItem(title: "Done",
                                                                             style: .plain,
@@ -224,20 +195,6 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     @objc
     private func dismissKeyboard() {
         view.endEditing(true)
-    }
-    
-    private func textFieldIsValid() -> Bool {
-        HUD.dimsBackground = false
-        if customPopUp.textField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if customPopUp.textField.text == gameData.playerObject.username {
-            HUD.flash(.label("Please enter a new username"), delay: 1.0)
-        } else if gameData.playerList.contains(customPopUp.textField.text ?? "") {
-            HUD.flash(.label("Username is already taken"), delay: 1.0)
-        } else {
-            return true
-        }
-        return false
     }
 }
 
