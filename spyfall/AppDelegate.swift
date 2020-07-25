@@ -40,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UserDefaults.standard.set("random", forKey: Constants.UserDefaultKeys.secondaryColor)
             UIColor.secondaryColor = UIColor.colors.randomElement()?.value ?? UIColor.blue
         }
-        
         window?.rootViewController = NavigationController(rootViewController: HomeController())
         window?.addSubview(networkErrorPopUp)
         ErrorManager.setPopUp(networkErrorPopUp)
@@ -85,5 +84,4 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         NotificationCenter.default.post(name: .gameInactive, object: nil)
     }
-    
 }

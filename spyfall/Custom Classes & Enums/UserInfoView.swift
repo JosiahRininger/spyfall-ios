@@ -50,10 +50,8 @@ class UserInfoView: UIView {
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        subView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapped)))
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     @objc func tapped(sender: UITapGestureRecognizer) {

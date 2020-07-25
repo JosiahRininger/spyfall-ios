@@ -18,6 +18,7 @@ struct ErrorManager {
     }
     
     static func showPopUp(for view: UIView) {
+        networkErrorPopUp?.networkErrorPopUpView.doneButton.backgroundColor = UIColor.secondaryColor
         view.isUserInteractionEnabled = false
         networkErrorPopUp?.isHidden = false
         

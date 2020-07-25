@@ -45,9 +45,20 @@ class GameSessionViewModel {
         FirestoreService.deleteGame(accessCode: gameData?.accessCode ?? "")
     }
     
+    func getPlayerList() -> [String] {
+        return gameData?.playerList ?? []
+    }
+    
+    func getLocationList() -> [String] {
+        return gameData?.locationList ?? []
+    }
+    
     // MARK: - Private Methods
     private func beginGameSession() {
         guard let gameData = self.gameData else { return }
+        gameData.playerObjectList.shuffle()
+        gameData.playerList.shuffle()
+        gameData.locationList.shuffle()
         FirestoreService.getUpdatedGameData(gameData: gameData) { [weak self] result in
             switch result {
             case .success(let gameData):

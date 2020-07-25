@@ -20,52 +20,87 @@ struct FirestoreService {
     typealias ListenerHandler = (Result<GameData?, Error>) -> Void
     
     static private let db = Firestore.firestore()
+    static private let workItemManager = WorkItemManager()
     static private let reachability = try! Reachability()
     
     static func listenForNetworkChanges() {
         reachability.listenForNetworkChanges()
     }
     
+    static func cancelCreateGame() {
+        workItemManager.cancelWorkItem(for: .createGame)
+    }
+    
+    static func cancelJoinGame() {
+        workItemManager.cancelWorkItem(for: .joinGame)
+    }
+    
+    static func cancelChangeName() {
+        workItemManager.cancelWorkItem(for: .changeName)
+    }
+    
+    static func cancelStartGame() {
+        workItemManager.cancelWorkItem(for: .startGame)
+    }
+    
+    static func cancelEndGame() {
+        workItemManager.cancelWorkItem(for: .endGame)
+    }
+    
     static func createGame(chosenPacks: [String], initialPlayer: String, timeLimit: Int, completion: @escaping GameDataHandler) {
         switch reachability.isConnectedToNetwork {
         case .success:
-            var accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
-            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { gameDataDocument, error in
-                if let gameExist = gameDataDocument?.exists, gameExist {
-                    accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
-                }
-                var locationList = [String]()
-                var amount = 0
-                switch chosenPacks.count {
-                case 3: amount = 5
-                case 2: amount = 7
-                default: amount = 14
-                }
-                for pack in chosenPacks {
-                    db.collection(Constants.DBStrings.packs).document(pack).getDocument { packDocument, error in
-                        if let docs = packDocument?.data() {
-                            let randomLocations = docs.map { $0.key }.shuffled()
-                            if locationList.count == 10 { amount -= 1 }
-                            for loc in randomLocations.indices where loc < amount {
-                                locationList.append(randomLocations[loc])
-                            }
-                        }
-                        if locationList.count == 14 {
-                            let gameData = GameData(accessCode: accessCode,
-                                                    initialPlayer: initialPlayer,
-                                                    chosenPacks: chosenPacks,
-                                                    locationList: locationList,
-                                                    timeLimit: timeLimit,
-                                                    chosenLocation: locationList.shuffled().first ?? "")
-                            
-                            db.collection(Constants.DBStrings.games).document(accessCode).setData(gameData.toDictionary()) { error in
-                                    SpyfallError.firestore.log(error?.localizedDescription)
-                                    completion(.success(gameData))
-                            }
-                        }
-                    }
-                }
-            }
+            workItemManager.setWorkItem(for: .createGame,
+                                        workItem: DispatchWorkItem {
+                                            var accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
+                                            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { gameDataDocument, error in
+                                                if let error = error {
+                                                    completion(.failure(SpyfallError.firestore.log(error.localizedDescription)))
+                                                    return
+                                                }
+                                                if let gameExist = gameDataDocument?.exists, gameExist {
+                                                    accessCode = String(NSUUID().uuidString.lowercased().prefix(6))
+                                                }
+                                                var locationList = [String]()
+                                                var amount = 0
+                                                switch chosenPacks.count {
+                                                case 3: amount = 5
+                                                case 2: amount = 7
+                                                default: amount = 14
+                                                }
+                                                for pack in chosenPacks {
+                                                    db.collection(Constants.DBStrings.packs).document(pack).getDocument { packDocument, error in
+                                                        if let error = error {
+                                                            completion(.failure(SpyfallError.firestore.log(error.localizedDescription)))
+                                                            return
+                                                        }
+                                                        if let docs = packDocument?.data() {
+                                                            let randomLocations = docs.map { $0.key }.shuffled()
+                                                            if locationList.count == 10 { amount -= 1 }
+                                                            for loc in randomLocations.indices where loc < amount {
+                                                                locationList.append(randomLocations[loc])
+                                                            }
+                                                        }
+                                                        if locationList.count == 14 {
+                                                            let gameData = GameData(accessCode: accessCode,
+                                                                                    initialPlayer: initialPlayer,
+                                                                                    chosenPacks: chosenPacks,
+                                                                                    locationList: locationList,
+                                                                                    timeLimit: timeLimit,
+                                                                                    chosenLocation: locationList.shuffled().first ?? "")
+                                                            
+                                                            db.collection(Constants.DBStrings.games).document(accessCode).setData(gameData.toDictionary()) { error in
+                                                                if let error = error {
+                                                                    completion(.failure(SpyfallError.firestore.log(error.localizedDescription)))
+                                                                    return
+                                                                }
+                                                                completion(.success(gameData))
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+            }).execute()
         case .failure(let error): completion(.failure(error))
         }
     }
@@ -73,34 +108,37 @@ struct FirestoreService {
     static func joinGame(accessCode: String, username: String, completion: @escaping JoinGameHandler) {
         switch reachability.isConnectedToNetwork {
         case .success:
-            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
-                var spyfallError: SpyfallError?
-                if let error = error {
-                    SpyfallError.firestore.log(error.localizedDescription)
-                }
-
-                if let document = document {
-                    if document.exists {
-                        if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
-                            if playerList.contains(username) {
-                                spyfallError = .joinGame(.usernameIsTaken)
-                            } else if playerList.count > 7 {
-                                spyfallError = .joinGame(.playersAreFull)
-                            }
-                        } else if let started = document.data()?[Constants.DBStrings.started] as? Bool,
-                            started {
-                            spyfallError = .joinGame(.gameHasAlreadyStarted)
-                        }
-                    } else {
-                        spyfallError = .joinGame(.gameDoesNotExist)
-                    }
-                }
-                if let spyfallError = spyfallError {
-                    completion(.failure(spyfallError))
-                } else {
-                    completion(.success(()))
-                }
-            }
+            workItemManager.setWorkItem(for: .joinGame,
+                                        workItem: DispatchWorkItem {
+                                            db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
+                                                var spyfallError: SpyfallError?
+                                                if let error = error {
+                                                    SpyfallError.firestore.log(error.localizedDescription)
+                                                }
+                                                
+                                                if let document = document {
+                                                    if document.exists {
+                                                        if let playerList = document.data()?[Constants.DBStrings.playerList] as? [String] {
+                                                            if playerList.contains(username) {
+                                                                spyfallError = .joinGame(.usernameIsTaken)
+                                                            } else if playerList.count > 7 {
+                                                                spyfallError = .joinGame(.playersAreFull)
+                                                            }
+                                                        } else if let started = document.data()?[Constants.DBStrings.started] as? Bool,
+                                                            started {
+                                                            spyfallError = .joinGame(.gameHasAlreadyStarted)
+                                                        }
+                                                    } else {
+                                                        spyfallError = .joinGame(.gameDoesNotExist)
+                                                    }
+                                                }
+                                                if let spyfallError = spyfallError {
+                                                    completion(.failure(spyfallError))
+                                                } else {
+                                                    completion(.success(()))
+                                                }
+                                            }
+            }).execute()
         case .failure(let error): completion(.failure(error))
         }
     }
@@ -220,6 +258,14 @@ struct FirestoreService {
             .updateData([Constants.DBStrings.playerList: FieldValue.arrayUnion([username])]) { error in
                 SpyfallError.firestore.log(error?.localizedDescription)
                 completion()
+        }
+    }
+    
+    // Updates playerList with changed name
+    static func changeNameInPlayerList(accessCode: String, playerList: [String], completion: @escaping VoidHandler) {
+        db.collection(Constants.DBStrings.games).document(accessCode).updateData([Constants.DBStrings.playerList: playerList]) { error in
+            SpyfallError.firestore.log(error?.localizedDescription)
+            completion()
         }
     }
     

@@ -47,9 +47,8 @@ class CustomPopUpView: UIView {
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {

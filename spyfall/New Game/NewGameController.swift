@@ -16,14 +16,12 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     private var keyboardHeight: CGFloat = 0.0
     
     private var chosenPacks: [String] {
-        // store selected location packs
-        var chosenPacks = [String]()
-        if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }
-        if newGameView.packTwoView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackTwo) }
-        if newGameView.specialPackView.isChecked { chosenPacks.append(Constants.DBStrings.specialPackOne) }
-        chosenPacks.shuffle()
-        
-        return chosenPacks
+        var packs = [String]()
+        if newGameView.packOneView.isChecked { packs.append(Constants.DBStrings.standardPackOne) }
+        if newGameView.packTwoView.isChecked { packs.append(Constants.DBStrings.standardPackTwo) }
+        if newGameView.specialPackView.isChecked { packs.append(Constants.DBStrings.specialPackOne) }
+        packs.shuffle()
+        return packs
     }
     
     override func viewDidLoad() {
@@ -32,7 +30,7 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         newGameView.usernameTextField.delegate = self
         newGameView.timeLimitTextField.delegate = self
         newGameViewModel = NewGameViewModel(delegate: self)
-        
+
         setupView()
 
         // Notifications for KeyBoard Behavior
@@ -107,7 +105,8 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         switch textField {
         case newGameView.usernameTextField: return updatedText.count <= 24
         case newGameView.timeLimitTextField: return updatedText.count <= 2
-        default: os_log("INVALID TEXTFIELD"); return false
+        default: SpyfallError.unknown.log("Invalid NewGameController Textfield")
+        return false
         }
     }
     

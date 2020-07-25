@@ -27,11 +27,11 @@ final class HomeController: UIViewController {
         homeView.joinGame.backgroundColor = .secondaryColor
         homeView.rulesPopUpView.doneButton.backgroundColor = .secondaryColor
     }
-
+    
+    // MARK: - Setup UI
     private func setupView() {
-        view = homeView
-        
         setupButtons()
+        view = homeView
     }
     
     private func animateView() {
@@ -48,8 +48,6 @@ final class HomeController: UIViewController {
     }
     
     fileprivate func setupButtons() {
-        
-        // Sets up homeView buttons
         homeView.newGame.touchUpInside = { [weak self] in
             self?.navigationController?.pushViewController(NewGameController(), animated: true)
         }
@@ -57,26 +55,28 @@ final class HomeController: UIViewController {
             self?.navigationController?.pushViewController(JoinGameController(), animated: true)
         }
         homeView.settings.touchUpInside = {  [weak self] in
-            let settingsVC = SettingsController()
-            settingsVC.homeVC = self ?? UIViewController()
-            self?.present(settingsVC, animated: true)
+            guard let self = self else { return }
+            self.present(SettingsController(parentVC: self), animated: true)
         }
         
         // Sets up the actions around the rules pop up
         let rulesGesture = UITapGestureRecognizer(target: self, action: #selector(rulesViewTapped))
         homeView.rulesView.addGestureRecognizer(rulesGesture)
-        homeView.rulesPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
+        homeView.rulesPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.endGamePopUp(shouldHide: true)
+        }
     }
     
-    @objc func rulesViewTapped() {
-        homeView.newGame.isUserInteractionEnabled = false
-        homeView.joinGame.isUserInteractionEnabled = false
-        homeView.rulesPopUpView.isHidden = false
+    // MARK: - Helper Methods
+    private func endGamePopUp(shouldHide: Bool) {
+        homeView.settings.isUserInteractionEnabled = shouldHide
+        homeView.newGame.isUserInteractionEnabled = shouldHide
+        homeView.joinGame.isUserInteractionEnabled = shouldHide
+        homeView.rulesPopUpView.isHidden = shouldHide
     }
     
-    private func resetViews() {
-        homeView.newGame.isUserInteractionEnabled = true
-        homeView.joinGame.isUserInteractionEnabled = true
-        homeView.rulesPopUpView.isHidden = true
+    @objc
+    private func rulesViewTapped() {
+        endGamePopUp(shouldHide: false)
     }
 }

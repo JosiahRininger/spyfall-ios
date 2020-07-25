@@ -48,6 +48,7 @@ class WaitingScreenViewModel {
     // Retrieves the stored chosenPacks and ChosenLocation
     func retrieveChosenPacksAndLocation() {
         guard let gameData = gameData else { return }
+        gameData.resetToPlayAgain()
         FirestoreService.retrieveChosenPacksAndLocation(accessCode: gameData.accessCode) { [weak self] result in
             switch result {
             case .success(let (chosenPacks, chosenLocation)):
@@ -76,14 +77,22 @@ class WaitingScreenViewModel {
     }
     
     func changeUsername(to text: String?) {
+        guard let gameData = gameData else { return }
         if text?.isEmpty ?? true {
             delegate?.showErrorFlash(SpyfallError.waitingScreen(.usernameIsEmpty))
-        } else if text == gameData?.playerObject.username {
+        } else if text == gameData.playerObject.username {
             delegate?.showErrorFlash(SpyfallError.waitingScreen(.enteredOldUsername))
-        } else if gameData?.playerList.contains(text ?? "") ?? true {
+        } else if gameData.playerList.contains(text ?? "") {
             delegate?.showErrorFlash(SpyfallError.waitingScreen(.usernameIsTaken))
         } else {
-            delegate?.changeNameSucceeded()
+            if let text = text {
+                let newPlayerList = gameData.playerList.map { $0 == gameData.oldUsername ? text : $0 }
+                FirestoreService.changeNameInPlayerList(accessCode: gameData.accessCode, playerList: newPlayerList) { [weak self] in
+                    gameData.oldUsername = gameData.playerObject.username
+                    gameData.playerObject.username = text
+                    self?.delegate?.changeNameSucceeded()
+                }
+            }
         }
     }
     
@@ -92,6 +101,14 @@ class WaitingScreenViewModel {
             !started {
             gameInactive()
         }
+    }
+    
+    func getCurrentUsername() -> String {
+        return gameData?.playerObject.username ?? ""
+    }
+    
+    func getPlayerList() -> [String] {
+        return gameData?.playerList ?? []
     }
     
     // MARK: - Private Methods
@@ -143,7 +160,6 @@ class WaitingScreenViewModel {
         }
         if updatedGameData.playerObjectList.count == gameData.playerList.count {
             gameData.playerObjectList = updatedGameData.playerObjectList
-            gameData.seguedToGameSession = true
             StatsManager.incrementTotalNumberOfPlayers()
             delegate?.startGameSucceeded(gameData: gameData)
         }

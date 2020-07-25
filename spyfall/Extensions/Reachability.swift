@@ -6,8 +6,6 @@
 //  Copyright © 2020 Josiah Rininger. All rights reserved.
 //
 
-import Foundation
-import UIKit
 import Reachability
 
 extension Reachability {

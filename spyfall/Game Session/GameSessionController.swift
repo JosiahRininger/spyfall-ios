@@ -8,7 +8,6 @@
 
 import UIKit
 import GoogleMobileAds
-import os.log
 
 final class GameSessionController: UIViewController, GameSessionViewModelDelegate, GADBannerViewDelegate {
 
@@ -17,24 +16,23 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
     private var gameSessionViewModel: GameSessionViewModel?
     private var customPopUp = EndGamePopUpView()
     private var firstPlayer = String()
-    private var playerList = [String]()
-    private var locationList = [String]()
     private var timer = Timer()
     private var currentTimeLeft: TimeInterval = 0.0
     private var maxTimeInterval: TimeInterval = 0.0
     private var startDate: Date?
-    
+    private var playerList: [String] {
+        gameSessionViewModel?.getPlayerList() ?? []
+    }
+    private var locationList: [String] {
+        gameSessionViewModel?.getLocationList() ?? []
+    }
+
 #if FREE
     private var bannerView = UIElementsManager.createBannerView()
 #endif
     
     init(gameData: GameData) {
         self.firstPlayer = gameData.playerObjectList.first?.username ?? ""
-        gameData.playerObjectList.shuffle()
-        gameData.playerList.shuffle()
-        gameData.locationList.shuffle()
-        playerList = gameData.playerList
-        locationList = gameData.locationList
         super.init(nibName: nil, bundle: nil)
         gameSessionViewModel = GameSessionViewModel(delegate: self, gameData: gameData)
     }
@@ -111,8 +109,6 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
     }
     
     private func updateGameSessionView(gameData: GameData) {
-        playerList = gameData.playerList
-        locationList = gameData.locationList
         gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
         gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
         
@@ -174,7 +170,7 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
     }
 }
 
-// MARK: - Collection View Delegate & Data Source
+// MARK: - CollectionView Delegate & Data Source
 extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch collectionView {

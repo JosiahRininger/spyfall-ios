@@ -7,27 +7,30 @@
 //
 
 import UIKit
-import FirebaseFirestore
 import GoogleMobileAds
 import PKHUD
-import os.log
 
 final class WaitingScreenController: UIViewController, WaitingScreenViewModelDelegate, GADBannerViewDelegate {
     private var scrollView = UIScrollView()
     private var waitingScreenView = WaitingScreenView()
     private var waitingScreenViewModel: WaitingScreenViewModel?
     private var customPopUp = ChangeNamePopUpView()
-    private var gameData = GameData()
-    private var oldUsername: String?
+    private var seguedToGameSession = false
+    private var currentUsername: String {
+        waitingScreenViewModel?.getCurrentUsername() ?? ""
+    }
+    private var playerList: [String] {
+        waitingScreenViewModel?.getPlayerList() ?? []
+    }
     
 #if FREE
     private var bannerView = UIElementsManager.createBannerView()
 #endif
     
     init(gameData: GameData) {
-        self.gameData = gameData
         super.init(nibName: nil, bundle: nil)
         waitingScreenViewModel = WaitingScreenViewModel(delegate: self, gameData: gameData)
+        waitingScreenView.codeLabel.text = gameData.accessCode
     }
     
     required init?(coder: NSCoder) {
@@ -48,10 +51,8 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if gameData.seguedToGameSession {
-            waitingScreenView.spinner.reset()
-            gameData.resetToPlayAgain()
-            oldUsername = nil
+        if seguedToGameSession {
+            seguedToGameSession = false
             waitingScreenViewModel?.retrieveChosenPacksAndLocation()
         }
         
@@ -70,7 +71,6 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
         scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        waitingScreenView.codeLabel.text = gameData.accessCode
         
         view.backgroundColor = .primaryBackgroundColor
         view.addSubviews(scrollView, customPopUp)
@@ -122,7 +122,7 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     
     @objc
     private func pencilTapped() {
-        customPopUp.textField.text = gameData.playerObject.username
+        customPopUp.textField.text = currentUsername
         endGamePopUp(shouldHide: false)
         customPopUp.textField.becomeFirstResponder()
     }
@@ -135,21 +135,19 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     }
     
     func updateTableView() {
-        waitingScreenView.tableHeight.constant = CGFloat(gameData.playerList.count) * UIElementsManager.tableViewCellHeight
+        waitingScreenView.tableHeight.constant = CGFloat(playerList.count) * UIElementsManager.tableViewCellHeight
         waitingScreenView.tableView.reloadData()
         waitingScreenView.tableView.layoutIfNeeded()
     }
 
     func startGameSucceeded(gameData: GameData) {
+        seguedToGameSession = true
+        waitingScreenView.spinner.reset()
         navigationController?.pushViewController(GameSessionController(gameData: gameData), animated: true)
     }
     
     func changeNameSucceeded() {
-        if let text = customPopUp.textField.text {
-            oldUsername = gameData.playerObject.username
-            gameData.playerObject.username = text
-            waitingScreenView.tableView.reloadData()
-        }
+        waitingScreenView.tableView.reloadData()
         endGamePopUp(shouldHide: true)
     }
     
@@ -202,7 +200,7 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
 extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return gameData.playerList.count
+        return playerList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -211,19 +209,10 @@ extension WaitingScreenController: UITableViewDelegate, UITableViewDataSource {
             fatalError()
         }
         
-        // updates playerList when player changes name
-        if let oldUsername = oldUsername {
-            if gameData.playerList[indexPath.row] == oldUsername {
-                gameData.playerList[indexPath.row] = gameData.playerObject.username
-                self.oldUsername = nil
-                FirestoreService.updateGameData(accessCode: gameData.accessCode, data: [Constants.DBStrings.playerList: gameData.playerList])
-            }
-        }
-        
         // configures the cells
         cell.selectionStyle = .none
-        isUser = gameData.playerList[indexPath.row] == gameData.playerObject.username
-        cell.configure(username: (gameData.playerList[indexPath.row]), index: indexPath.row + 1, isCurrentUsername: isUser)
+        isUser = playerList[indexPath.row] == currentUsername
+        cell.configure(username: (playerList[indexPath.row]), index: indexPath.row + 1, isCurrentUsername: isUser)
         
         return cell
     }

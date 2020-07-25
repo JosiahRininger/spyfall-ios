@@ -90,7 +90,8 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
         switch textField {
         case joinGameView.accessCodeTextField: return updatedText.count <= 6
         case joinGameView.usernameTextField: return updatedText.count <= 24
-        default: SpyfallError.unknown.log("Invalid JoinGameController Textfield"); return false
+        default: SpyfallError.unknown.log("Invalid JoinGameController Textfield")
+        return false
         }
     }
     
