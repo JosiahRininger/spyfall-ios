@@ -93,7 +93,7 @@ extension UIColor {
     static let packOneColor: UIColor = .hexToColor(hexString: "#9533C7")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#00A0EF")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#2FD566")
-    
+
     // Secondary Color Options
     static let customPurple: UIColor = .hexToColor(hexString: "#9533C7")
     static let customBlue: UIColor = .hexToColor(hexString: "#00A0EF")

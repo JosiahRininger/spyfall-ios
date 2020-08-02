@@ -13,14 +13,14 @@ import PKHUD
 final class WaitingScreenController: UIViewController, WaitingScreenViewModelDelegate, GADBannerViewDelegate {
     private var scrollView = UIScrollView()
     private var waitingScreenView = WaitingScreenView()
-    private var waitingScreenViewModel: WaitingScreenViewModel?
+    private var waitingScreenViewModel: WaitingScreenViewModel
     private var customPopUp = ChangeNamePopUpView()
     private var seguedToGameSession = false
     private var currentUsername: String {
-        waitingScreenViewModel?.getCurrentUsername() ?? ""
+        waitingScreenViewModel.getCurrentUsername()
     }
     private var playerList: [String] {
-        waitingScreenViewModel?.getPlayerList() ?? []
+        waitingScreenViewModel.getPlayerList()
     }
     
 #if FREE
@@ -28,8 +28,8 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
 #endif
     
     init(gameData: GameData) {
+        waitingScreenViewModel = WaitingScreenViewModel(gameData: gameData)
         super.init(nibName: nil, bundle: nil)
-        waitingScreenViewModel = WaitingScreenViewModel(delegate: self, gameData: gameData)
         waitingScreenView.codeLabel.text = gameData.accessCode
     }
     
@@ -41,19 +41,21 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
         super.viewDidLoad()
         waitingScreenView.tableView.delegate = self
         waitingScreenView.tableView.dataSource = self
+        waitingScreenViewModel.delegate = self
+        waitingScreenViewModel.viewDidLoad()
         
         setupView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        endGamePopUp(shouldHide: true)
+        changeNamePopUp(shouldHide: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         if seguedToGameSession {
             seguedToGameSession = false
-            waitingScreenViewModel?.retrieveChosenPacksAndLocation()
+            waitingScreenViewModel.retrieveChosenPacksAndLocation()
         }
         
         NotificationCenter.default.addObserver(self, selector: #selector(pencilTapped), name: .editUsername, object: nil)
@@ -67,7 +69,8 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     private func setupView() {
         setupButtons()
         setUpKeyboard()
-
+        waitingScreenView.spinner = Spinner(frame: CGRect(x: 45.0, y: waitingScreenView.startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
+        
         scrollView.backgroundColor = .primaryBackgroundColor
         scrollView.addSubview(waitingScreenView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -101,37 +104,42 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     
     private func setupButtons() {
         waitingScreenView.startGame.touchUpInside = { [weak self] in
-            self?.waitingScreenViewModel?.startGame()
+            self?.waitingScreenViewModel.startGame()
+            DispatchQueue.main.async {
+                self?.waitingScreenView.spinner.animate(with: self?.waitingScreenView.startGame ?? Button())
+            }
         }
         waitingScreenView.leaveGame.touchUpInside = { [weak self] in
-            self?.waitingScreenViewModel?.tryToLeaveGame()
+            self?.waitingScreenViewModel.tryToLeaveGame()
         }
         customPopUp.changeNamePopUpView.cancelButton.touchUpInside = { [weak self] in
-            self?.endGamePopUp(shouldHide: true)
+            self?.changeNamePopUp(shouldHide: true)
         }
         customPopUp.changeNamePopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.waitingScreenViewModel?.changeUsername(to: self?.customPopUp.textField.text)
+            self?.waitingScreenViewModel.changeUsername(to: self?.customPopUp.textField.text)
         }
     }
     
     // MARK: - Helper Methods
-    private func endGamePopUp(shouldHide: Bool) {
+    private func changeNamePopUp(shouldHide: Bool) {
         customPopUp.isHidden = shouldHide
         waitingScreenView.isUserInteractionEnabled = shouldHide
     }
     
     @objc
     private func pencilTapped() {
-        customPopUp.textField.text = currentUsername
-        endGamePopUp(shouldHide: false)
+        changeNamePopUp(shouldHide: false)
+        customPopUp.textField.text = ""
         customPopUp.textField.becomeFirstResponder()
     }
     
     // MARK: - WaitingScreenViewModel Methods
     func startGameLoading() {
-        if !waitingScreenView.spinner.isAnimating {
-            waitingScreenView.spinner.animate(with: waitingScreenView.startGame)
-        }
+//        DispatchQueue.global(qos: .background).async { [weak self] in
+//            DispatchQueue.main.async {
+//                self?.waitingScreenView.spinner.animate(with: self?.waitingScreenView.startGame ?? Button())
+//            }
+//        }
     }
     
     func updateTableView() {
@@ -141,27 +149,33 @@ final class WaitingScreenController: UIViewController, WaitingScreenViewModelDel
     }
 
     func startGameSucceeded(gameData: GameData) {
+        guard !seguedToGameSession else { return }
         seguedToGameSession = true
-        waitingScreenView.spinner.reset()
+        StatsManager.incrementTotalNumberOfPlayers()
+        DispatchQueue.main.async { [weak self] in
+            self?.waitingScreenView.spinner.reset()
+            self?.waitingScreenView.isUserInteractionEnabled = true
+        }
         navigationController?.pushViewController(GameSessionController(gameData: gameData), animated: true)
     }
     
     func changeNameSucceeded() {
         waitingScreenView.tableView.reloadData()
-        endGamePopUp(shouldHide: true)
+        changeNamePopUp(shouldHide: true)
     }
-    
-    func startGameFailed() {
 
-    }
-    
     func leaveGame() {
         navigationController?.popToRootViewController(animated: true)
     }
     
     func showErrorFlash(_ error: SpyfallError) {
-        HUD.dimsBackground = false
-        HUD.flash(.label(error.message), delay: 1.0)
+        DispatchQueue.main.async { [weak self] in
+            self?.waitingScreenView.spinner.reset()
+        }
+        switch error {
+        case SpyfallError.network: ErrorManager.showPopUp(for: view)
+        default: ErrorManager.showFlash(with: error.message)
+        }
     }
     
     // MARK: - TextField & Keyboard Methods

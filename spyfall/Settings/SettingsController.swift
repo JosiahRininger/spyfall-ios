@@ -8,7 +8,7 @@
 
 import UIKit
 
-fileprivate enum PopUp {
+private enum PopUp {
     case color
     case info
     case ad
@@ -16,7 +16,7 @@ fileprivate enum PopUp {
 
 final class SettingsController: UIViewController, SettingsViewModelDelegate {
     private var settingsView = SettingsView()
-    private var settingsViewModel: SettingsViewModel?
+    private var settingsViewModel = SettingsViewModel()
     private var secondaryColor = UIColor.secondaryColor
     private var parentVC: UIViewController?
     var selectedColor = UIColor.clear
@@ -28,9 +28,9 @@ final class SettingsController: UIViewController, SettingsViewModelDelegate {
         .customRed
     ]
     
-    init(parentVC: UIViewController) {
+    init(parentVC: HomeController?) {
         super.init(nibName: nil, bundle: nil)
-        self.parentVC? = parentVC
+        self.parentVC = parentVC
     }
     
     required init?(coder: NSCoder) {
@@ -41,7 +41,8 @@ final class SettingsController: UIViewController, SettingsViewModelDelegate {
         super.viewDidLoad()
         settingsView.colorsCollectionView.delegate = self
         settingsView.colorsCollectionView.dataSource = self
-        settingsViewModel = SettingsViewModel(delegate: self)
+        settingsViewModel.delegate = self
+        settingsViewModel.retrieveSavedColor()
         
         setupView()
     }
@@ -81,7 +82,7 @@ final class SettingsController: UIViewController, SettingsViewModelDelegate {
         let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(adTapped))
         settingsView.adView.addGestureRecognizer(adTapGesture)
         settingsView.adPopUpView.cancelButton.touchUpInside = { [weak self] in
-            self?.setViews(for: .ad, shouldHidePopUp: false)
+            self?.setViews(for: .ad, shouldHidePopUp: true)
         }
         settingsView.adPopUpView.doneButton.touchUpInside = { [weak self] in
             #if FREE
@@ -106,7 +107,7 @@ final class SettingsController: UIViewController, SettingsViewModelDelegate {
     
     @objc
     private func colorTapped() {
-        settingsViewModel?.retrieveSavedColor()
+        settingsViewModel.retrieveSavedColor()
         setViews(for: .color, shouldHidePopUp: false)
     }
     
@@ -156,7 +157,7 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
         if !cell.isChecked {
             cell.isChecked = true
             selectedColor = cell.cellBackgroundView.backgroundColor ?? UIColor.clear
-            settingsViewModel?.setUserDefaultsColor()
+            settingsViewModel.setUserDefaultsColor()
             secondaryColor = selectedColor == .secondaryBackgroundColor
                 ? UIColor.colors.randomElement()?.value ?? UIColor.blue
                 : selectedColor

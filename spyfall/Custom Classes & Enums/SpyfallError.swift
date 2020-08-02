@@ -29,6 +29,7 @@ enum WaitingScreen: String {
     case usernameIsEmpty = "Please enter a username"
     case enteredOldUsername = "Please enter a new username"
     case usernameIsTaken = "Username is already taken"
+    case unknown = "We are sorry. You were unable to start the game."
 }
 
 enum GameSession: String {

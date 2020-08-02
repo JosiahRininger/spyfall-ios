@@ -11,8 +11,7 @@ import os.log
 
 final class NewGameController: UIViewController, NewGameViewModelDelegate, UITextFieldDelegate {
     private var newGameView = NewGameView()
-    private var newGameViewModel: NewGameViewModel?
-    private var networkErrorPopUp = NetworkErrorPopUpView()
+    private var newGameViewModel = NewGameViewModel()
     private var keyboardHeight: CGFloat = 0.0
     
     private var chosenPacks: [String] {
@@ -26,10 +25,9 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         newGameView.usernameTextField.delegate = self
         newGameView.timeLimitTextField.delegate = self
-        newGameViewModel = NewGameViewModel(delegate: self)
+        newGameViewModel.delegate = self
 
         setupView()
 
@@ -56,7 +54,7 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
         }
         newGameView.create.touchUpInside = { [weak self] in
             guard let self = self else { return }
-            self.newGameViewModel?.createGame(chosenPacks: self.chosenPacks,
+            self.newGameViewModel.createGame(chosenPacks: self.chosenPacks,
                                               initialPlayer: self.newGameView.usernameTextField.text ?? "",
                                               timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "-1") ?? -1)
         }
@@ -64,7 +62,7 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     
     // MARK: - NewGameViewModel Methods
     func newGameLoading() {
-        newGameView.isUserInteractionEnabled = false
+        newGameView.create.isUserInteractionEnabled = false
         newGameView.spinner.animate(with: newGameView.create)
     }
     
@@ -76,7 +74,7 @@ final class NewGameController: UIViewController, NewGameViewModelDelegate, UITex
     
     func createGameFailed() {
         newGameView.spinner.reset()
-        newGameView.isUserInteractionEnabled = true
+        newGameView.create.isUserInteractionEnabled = true
     }
     
     func showErrorMessage(_ error: SpyfallError) {

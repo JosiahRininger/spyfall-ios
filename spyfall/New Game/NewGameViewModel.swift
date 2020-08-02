@@ -16,13 +16,7 @@ protocol NewGameViewModelDelegate: class {
 }
 
 class NewGameViewModel {
-    private weak var delegate: NewGameViewModelDelegate?
-    
-    private var currentWorkItem: WorkItemType?
-    
-    init(delegate: NewGameViewModelDelegate) {
-        self.delegate = delegate
-    }
+    weak var delegate: NewGameViewModelDelegate?
 
     // MARK: - Public Methods
     func createGame(chosenPacks: [String], initialPlayer: String, timeLimit: Int) {
@@ -37,22 +31,15 @@ class NewGameViewModel {
             errorExist(.newGame(.invalidTimeLimitSelected))
         } else {
             delegate?.newGameLoading()
-            currentWorkItem = .createGame
             FirestoreService.createGame(chosenPacks: chosenPacks,
                                         initialPlayer: initialPlayer,
                                         timeLimit: timeLimit) { [weak self] result in
-                                            self?.currentWorkItem = nil
                                             switch result {
                                             case .success(let gameData):
                                                 self?.delegate?.createGameSucceeded(gameData: gameData)
                                             case .failure(let error):
                                                 self?.errorExist(error)
                                             }
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-                guard self?.currentWorkItem == .createGame else { return }
-                FirestoreService.cancelCreateGame()
-                self?.errorExist(.network)
             }
         }
     }

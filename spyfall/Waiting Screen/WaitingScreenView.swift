@@ -45,7 +45,6 @@ class WaitingScreenView: UIView {
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
         addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)
-        spinner = Spinner(frame: CGRect(x: 45.0, y: startGame.frame.minY + 21.0, width: 20.0, height: 20.0))
         startGame.addSubview(spinner)
         setupConstraints()
     }

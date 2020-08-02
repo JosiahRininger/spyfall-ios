@@ -9,22 +9,15 @@
 import UIKit
 
 protocol JoinGameViewModelDelegate: class {
-    func joinGameLoading()
     func joinGameSucceeded(gameData: GameData)
-    func joinGameFailed()
     func showErrorMessage(_ error: SpyfallError)
 }
 
 class JoinGameViewModel {
-    private weak var delegate: JoinGameViewModelDelegate?
-    
-    init(delegate: JoinGameViewModelDelegate) {
-        self.delegate = delegate
-    }
+    weak var delegate: JoinGameViewModelDelegate?
     
     // MARK: - Public Methods
     func joinGame(accessCode: String, username: String) {
-        delegate?.joinGameLoading()
         guard !accessCode.isEmpty else {
             errorExist(.joinGame(.accessCodeIsEmpty))
              return
@@ -52,7 +45,6 @@ class JoinGameViewModel {
     // MARK: - Private Methods
     private func errorExist(_ error: SpyfallError) {
         error.log()
-        delegate?.joinGameFailed()
         delegate?.showErrorMessage(error)
     }
 }

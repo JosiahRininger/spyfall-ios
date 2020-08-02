@@ -15,13 +15,7 @@ protocol SettingsViewModelDelegate: class {
 }
 
 class SettingsViewModel {
-    private weak var delegate: SettingsViewModelDelegate?
-        
-    init(delegate: SettingsViewModelDelegate) {
-        self.delegate = delegate
-        
-        retrieveSavedColor()
-    }
+    weak var delegate: SettingsViewModelDelegate?
     
     // MARK: - Public Methods
     @discardableResult

@@ -22,8 +22,9 @@
 		8A29864824C08D7F007BBC44 /* JoinGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */; };
 		8A29864A24C113BA007BBC44 /* GameSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864924C113BA007BBC44 /* GameSessionViewModel.swift */; };
 		8A29864B24C116B8007BBC44 /* GameSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A29864924C113BA007BBC44 /* GameSessionViewModel.swift */; };
-		8AC1CDA024BFAFF70052E01D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */; };
-		8AC1CDA124BFAFF70052E01D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */; };
+		8A80E10124D5B2710041B902 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A80E10024D5B2710041B902 /* GoogleService-Info.plist */; };
+		8AC1199F24CE3BAC00CC4F5B /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1199E24CE3BAC00CC4F5B /* GameTimer.swift */; };
+		8AC119A024CE3BAC00CC4F5B /* GameTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1199E24CE3BAC00CC4F5B /* GameTimer.swift */; };
 		8AC1CDA324BFEE410052E01D /* NewGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */; };
 		8AC1CDA424BFEE480052E01D /* NewGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */; };
 		8AC1CDA624BFF01B0052E01D /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */; };
@@ -35,6 +36,9 @@
 		8AE4946B24CB0BBC00E8DD58 /* WorkItemType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE4946924CB0BBC00E8DD58 /* WorkItemType.swift */; };
 		8AE4946D24CB36E600E8DD58 /* UserDefaultsBacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE4946C24CB36E600E8DD58 /* UserDefaultsBacked.swift */; };
 		8AE4946E24CB36E600E8DD58 /* UserDefaultsBacked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE4946C24CB36E600E8DD58 /* UserDefaultsBacked.swift */; };
+		8AE70E8C24D7204400508BC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
+		8AE70E8D24D7207500508BC3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
+		8AE70E8E24D7226000508BC3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A80E10024D5B2710041B902 /* GoogleService-Info.plist */; };
 		8E2BD79AC050FC88879F694B /* Pods_SpyfallFree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC8FB325E906ECE3E8A7144A /* Pods_SpyfallFree.framework */; };
 		B2C6A5FED73E8626B3AA95D0 /* Pods_SpyfallPaid.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD0F37229D40A27DA5B39436 /* Pods_SpyfallPaid.framework */; };
 		BF713A0423160C110045F8DC /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF713A0323160C110045F8DC /* String.swift */; };
@@ -45,7 +49,6 @@
 		D704EB0B22EC85AB0083DA2A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704EB0A22EC85AB0083DA2A /* SettingsView.swift */; };
 		D705AE272327DD23004DBC25 /* ChangeNamePopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D705AE262327DD23004DBC25 /* ChangeNamePopUpView.swift */; };
 		D706256222586D3800A80B76 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706256122586D3800A80B76 /* AppDelegate.swift */; };
-		D706256922586D3900A80B76 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D706257822586DBC00A80B76 /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257722586DBC00A80B76 /* HomeController.swift */; };
 		D706257B225B87E600A80B76 /* NewGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D706257A225B87E600A80B76 /* NewGameController.swift */; };
 		D70AA4E0235A085800B372D7 /* SystemLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = D70AA4DF235A085800B372D7 /* SystemLogger.swift */; };
@@ -117,7 +120,6 @@
 		D77A0DD724121671005AF53D /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D77A0DDB24121671005AF53D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D738F59723501208003CA462 /* Localizable.strings */; };
 		D77A0DDC24121671005AF53D /* check_animation.json in Resources */ = {isa = PBXBuildFile; fileRef = D7A72D3F22C19013005D1831 /* check_animation.json */; };
-		D77A0DDD24121671005AF53D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D706256822586D3900A80B76 /* Assets.xcassets */; };
 		D7A72D3822BED262005D1831 /* PackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3722BED262005D1831 /* PackView.swift */; };
 		D7A72D3A22BFCE75005D1831 /* GameSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3922BFCE75005D1831 /* GameSessionView.swift */; };
 		D7A72D3C22BFD260005D1831 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7A72D3B22BFD260005D1831 /* UserInfoView.swift */; };
@@ -148,7 +150,8 @@
 		8A031CC724C66FF200EAEFEB /* ErrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorManager.swift; sourceTree = "<group>"; };
 		8A29864624C08D70007BBC44 /* JoinGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGameViewModel.swift; sourceTree = "<group>"; };
 		8A29864924C113BA007BBC44 /* GameSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSessionViewModel.swift; sourceTree = "<group>"; };
-		8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8A80E10024D5B2710041B902 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		8AC1199E24CE3BAC00CC4F5B /* GameTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameTimer.swift; sourceTree = "<group>"; };
 		8AC1CDA224BFEE410052E01D /* NewGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewGameViewModel.swift; sourceTree = "<group>"; };
 		8AC1CDA524BFF01B0052E01D /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		8AE4946024C9BE5500E8DD58 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -318,7 +321,7 @@
 				D738F59723501208003CA462 /* Localizable.strings */,
 				D706256D22586D3900A80B76 /* SpyfallFree.plist */,
 				D774E9822412909F0089094E /* SpyfallPaid.plist */,
-				8AC1CD9F24BFAFF60052E01D /* GoogleService-Info.plist */,
+				8A80E10024D5B2710041B902 /* GoogleService-Info.plist */,
 			);
 			path = spyfall;
 			sourceTree = "<group>";
@@ -399,6 +402,7 @@
 			children = (
 				D7A9F654232068FD00649F6D /* Button.swift */,
 				D738F591234FAF1D003CA462 /* NavigationController.swift */,
+				8AE4946C24CB36E600E8DD58 /* UserDefaultsBacked.swift */,
 				D7C4E77C2330721B00771C3F /* Spinner.swift */,
 				D7A72D3B22BFD260005D1831 /* UserInfoView.swift */,
 				D769B75223158B63003F05E3 /* CustomPopUpView.swift */,
@@ -408,7 +412,7 @@
 				D7DA72E223CC092900ECF67B /* DispatchQueue.swift */,
 				8A031CC124C37AC600EAEFEB /* SpyfallError.swift */,
 				8AE4946924CB0BBC00E8DD58 /* WorkItemType.swift */,
-				8AE4946C24CB36E600E8DD58 /* UserDefaultsBacked.swift */,
+				8AC1199E24CE3BAC00CC4F5B /* GameTimer.swift */,
 			);
 			path = "Custom Classes & Enums";
 			sourceTree = "<group>";
@@ -541,9 +545,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D738F59523501208003CA462 /* Localizable.strings in Resources */,
-				8AC1CDA024BFAFF70052E01D /* GoogleService-Info.plist in Resources */,
+				8A80E10124D5B2710041B902 /* GoogleService-Info.plist in Resources */,
+				8AE70E8D24D7207500508BC3 /* Assets.xcassets in Resources */,
 				D7A72D4022C19017005D1831 /* check_animation.json in Resources */,
-				D706256922586D3900A80B76 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -552,9 +556,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D77A0DDB24121671005AF53D /* Localizable.strings in Resources */,
-				8AC1CDA124BFAFF70052E01D /* GoogleService-Info.plist in Resources */,
+				8AE70E8E24D7226000508BC3 /* GoogleService-Info.plist in Resources */,
+				8AE70E8C24D7204400508BC3 /* Assets.xcassets in Resources */,
 				D77A0DDC24121671005AF53D /* check_animation.json in Resources */,
-				D77A0DDD24121671005AF53D /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +741,7 @@
 				D769B74D2314611B003F05E3 /* UserDefaultKeys.swift in Sources */,
 				D738F592234FAF1D003CA462 /* NavigationController.swift in Sources */,
 				8A031CBC24C2609500EAEFEB /* WaitingScreenViewModel.swift in Sources */,
+				8AC1199F24CE3BAC00CC4F5B /* GameTimer.swift in Sources */,
 				D7FD37DC22666D180043A8D4 /* PlayersWaitingTableViewCell.swift in Sources */,
 				D70CF92322D3CC840093AB94 /* GameData.swift in Sources */,
 				8A031CC224C37AC600EAEFEB /* SpyfallError.swift in Sources */,
@@ -803,6 +808,7 @@
 				D77A0DB024121671005AF53D /* UserDefaultKeys.swift in Sources */,
 				D77A0DB124121671005AF53D /* NavigationController.swift in Sources */,
 				8A031CBD24C265C800EAEFEB /* WaitingScreenViewModel.swift in Sources */,
+				8AC119A024CE3BAC00CC4F5B /* GameTimer.swift in Sources */,
 				D77A0DB424121671005AF53D /* PlayersWaitingTableViewCell.swift in Sources */,
 				D77A0DB524121671005AF53D /* GameData.swift in Sources */,
 				8A031CC324C37AD000EAEFEB /* SpyfallError.swift in Sources */,
@@ -995,7 +1001,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 964C4FE750111C1BCBE8DAEB /* Pods-SpyfallFree.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconFree;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1028,7 +1034,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2BB347A6C2AF7C3C5737C8A7 /* Pods-SpyfallFree.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconFree;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = BPW45ZHW4H;
@@ -1060,7 +1066,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8FAF75D0360856B87D6ED4F7 /* Pods-SpyfallPaid.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconPaid;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1094,7 +1100,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 43586E1DA46DE3A6B2C7CC5B /* Pods-SpyfallPaid.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconPaid;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = BPW45ZHW4H;

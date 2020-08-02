@@ -11,15 +11,14 @@ import os.log
 
 final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UITextFieldDelegate {
     private var joinGameView = JoinGameView()
-    private var joinGameViewModel: JoinGameViewModel?
+    private var joinGameViewModel = JoinGameViewModel()
     private var keyboardHeight: CGFloat = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         joinGameView.usernameTextField.delegate = self
         joinGameView.accessCodeTextField.delegate = self
-        joinGameViewModel = JoinGameViewModel(delegate: self)
+        joinGameViewModel.delegate = self
         
         setupView()
         
@@ -43,8 +42,10 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
     private func setupButtons() {
         joinGameView.join.touchUpInside = { [weak self] in
             guard let self = self else { return }
-            self.joinGameViewModel?.joinGame(accessCode: self.joinGameView.accessCodeTextField.text?.lowercased() ?? "",
+            self.joinGameViewModel.joinGame(accessCode: self.joinGameView.accessCodeTextField.text?.lowercased() ?? "",
                                              username: self.joinGameView.usernameTextField.text ?? "")
+            self.joinGameView.join.isUserInteractionEnabled = false
+            self.joinGameView.spinner.animate(with: self.joinGameView.join)
         }
 
         joinGameView.back.touchUpInside = { [weak self] in
@@ -53,22 +54,18 @@ final class JoinGameController: UIViewController, JoinGameViewModelDelegate, UIT
     }
     
     // MARK: - NewGameViewModel Methods
-    func joinGameLoading() {
-        joinGameView.isUserInteractionEnabled = false
-        joinGameView.spinner.animate(with: self.joinGameView.join)
-    }
-    
     func joinGameSucceeded(gameData: GameData) {
-        joinGameView.spinner.reset()
-        self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
-    }
-    
-    func joinGameFailed() {
-        joinGameView.spinner.reset()
-        joinGameView.isUserInteractionEnabled = true
+        DispatchQueue.main.async { [weak self] in
+            self?.joinGameView.spinner.reset()
+        }
+        navigationController?.pushViewController(WaitingScreenController(gameData: gameData), animated: true)
     }
     
     func showErrorMessage(_ error: SpyfallError) {
+        DispatchQueue.main.async { [weak self] in
+            self?.joinGameView.spinner.reset()
+            self?.joinGameView.join.isUserInteractionEnabled = true
+        }
         switch error {
         case SpyfallError.network: ErrorManager.showPopUp(for: view)
         default: ErrorManager.showFlash(with: error.message)

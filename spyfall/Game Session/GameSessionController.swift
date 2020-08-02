@@ -9,32 +9,23 @@
 import UIKit
 import GoogleMobileAds
 
-final class GameSessionController: UIViewController, GameSessionViewModelDelegate, GADBannerViewDelegate {
+final class GameSessionController: UIViewController, GameSessionViewModelDelegate, GameTimerDelegate, GADBannerViewDelegate {
 
     private var scrollView = UIScrollView()
     private var gameSessionView = GameSessionView()
-    private var gameSessionViewModel: GameSessionViewModel?
+    private var gameSessionViewModel: GameSessionViewModel
     private var customPopUp = EndGamePopUpView()
-    private var firstPlayer = String()
-    private var timer = Timer()
-    private var currentTimeLeft: TimeInterval = 0.0
-    private var maxTimeInterval: TimeInterval = 0.0
-    private var startDate: Date?
-    private var playerList: [String] {
-        gameSessionViewModel?.getPlayerList() ?? []
-    }
-    private var locationList: [String] {
-        gameSessionViewModel?.getLocationList() ?? []
-    }
+    private var gameTimer: GameTimer?
+    private var playerList: [String] { gameSessionViewModel.getPlayerList() }
+    private var locationList: [String] { gameSessionViewModel.getLocationList() }
 
 #if FREE
     private var bannerView = UIElementsManager.createBannerView()
 #endif
     
     init(gameData: GameData) {
-        self.firstPlayer = gameData.playerObjectList.first?.username ?? ""
+        gameSessionViewModel = GameSessionViewModel(gameData: gameData)
         super.init(nibName: nil, bundle: nil)
-        gameSessionViewModel = GameSessionViewModel(delegate: self, gameData: gameData)
     }
     
     required init?(coder: NSCoder) {
@@ -47,6 +38,8 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
         gameSessionView.playersCollectionView.dataSource = self
         gameSessionView.locationsCollectionView.delegate = self
         gameSessionView.locationsCollectionView.dataSource = self
+        gameSessionViewModel.delegate = self
+        gameSessionViewModel.viewDidLoad()
         
         setupView()
     }
@@ -84,20 +77,20 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
     
     private func setupButtons() {
         gameSessionView.endGame.touchUpInside = { [weak self] in
-            if self?.currentTimeLeft != 0 {
+            if self?.gameSessionView.playAgain.isHidden ?? true {
                 self?.endGamePopUp(shouldHide: false)
             } else {
-                self?.gameSessionViewModel?.endGame()
+                self?.gameSessionViewModel.endGame()
             }
         }
         gameSessionView.playAgain.touchUpInside = { [weak self] in
-            self?.gameSessionViewModel?.resetGameData()
+            self?.gameSessionViewModel.resetGameData()
         }
         customPopUp.endGamePopUpView.cancelButton.touchUpInside = { [weak self] in
             self?.endGamePopUp(shouldHide: true)
         }
         customPopUp.endGamePopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.gameSessionViewModel?.endGame()
+            self?.gameSessionViewModel.endGame()
         }
     }
     
@@ -108,24 +101,12 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
         customPopUp.isHidden = shouldHide
     }
     
-    private func updateGameSessionView(gameData: GameData) {
-        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
-        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
-        
-        gameSessionView.playersCollectionHeight.constant = CGFloat((playerList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
-        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
-        gameSessionView.playersCollectionView.reloadData()
-        gameSessionView.locationsCollectionView.reloadData()
-    }
-    
     // MARK: - GameSessionViewModel Methods
     func beginGameSession(with newGameData: GameData) {
+        gameTimer = GameTimer(delegate: self, timeLimit: newGameData.timeLimit)
         updateGameSessionView(gameData: newGameData)
 
         gameSessionView.timerLabel.text = "\(newGameData.timeLimit):00"
-        maxTimeInterval = TimeInterval(newGameData.timeLimit * 60)  // Minutes * Seconds
-                
-        setupTimer()
         gameSessionView.layoutIfNeeded()
     }
     
@@ -136,37 +117,35 @@ final class GameSessionController: UIViewController, GameSessionViewModelDelegat
         }
     }
     
-    func updateViews(gameData: GameData) {
-        firstPlayer = gameData.firstPlayer ?? ""
-        updateGameSessionView(gameData: gameData)
+    func updateGameSessionView(gameData: GameData) {
+        gameSessionView.userInfoView.roleLabel.text = "Role: \(gameData.playerObject.role)"
+        gameSessionView.userInfoView.locationLabel.text = gameData.playerObject.role == "The Spy!" ? "Figure out the location!" : String(format: "Location: %@", gameData.chosenLocation)
+        
+        gameSessionView.playersCollectionHeight.constant = CGFloat((playerList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
+        gameSessionView.locationsCollectionHeight.constant = CGFloat((locationList.count + 1) / 2) * (UIElementsManager.collectionViewCellHeight + 10)
+        gameSessionView.playersCollectionView.updateConstraintsIfNeeded()
+        gameSessionView.playersCollectionView.updateConstraintsIfNeeded()
+        gameSessionView.playersCollectionView.reloadData()
+        gameSessionView.locationsCollectionView.reloadData()
+        gameSessionView.layoutIfNeeded()
     }
     
-    // MARK: - Timer Logic
-    private func setupTimer() {
-        startDate = Date()
-        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-            self?.timerFinished()
+    func showErrorFlash(_ error: SpyfallError) {
+        switch error {
+        case SpyfallError.network: ErrorManager.showPopUp(for: view)
+        default: ErrorManager.showFlash(with: error.message)
         }
     }
+    
+    // MARK: - GameTimer Methods
+    func updateTimerLabel(with timeLeft: TimeInterval) {
+        gameSessionView.timerLabel.text = String.timerFormat(timeInterval: timeLeft)
+    }
 
-    private func timerFinished() {
-        guard let startDate = startDate else { timer.invalidate(); return }
-
-        let interval = Date().timeIntervalSince(startDate)
-        let newTimeLeft = max(0, maxTimeInterval - interval)
-        guard newTimeLeft != currentTimeLeft else { return }
-        currentTimeLeft = newTimeLeft
-
-        switch currentTimeLeft {
-        case 0:
-            gameSessionView.timerLabel.text = "0:00"
-            timer.invalidate()
-            self.startDate = nil
-            gameSessionView.endGameTopAnchor.constant = UIElementsManager.buttonHeight + 48
-            gameSessionView.playAgain.isHidden = false
-        default:
-            gameSessionView.timerLabel.text = String.timerFormat(timeInterval: currentTimeLeft)
-        }
+    func timerFinished() {
+        gameSessionView.timerLabel.text = "0:00"
+        gameSessionView.endGameTopAnchor.constant = UIElementsManager.buttonHeight + 48
+        gameSessionView.playAgain.isHidden = false
     }
 }
 
@@ -185,7 +164,8 @@ extension GameSessionController: UICollectionViewDelegate, UICollectionViewDataS
         switch collectionView {
         case gameSessionView.playersCollectionView:
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.IDs.playersCollectionViewCellId, for: indexPath) as? PlayersCollectionViewCell else { return UICollectionViewCell() }
-            cell.configure(username: playerList[indexPath.row], isFirstPlayer: playerList[indexPath.row] == firstPlayer)
+            cell.configure(username: playerList[indexPath.row],
+                           isFirstPlayer: playerList[indexPath.row] == gameSessionViewModel.getFirstPlayer())
             return cell
             
         default:
