@@ -11,21 +11,17 @@ import UIKit
 class GameSessionView: UIView {
     
     var timerLabel = UIElementsManager.createLabel(with: "", fontSize: 48, textAlignment: .center, isHeader: true)
-    
     var userInfoView = UIElementsManager.createUserInfoView()
     
     var playersLabel = UIElementsManager.createLabel(with: "Players:", fontSize: 24, textAlignment: .center, isHeader: true)
-    
     var playersCollectionHeight = NSLayoutConstraint()
     var playersCollectionView = UIElementsManager.createCollectionView()
     
     var locationsLabel = UIElementsManager.createLabel(with: "Locations:", fontSize: 24, textAlignment: .center, isHeader: true)
-    
     var locationsCollectionHeight = NSLayoutConstraint()
     var locationsCollectionView = UIElementsManager.createCollectionView()
     
     var endGameTopAnchor = NSLayoutConstraint()
-    
     var endGame = UIElementsManager.createButton(with: "End Game")
     var playAgain = UIElementsManager.createButton(with: "Play Again", color: .secondaryBackgroundColor)
 

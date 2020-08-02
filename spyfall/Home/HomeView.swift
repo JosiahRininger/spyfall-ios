@@ -40,9 +40,8 @@ class HomeView: UIView {
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
@@ -51,13 +50,13 @@ class HomeView: UIView {
         
         addSubviews(settings, welcomeToLabel, spyfallLabel, newGame, joinGame, rulesView, rulesPopUpView)
         rulesView.addSubviews(infoView, rulesLabel)
+        rulesPopUpView.alpha = 0.0
         
         setupConstraints()
         setupRulesPopUpView()
     }
     
     private func setupConstraints() {
-        
         NSLayoutConstraint.activate([
             infoView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -89),
             infoView.trailingAnchor.constraint(equalTo: centerXAnchor, constant: -11),

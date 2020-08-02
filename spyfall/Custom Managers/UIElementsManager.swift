@@ -214,6 +214,18 @@ class UIElementsManager {
         
         return cv
     }
+    
+    static func createToolBar(with button: UIBarButtonItem) -> UIToolbar {
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        let doneButton = button
+        doneButton.tintColor = .secondaryColor
+        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+
+        return toolBar
+    }
 
 #if FREE
     static func createBannerView() -> GADBannerView {

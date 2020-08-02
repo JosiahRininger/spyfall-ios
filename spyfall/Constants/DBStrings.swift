@@ -14,12 +14,20 @@ extension Constants {
         // Strings for game data
 #if DEBUG
         static let games = "games_test"
+        static let feedback_test = "feedback_test"
 #else
         static let games = "games"
+        static let feedback = "feedback_test"
 #endif
         static let playerList = "playerList"
         static let locationList = "locationList"
         static let playerObjectList = "playerObjectList"
+        static let timeLimit = "timeLimit"
+        static let chosenLocation = "chosenLocation"
+        static let chosenPacks = "chosenPacks"
+        static let started = "started"
+        static let username = "username"
+        static let expiration = "expiration"
         
         // Strings for pack data
         static let packs = "packs"

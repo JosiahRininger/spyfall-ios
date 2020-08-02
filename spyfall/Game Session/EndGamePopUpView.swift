@@ -12,6 +12,13 @@ class EndGamePopUpView: UIView {
     lazy var endGamePopUpView = CustomPopUpView(frame: .zero, title: "End Game", twoButtons: true)
     lazy var endGameLabel = UIElementsManager.createLabel(with: "Are you sure you want to end the game?", fontSize: 24, color: .subText, textAlignment: .center)
     
+    override var isHidden: Bool {
+        didSet {
+            isUserInteractionEnabled = !isHidden
+            endGamePopUpView.isHidden = isHidden
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()

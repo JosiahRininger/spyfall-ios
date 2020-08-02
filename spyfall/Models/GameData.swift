@@ -11,55 +11,66 @@ import Foundation
 class GameData {
     // Variable Declaration
     var accessCode: String
-    var playerObject: Player
+    var oldUsername: String
+    var startedGame: String
+    var playerObject: Player {
+        didSet {
+            oldUsername = oldValue.username
+        }
+    }
     var playerList: [String]
     var playerObjectList: [Player]
     var started: Bool
-    var seguedToGameSession: Bool
     var timeLimit: Int
     var chosenPacks: [String]
     var chosenLocation: String
     var locationList: [String]
     var expiration: Int64
+    private(set) var firstPlayer: String = ""
     
     // For initializing GameData object with dummy data
-    init() {
-        self.accessCode = String()
-        self.playerObject = Player(role: String(), username: String(), votes: Int())
-        self.playerList = [String]()
+    init(accessCode: String = String(),
+         playerList: [String] = [String](),
+         playerObject: Player = Player(role: String(), username: String(), votes: Int())) {
+        self.accessCode = accessCode
+        self.playerObject = playerObject
+        self.oldUsername = playerObject.username
+        self.startedGame = ""
+        self.playerList = playerList
         self.playerObjectList = [Player]()
         self.started = true
-        self.seguedToGameSession = false
         self.timeLimit = Int()
         self.chosenPacks = [String]()
         self.chosenLocation = String()
         self.locationList = [String()]
-        self.expiration = Int64(Date().timeIntervalSince1970 + 21600)
+        self.expiration = Int64(Date().timeIntervalSince1970 + 7200)
     }
     
     // For initializing GameData object with actual data
     init(accessCode: String, initialPlayer: String, chosenPacks: [String], locationList: [String], timeLimit: Int, chosenLocation: String) {
         self.accessCode = accessCode
         self.playerObject = Player(role: "", username: initialPlayer, votes: 0)
+        self.oldUsername = playerObject.username
+        self.startedGame = ""
         self.playerList = [initialPlayer]
         self.playerObjectList = [Player]()
         self.started = false
-        self.seguedToGameSession = false
         self.timeLimit = timeLimit
         self.chosenLocation = chosenLocation
         self.chosenPacks = chosenPacks
         self.locationList = locationList
-        self.expiration = Int64(Date().timeIntervalSince1970 + 21600)
+        self.expiration = Int64(Date().timeIntervalSince1970 + 7200)
     }
     
     // For comparing GameData objects
     static func += (lhs: inout GameData, rhs: GameData) {
         lhs.accessCode = rhs.accessCode
         lhs.playerObject = rhs.playerObject
+        lhs.oldUsername = rhs.oldUsername
+        lhs.startedGame = rhs.startedGame
         lhs.playerList = rhs.playerList
         lhs.playerObjectList = rhs.playerObjectList
         lhs.started = rhs.started
-        lhs.seguedToGameSession = rhs.seguedToGameSession
         lhs.timeLimit = rhs.timeLimit
         lhs.chosenPacks = rhs.chosenPacks
         lhs.chosenLocation = rhs.chosenLocation
@@ -70,14 +81,14 @@ class GameData {
     // Converts desired GameData properties to a dictionary for Firebase
     func toDictionary() -> [String: Any] {
         let dictionary: [String: Any] = [
-            "chosenLocation": self.chosenLocation,
-            "chosenPacks": self.chosenPacks,
+            Constants.DBStrings.chosenLocation: self.chosenLocation,
+            Constants.DBStrings.chosenPacks: self.chosenPacks,
             Constants.DBStrings.locationList: self.locationList,
             Constants.DBStrings.playerList: self.playerList,
-            "playerObjectList": self.playerObjectList,
-            "started": self.started,
-            "timeLimit": self.timeLimit,
-            "expiration": self.expiration
+            Constants.DBStrings.playerObjectList: self.playerObjectList,
+            Constants.DBStrings.started: self.started,
+            Constants.DBStrings.timeLimit: self.timeLimit,
+            Constants.DBStrings.expiration: self.expiration
         ]
         return dictionary
     }
@@ -86,6 +97,13 @@ class GameData {
     func resetToPlayAgain() {
         self.playerObjectList = []
         self.started = false
-        self.seguedToGameSession = false
+        self.startedGame = ""
+    }
+    
+    func setFirstPlayer() {
+        firstPlayer = playerObjectList
+            .map({ $0.username })
+            .filter({ playerList.contains($0) })
+            .first ?? ""
     }
 }

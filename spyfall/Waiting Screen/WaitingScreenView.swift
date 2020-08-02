@@ -25,25 +25,27 @@ class WaitingScreenView: UIView {
 
     var leaveGame = UIElementsManager.createButton(with: "Leave Game", color: .secondaryBackgroundColor)
     var startGame = UIElementsManager.createButton(with: "Start Game")
+    var spinner = Spinner(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
+        translatesAutoresizingMaskIntoConstraints = false
         
         tableView.register(PlayersWaitingTableViewCell.self, forCellReuseIdentifier: Constants.IDs.playerListCellId)
         tableHeight = tableView.heightAnchor.constraint(equalToConstant: 58)
         
         addSubviews(waitingForPlayersLabel, accessCodeLabel, tableView, codeLabel, leaveGame, startGame)
+        startGame.addSubview(spinner)
         setupConstraints()
     }
     

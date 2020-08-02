@@ -8,33 +8,52 @@
 
 import UIKit
 
-final class SettingsController: UIViewController {
+private enum PopUp {
+    case color
+    case info
+    case ad
+}
 
-    var settingsView = SettingsView()
-    var colors: [UIColor] = []
+final class SettingsController: UIViewController, SettingsViewModelDelegate {
+    private var settingsView = SettingsView()
+    private var settingsViewModel = SettingsViewModel()
+    private var secondaryColor = UIColor.secondaryColor
+    private var parentVC: UIViewController?
     var selectedColor = UIColor.clear
-    var secondaryColor = UIColor.secondaryColor
-    var oldColorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor)
-    var homeVC = UIViewController()
+    private let colors: [UIColor] = [
+        .customPurple,
+        .customBlue,
+        .customGreen,
+        .customOrange,
+        .customRed
+    ]
+    
+    init(parentVC: HomeController?) {
+        super.init(nibName: nil, bundle: nil)
+        self.parentVC = parentVC
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         settingsView.colorsCollectionView.delegate = self
         settingsView.colorsCollectionView.dataSource = self
+        settingsViewModel.delegate = self
+        settingsViewModel.retrieveSavedColor()
         
-        getColors()
-        retrieveSavedColor()
-        
-        setupButtonActions()
         setupView()
     }
     
+    // MARK: - Setup UI
     private func setupView() {
+        setupButtons()
         view = settingsView
     }
     
-    private func setupButtonActions() {
+    private func setupButtons() {
         settingsView.back.touchUpInside = { [weak self] in
             self?.dismiss(animated: true)
         }
@@ -42,8 +61,12 @@ final class SettingsController: UIViewController {
         // Sets up the actions around the color pop up
         let colorTapGesture = UITapGestureRecognizer(target: self, action: #selector(colorTapped))
         settingsView.colorView.addGestureRecognizer(colorTapGesture)
-        settingsView.colorPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
-        settingsView.colorPopUpView.doneButton.touchUpInside = { [weak self] in self?.colorPopupDoneTapped() }
+        settingsView.colorPopUpView.cancelButton.touchUpInside = { [weak self] in
+            self?.setViews(for: .color, shouldHidePopUp: true)
+        }
+        settingsView.colorPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.colorPopUpDoneTapped()
+        }
         
         // Sets up the actions around the info pop up
         let infoTapGesture = UITapGestureRecognizer(target: self, action: #selector(infoTapped))
@@ -51,102 +74,71 @@ final class SettingsController: UIViewController {
         let emailTapGesture = UITapGestureRecognizer(target: self, action: #selector(emailTapped))
         settingsView.emailLabel.isUserInteractionEnabled = true
         settingsView.emailLabel.addGestureRecognizer(emailTapGesture)
-        settingsView.infoPopUpView.doneButton.touchUpInside = { [weak self] in self?.resetViews() }
+        settingsView.infoPopUpView.doneButton.touchUpInside = { [weak self] in
+            self?.setViews(for: .info, shouldHidePopUp: true)
+        }
         
         // Sets up the actions around the remove ad pop up
         let adTapGesture = UITapGestureRecognizer(target: self, action: #selector(adTapped))
         settingsView.adView.addGestureRecognizer(adTapGesture)
-        settingsView.adPopUpView.cancelButton.touchUpInside = { [weak self] in self?.resetViews() }
+        settingsView.adPopUpView.cancelButton.touchUpInside = { [weak self] in
+            self?.setViews(for: .ad, shouldHidePopUp: true)
+        }
         settingsView.adPopUpView.doneButton.touchUpInside = { [weak self] in
             #if FREE
                 if let url = URL(string: Constants.IDs.appStoreLinkURL) {
                     UIApplication.shared.open(url)
                 }
             #endif
-            self?.resetViews()
+            self?.setViews(for: .ad, shouldHidePopUp: true)
         }
     }
     
-    @objc private func colorTapped() {
-        settingsView.settingsStackView.isUserInteractionEnabled = false
-        settingsView.back.isUserInteractionEnabled = false
-        selectedColor = retrieveSavedColor()
-        settingsView.colorPopUpView.isHidden = false
+    // MARK: - Helper Methods
+    private func setViews(for popup: PopUp, shouldHidePopUp: Bool) {
+        settingsView.settingsStackView.isUserInteractionEnabled = shouldHidePopUp
+        settingsView.back.isUserInteractionEnabled = shouldHidePopUp
+        switch popup {
+        case .color: settingsView.colorPopUpView.isHidden = shouldHidePopUp
+        case .info: settingsView.infoPopUpView.isHidden = shouldHidePopUp
+        case .ad: settingsView.adPopUpView.isHidden = shouldHidePopUp
+        }
     }
     
-    @objc private func infoTapped() {
-        settingsView.settingsStackView.isUserInteractionEnabled = false
-        settingsView.back.isUserInteractionEnabled = false
-        settingsView.infoPopUpView.isHidden = false
+    @objc
+    private func colorTapped() {
+        settingsViewModel.retrieveSavedColor()
+        setViews(for: .color, shouldHidePopUp: false)
     }
     
-    @objc private func emailTapped() {
+    @objc
+    private func infoTapped() {
+        setViews(for: .info, shouldHidePopUp: false)
+    }
+    
+    @objc
+    private func adTapped() {
+        setViews(for: .ad, shouldHidePopUp: false)
+    }
+    
+    @objc
+    private func emailTapped() {
         if let text = settingsView.emailLabel.text, let url = URL(string: "mailto:\(text)") {
             UIApplication.shared.open(url)
         }
     }
     
-    @objc private func adTapped() {
-        settingsView.settingsStackView.isUserInteractionEnabled = false
-        settingsView.back.isUserInteractionEnabled = false
-        settingsView.adPopUpView.isHidden = false
-    }
-    
-    @discardableResult private func retrieveSavedColor() -> UIColor {
-        guard let colorString = UserDefaults.standard.object(forKey: Constants.UserDefaultKeys.secondaryColor) as? String else { return UIColor.clear }
-        switch colorString {
-        case ColorOptions.purple.rawValue: selectedColor = .customPurple
-        case ColorOptions.blue.rawValue: selectedColor = .customBlue
-        case ColorOptions.green.rawValue: selectedColor = .customGreen
-        case ColorOptions.orange.rawValue: selectedColor = .customOrange
-        case ColorOptions.red.rawValue: selectedColor = .customRed
-        case ColorOptions.random.rawValue: selectedColor = .secondaryBackgroundColor; return UIColor.colors.randomElement()?.value ?? UIColor.blue
-        default: return UIColor.colors.randomElement()?.value ?? UIColor.blue
-        }
-        return selectedColor
-    }
-    
-    private func resetViews() {
-        self.settingsView.settingsStackView.isUserInteractionEnabled = true
-        self.settingsView.back.isUserInteractionEnabled = true
-        self.settingsView.colorPopUpView.isHidden = true
-        self.settingsView.infoPopUpView.isHidden = true
-        self.settingsView.adPopUpView.isHidden = true
-    }
-    
-    private func colorPopupDoneTapped() {
-        resetViews()
+    private func colorPopUpDoneTapped() {
+        setViews(for: .color, shouldHidePopUp: true)
         UIColor.secondaryColor = self.secondaryColor
         settingsView.infoPopUpView.doneButton.backgroundColor = .secondaryColor
         settingsView.emailLabel.textColor = .secondaryColor
         settingsView.adPopUpView.doneButton.backgroundColor = .secondaryColor
-        homeVC.viewWillAppear(true)
-    }
-    
-    private func getColors() {
-        colors.append(.customPurple)
-        colors.append(.customBlue)
-        colors.append(.customGreen)
-        colors.append(.customOrange)
-        colors.append(.customRed)
-    }
-    
-    private func checkUserDefaults() {
-        if let colorString = UserDefaults.standard.string(forKey: Constants.UserDefaultKeys.secondaryColor) {
-            switch selectedColor {
-            case .customPurple: UserDefaults.standard.set(ColorOptions.purple.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            case .customBlue: UserDefaults.standard.set(ColorOptions.blue.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            case .customGreen: UserDefaults.standard.set(ColorOptions.green.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            case .customOrange: UserDefaults.standard.set(ColorOptions.orange.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            case .customRed: UserDefaults.standard.set(ColorOptions.red.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            case .secondaryBackgroundColor: UserDefaults.standard.set(ColorOptions.random.rawValue, forKey: Constants.UserDefaultKeys.secondaryColor)
-            default: print("Could not correctly retrieve user default")
-            }
-            oldColorString = colorString
-        }
+        parentVC?.viewWillAppear(true)
     }
 }
 
+// MARK: - CollectionView Delegate & Data Source
 extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // Returns count of all colors plus 1 for the random color option
@@ -165,7 +157,7 @@ extension SettingsController: UICollectionViewDelegate, UICollectionViewDataSour
         if !cell.isChecked {
             cell.isChecked = true
             selectedColor = cell.cellBackgroundView.backgroundColor ?? UIColor.clear
-            checkUserDefaults()
+            settingsViewModel.setUserDefaultsColor()
             secondaryColor = selectedColor == .secondaryBackgroundColor
                 ? UIColor.colors.randomElement()?.value ?? UIColor.blue
                 : selectedColor
