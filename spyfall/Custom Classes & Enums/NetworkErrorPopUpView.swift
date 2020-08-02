@@ -12,20 +12,25 @@ class NetworkErrorPopUpView: UIView {
     var networkErrorPopUpView = CustomPopUpView(frame: .zero, title: "Error title".localize(), twoButtons: false)
     var errorLabel = UIElementsManager.createLabel(with: "Error message".localize(), fontSize: 24, color: .subText, textAlignment: .center)
     
+    override var isHidden: Bool {
+        didSet {
+            isUserInteractionEnabled = !isHidden
+            networkErrorPopUpView.isHidden = isHidden
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .clear
-        isUserInteractionEnabled = false
         
         addSubview(networkErrorPopUpView)
         setupNetworkErrorPopUpView()

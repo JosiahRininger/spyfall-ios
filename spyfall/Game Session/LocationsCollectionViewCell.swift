@@ -39,7 +39,6 @@ class LocationsCollectionViewCell: UICollectionViewCell {
         isUserInteractionEnabled = true
         backgroundColor = .cellBackground
         layer.cornerRadius = 9
-        
         addSubview(locationLabel)
         setupConstraints()
     }

@@ -20,22 +20,26 @@ class JoinGameView: UIView {
     
     var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
     var join = UIElementsManager.createButton(with: "Join")
+    var spinner = Spinner(frame: .zero)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupView()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setupView() {
         frame = CGRect(x: 0, y: 0, width: UIElementsManager.windowWidth, height: UIElementsManager.windowHeight)
         backgroundColor = .primaryBackgroundColor
         
+        accessCodeTextField.autocapitalizationType = .none
+        
         addSubviews(joinGameLabel, usernameLabel, usernameTextField, accessCodeLabel, accessCodeTextField, join, back)
+        spinner = Spinner(frame: CGRect(x: 45.0, y: join.frame.minY + 21.0, width: 20.0, height: 20.0))
+        join.addSubview(spinner)
         setupConstraints()
     }
     

@@ -27,7 +27,7 @@ extension UIColor {
         let red = CGFloat((hexint & 0xff0000) >> 16) / 255.0
         let green = CGFloat((hexint & 0xff00) >> 8) / 255.0
         let blue = CGFloat((hexint & 0xff) >> 0) / 255.0
-        let alpha = alpha!
+        let alpha = alpha ?? 1.0
         // Create color object, specifying alpha as well
         let color = UIColor(red: red, green: green, blue: blue, alpha: alpha)
         return color
@@ -73,11 +73,27 @@ extension UIColor {
         }
     }()
     
+    static let popupBackground: UIColor = {
+        if #available(iOS 13.0, *) {
+            return UIColor(named: "PopupBackground") ?? .hexToColor(hexString: "#222222")
+        } else {
+            return .hexToColor(hexString: "#222222")
+        }
+    }()
+    
+    static let popupShadow: UIColor = {
+        if #available(iOS 13.0, *) {
+            return UIColor(named: "PopupShadow") ?? .hexToColor(hexString: "#7F7F7F")
+        } else {
+            return .hexToColor(hexString: "#7F7F7F")
+        }
+    }()
+    
     static let secondaryGray: UIColor = .hexToColor(hexString: "#707070")
     static let packOneColor: UIColor = .hexToColor(hexString: "#9533C7")
     static let packTwoColor: UIColor = .hexToColor(hexString: "#00A0EF")
     static let specialPackColor: UIColor = .hexToColor(hexString: "#2FD566")
-    
+
     // Secondary Color Options
     static let customPurple: UIColor = .hexToColor(hexString: "#9533C7")
     static let customBlue: UIColor = .hexToColor(hexString: "#00A0EF")

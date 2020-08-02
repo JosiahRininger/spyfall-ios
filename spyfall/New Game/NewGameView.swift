@@ -36,6 +36,7 @@ class NewGameView: UIView {
     
     var back = UIElementsManager.createButton(with: "Back", color: .secondaryBackgroundColor)
     var create = UIElementsManager.createButton(with: "Create")
+    var spinner = Spinner(frame: .zero)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -54,6 +55,8 @@ class NewGameView: UIView {
         usernameView.addSubviews(usernameLabel, usernameTextField)
         packView.addSubviews(choosePacksLabel, packStackView)
         timeView.addSubviews(timeLabel, disclaimerLabel, timeLimitTextField)
+        spinner = Spinner(frame: CGRect(x: 45.0, y: create.frame.minY + 21.0, width: 20.0, height: 20.0))
+        create.addSubview(spinner)
         
         newGameStackView.addArrangedSubview(usernameView)
         newGameStackView.addArrangedSubview(packView)

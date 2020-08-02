@@ -23,8 +23,8 @@ class Spinner: UIActivityIndicatorView {
     }
     
     func reset() {
-        self.center.x += 5.0
         self.alpha = 0.0
+        self.center.x += 5.0
     }
     
     func animate(with button: Button) {

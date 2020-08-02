@@ -7,32 +7,29 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import PKHUD
 import os.log
-import Reachability
 
-final class NewGameController: UIViewController, UITextFieldDelegate {
-    var newGameView = NewGameView()
-    var networkErrorPopUp = NetworkErrorPopUpView()
-    var spinner = Spinner(frame: .zero)
-    var keyboardHeight: CGFloat = 0.0
-    let reachability = try! Reachability()
+final class NewGameController: UIViewController, NewGameViewModelDelegate, UITextFieldDelegate {
+    private var newGameView = NewGameView()
+    private var newGameViewModel = NewGameViewModel()
+    private var keyboardHeight: CGFloat = 0.0
+    
+    private var chosenPacks: [String] {
+        var packs = [String]()
+        if newGameView.packOneView.isChecked { packs.append(Constants.DBStrings.standardPackOne) }
+        if newGameView.packTwoView.isChecked { packs.append(Constants.DBStrings.standardPackTwo) }
+        if newGameView.specialPackView.isChecked { packs.append(Constants.DBStrings.specialPackOne) }
+        packs.shuffle()
+        return packs
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         newGameView.usernameTextField.delegate = self
         newGameView.timeLimitTextField.delegate = self
-        
+        newGameViewModel.delegate = self
+
         setupView()
-        
-        // Listen to changes in connection
-        do {
-            try reachability.startNotifier()
-        } catch {
-            print("Unable to start notifier")
-        }
 
         // Notifications for KeyBoard Behavior
         NotificationCenter.default.addObserver(self, selector: #selector(NewGameController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -41,104 +38,57 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     deinit {
-        reachability.stopNotifier()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Setup UI
     private func setupView() {
         setupButtons()
         setUpKeyboard()
-        spinner = Spinner(frame: CGRect(x: 45.0, y: newGameView.create.frame.minY + 21.0, width: 20.0, height: 20.0))
-        view.addSubviews(newGameView, networkErrorPopUp)
-        newGameView.create.addSubview(spinner)
+        view.addSubview(newGameView)
     }
     
     private func setupButtons() {
-        newGameView.create.touchUpInside = { [weak self] in self?.createWasTapped() }
         newGameView.back.touchUpInside = { [weak self] in
             self?.navigationController?.popViewController(animated: true)
         }
-        
-        networkErrorPopUp.networkErrorPopUpView.doneButton.touchUpInside = { [weak self] in
-            self?.networkErrorPopUp.isUserInteractionEnabled = false
-            self?.networkErrorPopUp.networkErrorPopUpView.isHidden = true
+        newGameView.create.touchUpInside = { [weak self] in
+            guard let self = self else { return }
+            self.newGameViewModel.createGame(chosenPacks: self.chosenPacks,
+                                              initialPlayer: self.newGameView.usernameTextField.text ?? "",
+                                              timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "-1") ?? -1)
         }
     }
     
-    // MARK: - Helper Methods
-    private func createWasTapped() {
-        guard textFieldsAreValid else { return }
-        
-        switch reachability.connection {
-        case .wifi, .cellular:
-            newGameView.usernameTextField.isUserInteractionEnabled = false
-            newGameView.packStackView.isUserInteractionEnabled = false
-            newGameView.timeLimitTextField.isUserInteractionEnabled = false
-            newGameView.back.isUserInteractionEnabled = false
-            newGameView.create.isUserInteractionEnabled = false
-            
-            spinner.animate(with: newGameView.create)
-            
-            var accessCode = NSUUID().uuidString.lowercased().prefix(6)
-            FirestoreManager.gameExist(with: String(accessCode)) { [weak self] gameExist in
-                if gameExist { accessCode = NSUUID().uuidString.lowercased().prefix(6) }
-                FirestoreManager.retrieveLocationList(chosenPacks: self?.chosenPacks ?? []) { result in
-                    self?.handleGameData(locationList: result, with: String(accessCode))
-                }
-            }
-        case .unavailable, .none:
-            networkErrorPopUp.isUserInteractionEnabled = true
-            networkErrorPopUp.networkErrorPopUpView.isHidden = false
-        }
+    // MARK: - NewGameViewModel Methods
+    func newGameLoading() {
+        newGameView.create.isUserInteractionEnabled = false
+        newGameView.spinner.animate(with: newGameView.create)
     }
     
-    private func handleGameData(locationList: [String], with accessCode: String) {
-        let gameData = GameData(accessCode: accessCode,
-                                initialPlayer: self.newGameView.usernameTextField.text ?? "",
-                                chosenPacks: chosenPacks,
-                                locationList: locationList,
-                                timeLimit: Int(self.newGameView.timeLimitTextField.text ?? "0") ?? 1,
-                                chosenLocation: locationList.shuffled().first ?? "")
-        
-        // Add a new document with a generated ID
-        FirestoreManager.setGameData(accessCode: gameData.accessCode, data: gameData.toDictionary())
-        
-        // Navigate to the next screen with new gameData
+    func createGameSucceeded(gameData: GameData) {
+        newGameView.spinner.reset()
         self.navigationController?.pushViewController(WaitingScreenController(gameData: gameData),
                                                       animated: true)
     }
     
-    private var chosenPacks: [String] {
-        // store selected location packs
-        var chosenPacks = [String]()
-        if newGameView.packOneView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackOne) }
-        if newGameView.packTwoView.isChecked { chosenPacks.append(Constants.DBStrings.standardPackTwo) }
-        if newGameView.specialPackView.isChecked { chosenPacks.append(Constants.DBStrings.specialPackOne) }
-        
-        // Grab random location
-        chosenPacks.shuffle()
-        
-        return chosenPacks
-    }
-
-    private var textFieldsAreValid: Bool {
-        HUD.dimsBackground = false
-        if newGameView.usernameTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a username"), delay: 1.0)
-        } else if chosenPacks.isEmpty {
-            HUD.flash(.label("Please select pack(s)"), delay: 1.0)
-        } else if newGameView.timeLimitTextField.text?.isEmpty ?? true {
-            HUD.flash(.label("Please enter a time limit"), delay: 1.0)
-        } else if Int(newGameView.timeLimitTextField.text ?? "11") ?? 11 > 10
-            || Int(newGameView.timeLimitTextField.text ?? "0") ?? 0 < 1 {
-            newGameView.timeLimitTextField.text = ""
-            HUD.flash(.label("Please enter a time limit between 1 and 10"), delay: 1.0)
-        } else {
-            return true
-        }
-        return false
+    func createGameFailed() {
+        newGameView.spinner.reset()
+        newGameView.create.isUserInteractionEnabled = true
     }
     
+    func showErrorMessage(_ error: SpyfallError) {
+        switch error {
+        case SpyfallError.network: ErrorManager.showPopUp(for: view)
+        default:
+            if error.message == SpyfallError.newGame(.invalidTimeLimitSelected).message {
+                newGameView.timeLimitTextField.text = ""
+            }
+            ErrorManager.showFlash(with: error.message)
+        }
+    }
+    
+    // MARK: - TextField & Keyboard Methods
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         // get the current text, or use an empty string if that failed
         let currentText = textField.text ?? ""
@@ -153,33 +103,26 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         switch textField {
         case newGameView.usernameTextField: return updatedText.count <= 24
         case newGameView.timeLimitTextField: return updatedText.count <= 2
-        default: os_log("INVALID TEXTFIELD"); return false
+        default: SpyfallError.unknown.log("Invalid NewGameController Textfield")
+        return false
         }
     }
     
-    // MARK: - Keyboard Set Up
     private func setUpKeyboard() {
-        createToolBar()
-
+        let toolBar = UIElementsManager.createToolBar(with: UIBarButtonItem(title: "Done",
+                                                                            style: .plain,
+                                                                            target: self,
+                                                                            action: #selector(NewGameController.dismissKeyboard)))
+        newGameView.usernameTextField.inputAccessoryView = toolBar
+        newGameView.timeLimitTextField.inputAccessoryView = toolBar
         let dismissKeyboardTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         dismissKeyboardTapGestureRecognizer.cancelsTouchesInView = false
         view.addGestureRecognizer(dismissKeyboardTapGestureRecognizer)
     }
     
-    @objc private func dismissKeyboard() {
+    @objc
+    private func dismissKeyboard() {
         view.endEditing(true)
-    }
-    
-    private func createToolBar() {
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        let doneButton = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(NewGameController.dismissKeyboard))
-        doneButton.tintColor = .secondaryColor
-        let flexibilitySpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        toolBar.setItems([flexibilitySpace, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        newGameView.usernameTextField.inputAccessoryView = toolBar
-        newGameView.timeLimitTextField.inputAccessoryView = toolBar
     }
     
     // Moves view up if textfield is covered
@@ -197,7 +140,8 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    @objc func keyboardWillShow(notification: NSNotification) {
+    @objc
+    func keyboardWillShow(notification: NSNotification) {
         guard let userInfo = notification.userInfo else { return }
         guard let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         if newGameView.timeLimitTextField.isFirstResponder {
@@ -206,13 +150,15 @@ final class NewGameController: UIViewController, UITextFieldDelegate {
     }
     
     // Moves view down if not centerd on screen
-    @objc func keyboardWillHide(notification: NSNotification) {
+    @objc
+    func keyboardWillHide(notification: NSNotification) {
         if self.newGameView.frame.origin.y != 0 {
             self.newGameView.frame.origin.y = 0
         }
     }
     
-    @objc func keyboardWillChangeFrame(_ notification: Notification) {
+    @objc
+    func keyboardWillChangeFrame(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             if newGameView.timeLimitTextField.isFirstResponder {
                 keyboardHeight = keyboardFrame.cgRectValue.size.height

@@ -12,15 +12,23 @@ class StatsManager {
     
     // Updates total number of games played
     static func incrementTotalNumberOfGamesPlayed() {
-        FirestoreManager.updateStatData(for: Constants.DBStrings.game, data: [
-            Constants.DBStrings.numberOfGamesPlayed: FieldValue.increment(Int64(1))
+        var increment = 1
+        #if DEBUG
+        increment = 0
+        #endif
+        FirestoreService.updateStatData(for: Constants.DBStrings.game, data: [
+            Constants.DBStrings.numberOfGamesPlayed: FieldValue.increment(Int64(increment))
         ])
     }
     
     // Updates total number of players
     static func incrementTotalNumberOfPlayers() {
-        FirestoreManager.updateStatData(for: Constants.DBStrings.game, data: [
-            Constants.DBStrings.numberOfPlayers: FieldValue.increment(Int64(1))
+        var increment = 1
+        #if DEBUG
+        increment = 0
+        #endif
+        FirestoreService.updateStatData(for: Constants.DBStrings.game, data: [
+            Constants.DBStrings.numberOfPlayers: FieldValue.increment(Int64(increment))
         ])
     }
 }
