@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import UIKit
 
 struct Constants {
     /// This struct contains all the constants we use within the app.

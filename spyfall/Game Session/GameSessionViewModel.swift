@@ -130,7 +130,7 @@ class GameSessionViewModel {
     }
     
     // Assigns each player a role
-func handleRoles(_ result: Result<[String], SpyfallError>) {
+    func handleRoles(_ result: Result<[String], SpyfallError>) {
         switch result {
         case .success(let retrievedRoles):
             var roles = retrievedRoles
