@@ -19,4 +19,8 @@ extension String {
         let minutes = (interval / 60) % 60
         return String(format: "%01d:%02d", minutes, seconds)
     }
+    
+    func isAlphanumeric() -> Bool {
+        return self.rangeOfCharacter(from: CharacterSet.alphanumerics.inverted) == nil && self != ""
+    }
 }

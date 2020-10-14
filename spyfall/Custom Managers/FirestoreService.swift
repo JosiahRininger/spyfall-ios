@@ -104,6 +104,10 @@ struct FirestoreService {
     }
     
     static func joinGame(accessCode: String, username: String, completion: @escaping VoidHandler) {
+        guard accessCode.isAlphanumeric() else {
+            completion(.failure(.joinGame(.gameDoesNotExist)))
+            return
+        }
         switch reachability.isConnectedToNetwork {
         case .success:
                                             db.collection(Constants.DBStrings.games).document(accessCode).getDocument { document, error in
