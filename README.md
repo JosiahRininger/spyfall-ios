@@ -13,5 +13,5 @@ Xcode 11, Swift 5, Firebase, Lottie
 This project is multi-platform. Android Developer [Elijah Dangerfield](https://github.com/Elijah-Dangerfield) is currently developing the Android application. Our progress is tracked in this [trello board](https://trello.com/b/HqUDTDkq/spyfall-v1)
 
 ## App Store Link
-Spyfall • Mobile & Spyfall+ • Mobile are no longer available on the App Store. LTV of 70,000 downloads before removal from the App Store.
+Spyfall • Mobile & Spyfall+ • Mobile are no longer available on the App Store. LTV of over 70,000 downloads before removal from the App Store.
 
